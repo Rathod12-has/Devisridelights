@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#e65100">
+    <meta name="theme-color" content="#e65100">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Devi Sri Delights & Foods</title>
@@ -138,10 +138,6 @@
             border-bottom: 1px dashed #ddd;
         }
 
-        .menu-item:last-child {
-            border-bottom: none;
-        }
-
         .item-info h4 {
             margin: 0 0 5px 0;
             font-size: 1.1rem;
@@ -173,12 +169,6 @@
             transition: all 0.2s ease;
         }
 
-        button.add-btn:hover {
-            background-color: #bf360c;
-            transform: scale(1.05);
-        }
-
-        /* --- NEW: Floating Call Button --- */
         #call-shop-btn {
             position: fixed;
             bottom: 20px;
@@ -195,14 +185,31 @@
             z-index: 1002;
             text-decoration: none;
             font-size: 24px;
-            transition: transform 0.3s ease;
-        }
-        
-        #call-shop-btn:hover {
-            transform: scale(1.1);
         }
 
-        /* Floating Cart Container */
+        /* App Action Buttons */
+        .app-actions {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #install-app-btn { background-color: #333; color: white; display: none; }
+        #share-app-btn { background-color: #25D366; color: white; }
+
         #floating-cart {
             position: fixed;
             bottom: 0;
@@ -218,11 +225,6 @@
             z-index: 1000;
         }
 
-        .cart-info {
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-
         .checkout-btn {
             background-color: #25D366; 
             color: white;
@@ -235,15 +237,8 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.3s ease;
         }
 
-        .checkout-btn:hover {
-            background-color: #1ebe57;
-            transform: translateY(-2px);
-        }
-
-        /* Cart Modal Styles */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -255,8 +250,7 @@
         .modal-content {
             background-color: white;
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             width: 90%;
             max-width: 500px;
@@ -265,88 +259,22 @@
             padding: 1.5rem;
             border-radius: 12px;
             box-sizing: border-box;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            animation: modalSlideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .modal-header-flex {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        /* NEW: Clear Cart Button */
-        .clear-cart-btn {
-            background: none;
-            border: 1px solid #ccc;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            color: #666;
-            font-size: 0.85rem;
-        }
-        
-        .clear-cart-btn:hover {
-            background-color: #f0f0f0;
-            color: #333;
-        }
-
-        .close-btn {
-            font-size: 28px;
-            font-weight: bold;
-            color: #aaa;
-            cursor: pointer;
-        }
-
-        .cart-item-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .remove-btn {
-            background-color: #ff4d4d;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-
-        .customer-info {
-            margin: 20px 0;
-            padding-top: 20px;
-            border-top: 2px solid #eee;
-        }
-
-        .customer-info label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .customer-info input {
-            width: 100%;
-            padding: 12px;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            box-sizing: border-box;
-        }
-        
+        .modal-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .clear-cart-btn { background: none; border: 1px solid #ccc; padding: 5px 10px; border-radius: 4px; cursor: pointer; color: #666; font-size: 0.85rem; }
+        .close-btn { font-size: 28px; font-weight: bold; color: #aaa; cursor: pointer; }
+        .cart-item-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee; }
+        .remove-btn { background-color: #ff4d4d; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+        .customer-info { margin: 20px 0; padding-top: 20px; border-top: 2px solid #eee; }
+        .customer-info input { width: 100%; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
         .full-width { width: 100%; justify-content: center; margin-top: 10px; }
 
-        /* Animations */
         @keyframes fadeInPage { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideDownFade { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes modalSlideUp { from { opacity: 0; transform: translate(-50%, -40%) scale(0.95); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
         @keyframes slideDownBar { from { transform: translateY(-100%); } to { transform: translateY(0); } }
-        @keyframes popIn { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         .animate-pop { animation: popIn 0.3s ease-out; }
+        @keyframes popIn { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
         .shop-info { text-align: center; margin-top: 3rem; padding: 2rem; background: white; border-radius: 12px; color: var(--text-muted); line-height: 1.6; }
         .shop-location-img { max-width: 100%; height: auto; border-radius: 8px; margin-top: 1.5rem; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
@@ -372,7 +300,13 @@
         <div class="shop-info">
             <h3>Contact Us</h3>
             <p>Phone / WhatsApp: +91 6305469979</p>
-            <p><em>Check out our location below!</em></p>
+            
+            <div class="app-actions">
+                <button id="install-app-btn" class="action-btn">📲 Download Our App</button>
+                <button id="share-app-btn" class="action-btn">📢 Share App</button>
+            </div>
+
+            <p style="margin-top:20px;"><em>Check out our location below!</em></p>
             <img class="shop-location-img" src="banner.jpg.jpg" alt="Devi Sri Delights & Foods Location">
         </div>
     </div>
@@ -393,16 +327,12 @@
                 <button class="clear-cart-btn" onclick="clearCart()">Clear All</button>
                 <span class="close-btn" onclick="toggleCartModal()">&times;</span>
             </div>
-            
             <div id="cart-items-list"></div>
-            
             <h3 style="text-align: right; color: var(--primary-color);">Total: ₹<span id="modal-total">0</span></h3>
-
             <div class="customer-info">
                 <label for="customer-name">Enter your name:</label>
                 <input type="text" id="customer-name" placeholder="E.g., Arjun Sharma" required>
             </div>
-
             <button class="checkout-btn full-width" onclick="sendWhatsAppOrder()">
                 Send Order via WhatsApp
             </button>
@@ -546,7 +476,6 @@
             }
         }
 
-        // --- NEW: Clear Cart Logic ---
         function clearCart() {
             if (confirm("Are you sure you want to clear your entire order?")) {
                 cart = {};
@@ -601,6 +530,38 @@
             window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
             toggleCartModal();
         }
+
+        // --- PWA & SHARING LOGIC ---
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('install-app-btn').style.display = 'inline-flex';
+        });
+
+        document.getElementById('install-app-btn').addEventListener('click', () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt = null;
+            }
+        });
+
+        document.getElementById('share-app-btn').addEventListener('click', () => {
+            const shareData = {
+                title: 'Devi Sri Delights',
+                text: 'Check out the menu and order online from Devi Sri Delights!',
+                url: window.location.href
+            };
+            if (navigator.share) {
+                navigator.share(shareData);
+            } else {
+                window.open(`https://wa.me/?text=${encodeURIComponent(shareData.text + " " + shareData.url)}`);
+            }
+        });
     </script>
 </body>
-</html> 
+</html>
