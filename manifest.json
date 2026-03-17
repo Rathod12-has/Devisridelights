@@ -1,7 +1,7 @@
 {
   "name": "Devi Sri Delights & Foods",
   "short_name": "Devi Sri",
-  "start_url": "index.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#e65100",
@@ -9,7 +9,8 @@
     {
       "src": "https://cdn-icons-png.flaticon.com/512/1046/1046747.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
