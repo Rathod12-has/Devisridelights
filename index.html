@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devi Sri Delights & Foods</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#e65100">
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <style>
+        /* All your existing classy styles */
+        :root { --primary-color: #e65100; --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #333333; --text-muted: #666666; --call-color: #007bff; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 0; padding-bottom: 100px; animation: fadeInPage 0.8s ease-out; }
+        #announcement-bar { background-color: #bf360c; color: white; text-align: center; padding: 12px 15px; font-size: 0.95rem; font-weight: bold; position: sticky; top: 0; z-index: 1001; box-shadow: 0 4px 6px rgba(0,0,0,0.2); animation: slideDownBar 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; transform: translateY(-100%); }
+        header { background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1543353071-873f17a7a088?q=80&w=2070&auto=format&fit=crop'); background-size: cover; background-position: center; color: white; text-align: center; padding: 5rem 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        header h1 { margin: 0; font-size: 3.2rem; letter-spacing: 1px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); font-family: 'Playfair Display', serif; }
+        header p { margin: 10px 0 0 0; font-size: 1.1rem; opacity: 0.95; }
+        .container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+        .category-card { background-color: var(--card-bg); border-radius: 12px; margin-bottom: 1.5rem; box-shadow: 0 4px 8px rgba(0,0,0,0.05); overflow: hidden; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease; }
+        .category-card:hover { transform: translateY(-6px); box-shadow: 0 12px 24px rgba(0,0,0,0.12); }
+        .category-image { width: 100%; height: 160px; object-fit: cover; display: block; border-bottom: 2px solid #eee; }
+        .category-header { padding: 1rem 1.5rem; font-size: 1.5rem; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background-color: var(--card-bg); }
+        .category-header::after { content: '+'; font-size: 1.8rem; color: var(--primary-color); transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+        .category-card.active .category-header::after { transform: rotate(45deg); }
+        .item-list { display: none; padding: 0 1.5rem 1.5rem 1.5rem; }
+        .category-card.active .item-list { display: block; animation: slideDownFade 0.4s ease forwards; }
+        .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px dashed #ddd; }
+        .item-info h4 { margin: 0 0 5px 0; font-size: 1.1rem; }
+        .item-price { color: var(--primary-color); font-weight: bold; font-size: 1.1rem; }
+        .shop-visit-tag { font-size: 0.85rem; color: var(--text-muted); font-style: italic; background: #eee; padding: 4px 8px; border-radius: 4px; }
+        button.add-btn { background-color: var(--primary-color); color: white; border: none; padding: 8px 18px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.2s ease; }
+        button.add-btn:hover { background-color: #bf360c; transform: scale(1.05); }
+
+        #call-shop-btn { position: fixed; bottom: 20px; left: 20px; background-color: var(--call-color); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 1002; text-decoration: none; font-size: 24px; transition: transform 0.3s ease; }
+        #floating-cart { position: fixed; bottom: 0; left: 0; width: 100%; background-color: white; box-shadow: 0 -4px 15px rgba(0,0,0,0.15); padding: 1rem 2rem; display: none; justify-content: space-between; align-items: center; box-sizing: border-box; z-index: 1000; }
+        .cart-info { font-size: 1.2rem; font-weight: bold; }
+        .checkout-btn { background-color: #25D366; color: white; border: none; padding: 12px 24px; font-size: 1.1rem; border-radius: 8px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; }
+        
+        /* NEW: Install App Button Style */
+        #install-app-btn { background-color: #333; color: white; border: none; padding: 10px 20px; border-radius: 6px; margin-top: 15px; cursor: pointer; display: none; font-weight: bold; }
+
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); z-index: 2000; }
+        .modal-content { background-color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 500px; max-height: 85vh; overflow-y: auto; padding: 1.5rem; border-radius: 12px; box-sizing: border-box; box-shadow: 0 15px 35px rgba(0,0,0,0.2); animation: modalSlideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .modal-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .clear-cart-btn { background: none; border: 1px solid #ccc; padding: 5px 10px; border-radius: 4px; cursor: pointer; color: #666; font-size: 0.85rem; }
+        .close-btn { font-size: 28px; font-weight: bold; color: #aaa; cursor: pointer; }
+        .cart-item-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee; }
+        .remove-btn { background-color: #ff4d4d; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+        .customer-info { margin: 20px 0; padding-top: 20px; border-top: 2px solid #eee; }
+        .customer-info label { font-weight: bold; display: block; margin-bottom: 8px; }
+        .customer-info input { width: 100%; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        .full-width { width: 100%; justify-content: center; margin-top: 10px; }
+
+        @keyframes fadeInPage { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideDownFade { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes modalSlideUp { from { opacity: 0; transform: translate(-50%, -40%) scale(0.95); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+        @keyframes slideDownBar { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+        @keyframes popIn { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        .animate-pop { animation: popIn 0.3s ease-out; }
+        .shop-info { text-align: center; margin-top: 3rem; padding: 2rem; background: white; border-radius: 12px; color: var(--text-muted); line-height: 1.6; }
+        .shop-location-img { max-width: 100%; height: auto; border-radius: 8px; margin-top: 1.5rem; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+
+    <div id="announcement-bar">
+        ✨ Pre-order on WhatsApp to save time. We'll have your hot food ready! ✨
+    </div>
+
+    <a href="tel:9491413342" id="call-shop-btn" title="Call Shop">📞</a>
+
+    <header>
+        <h1>Devi Sri Delights & Foods</h1>
+        <p>📍 Shivani Nagar, Sanghamitra School road, Zaheerabad</p>
+        <p>🕒 Open Every Day: 8:00 AM - 10:00 PM</p>
+    </header>
+
+    <div class="container" id="menu-container"></div>
+
+    <div class="container">
+        <div class="shop-info">
+            <h3>Contact Us</h3>
+            <p>Phone / WhatsApp: +91 9491413342</p>
+            
+            <button id="install-app-btn">📲 Download Our App</button>
+
+            <p style="margin-top:20px;"><em>Check out our location below!</em></p>
+            <img class="shop-location-img" src="banner.jpg.jpg" alt="Devi Sri Delights & Foods Location">
+        </div>
+    </div>
+
+    <div id="floating-cart">
+        <div class="cart-info">
+            <span id="cart-count">0</span> Items | ₹<span id="cart-total">0</span>
+        </div>
+        <button class="checkout-btn" onclick="toggleCartModal()">
+            View Order & Checkout
+        </button>
+    </div>
+
+    <div id="cart-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header-flex">
+                <h2>Your Order</h2>
+                <button class="clear-cart-btn" onclick="clearCart()">Clear All</button>
+                <span class="close-btn" onclick="toggleCartModal()">&times;</span>
+            </div>
+            <div id="cart-items-list"></div>
+            <h3 style="text-align: right; color: var(--primary-color);">Total: ₹<span id="modal-total">0</span></h3>
+            <div class="customer-info">
+                <label for="customer-name">Enter your name:</label>
+                <input type="text" id="customer-name" placeholder="E.g., Arjun Sharma" required>
+            </div>
+            <button class="checkout-btn full-width" onclick="sendWhatsAppOrder()">
+                Send Order via WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- Core Application Logic ---
+        // (Existing menu data and cart functions remain exactly same)
+        const menuCategories = [
+            { name: "Foods", image: "data:image/webp;base64,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", items: [ { name: "Chapati", price: 10 }, { name: "Jowar rotis", price: 15 }, { name: "Bajra roties", price: 20 }, { name: "Sambar", price: 20 }, { name: "Veg curries", price: 20 }, { name: "Chicken curry", price: "Shop Visit" }, { name: "Rice", price: 20 }, { name: "Idli", price: 35 } ] },
+            { name: "Thali", image: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?q=80&w=1000&auto=format&fit=crop", items: [ { name: "Veg thali", price: 79 }, { name: "Non veg thali", price: 99 }, { name: "Unlimited buffet", price: 79 } ] },
+            { name: "Shakes", image: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=1000&auto=format&fit=crop", items: [ { name: "Buttermilk", price: 10 }, { name: "Lassi", price: 20 }, { name: "Oreo milkshake", price: 79 } ] },
+            { name: "Cool Drinks", image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?q=80&w=1000&auto=format&fit=crop", items: [ { name: "Red bull", price: 125 }, { name: "Monster energy", price: 125 }, { name: "Badam milk", price: 40 }, { name: "Predator", price: 60 }, { name: "Thums up", price: "Shop Visit" }, { name: "Sprite", price: "Shop Visit" }, { name: "Coca-cola", price: "Shop Visit" }, { name: "Limca", price: "Shop Visit" }, { name: "Sprite sugar free", price: "Shop Visit" }, { name: "Water bottles", price: "Shop Visit" } ] },
+            { name: "Ice Creams", image: "https://images.unsplash.com/photo-1505394033641-40c6ad1178d7?q=80&w=1000&auto=format&fit=crop", items: [ { name: "Vanilla", price: "Shop Visit" }, { name: "Strawberry", price: "Shop Visit" }, { name: "Choco chips", price: "Shop Visit" }, { name: "Honeymoon delight", price: "Shop Visit" }, { name: "Mango", price: "Shop Visit" } ] },
+            { name: "Sunday Specials", image: "https://tse3.mm.bing.net/th/id/OIP.KE-drO0MxumvxRq8P5nOnwHaEK?rs=1&pid=ImgDetMain&o=7&rm=3", items: [ { name: "Sunday cups (Tutti Frutti)", price: "Shop Visit" }, { name: "Chocolate flavour", price: "Shop Visit" } ] },
+            { name: "Items with Fruits", image: "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?q=80&w=1000&auto=format&fit=crop", items: [ { name: "Fruits bowl", price: "Shop Visit" }, { name: "Fruits juice", price: "Shop Visit" }, { name: "Sprouts", price: "Shop Visit" } ] },
+            { name: "Snacks", image: "sprouts.jpg.jpg", items: [ { name: "Pakodi", price: "Shop Visit" }, { name: "Sprouts", price: "Shop Visit" } ] }
+        ];
+
+        // UI Build and Logic (Simplified for brevity, exactly same as your previous version)
+        const container = document.getElementById('menu-container');
+        menuCategories.forEach(category => {
+            const card = document.createElement('div'); card.className = 'category-card';
+            const img = document.createElement('img'); img.className = 'category-image'; img.src = category.image; card.appendChild(img);
+            const header = document.createElement('div'); header.className = 'category-header'; header.innerText = category.name; header.onclick = () => card.classList.toggle('active'); card.appendChild(header);
+            const itemList = document.createElement('div'); itemList.className = 'item-list';
+            category.items.forEach(item => {
+                const itemDiv = document.createElement('div'); itemDiv.className = 'menu-item';
+                let priceDisplay = (item.price === "Shop Visit") ? `<span class="shop-visit-tag">Price at Shop</span>` : `<span class="item-price">₹${item.price}</span>`;
+                let buttonHTML = (item.price === "Shop Visit") ? '' : `<button class="add-btn" onclick="addToCart('${item.name}', ${item.price})">Add</button>`;
+                itemDiv.innerHTML = `<div class="item-info"><h4>${item.name}</h4>${priceDisplay}</div>${buttonHTML}`;
+                itemList.appendChild(itemDiv);
+            });
+            card.appendChild(itemList); container.appendChild(card);
+        });
+
+        let cart = {};
+        function addToCart(itemName, price) { cart[itemName] = cart[itemName] ? { ...cart[itemName], quantity: cart[itemName].quantity + 1 } : { price, quantity: 1 }; updateCartUI(); }
+        function removeFromCart(itemName) { if (cart[itemName]) { cart[itemName].quantity -= 1; if (cart[itemName].quantity <= 0) delete cart[itemName]; updateCartUI(); renderCartModalItems(); if (Object.keys(cart).length === 0) toggleCartModal(); } }
+        function clearCart() { if (confirm("Clear your order?")) { cart = {}; updateCartUI(); toggleCartModal(); } }
+        function updateCartUI() {
+            let totalItems = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
+            let totalPrice = Object.values(cart).reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            document.getElementById('cart-count').innerText = totalItems; document.getElementById('cart-total').innerText = totalPrice;
+            const cartBar = document.getElementById('floating-cart');
+            if (totalItems > 0) { cartBar.style.display = 'flex'; cartBar.classList.remove('animate-pop'); void cartBar.offsetWidth; cartBar.classList.add('animate-pop'); } else { cartBar.style.display = 'none'; }
+        }
+        function toggleCartModal() { const modal = document.getElementById('cart-modal'); if (modal.style.display === "block") { modal.style.display = "none"; } else { renderCartModalItems(); modal.style.display = "block"; } }
+        function renderCartModalItems() {
+            const list = document.getElementById('cart-items-list'); list.innerHTML = ''; let total = 0;
+            for (let item in cart) { let itemTotal = cart[item].price * cart[item].quantity; total += itemTotal; list.innerHTML += `<div class="cart-item-row"><div><strong>${item}</strong><br><small>₹${cart[item].price} x ${cart[item].quantity}</small></div><div style="text-align: right;"><strong style="display:block;">₹${itemTotal}</strong><button class="remove-btn" onclick="removeFromCart('${item}')">Remove</button></div></div>`; }
+            document.getElementById('modal-total').innerText = total;
+        }
+        function sendWhatsAppOrder() {
+            const customerName = document.getElementById('customer-name').value.trim();
+            if (customerName.length < 2) { alert("Please enter your name!"); return; }
+            const phoneNumber = "919347736645"; 
+            let message = `Hello Devi Sri Delights & Foods! 👋\n\nMy name is *${customerName}* and I would like to pre-order:\n\n`;
+            let total = 0;
+            for (let item in cart) { let itemTotal = cart[item].price * cart[item].quantity; message += `▪️ ${item} (x${cart[item].quantity}) - ₹${itemTotal}\n`; total += itemTotal; }
+            message += `\n*Total Bill: ₹${total}*\n\nI am coming to pick it up. Thank you!`;
+            window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+            toggleCartModal();
+        }
+
+        // --- NEW: PWA App Installation Logic ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js');
+            });
+        }
+
+        let deferredPrompt;
+        const installBtn = document.getElementById('install-app-btn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'block'; // Show button when app is installable
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') installBtn.style.display = 'none';
+                deferredPrompt = null;
+            }
+        });
+    </script>
+</body>
+</html>
