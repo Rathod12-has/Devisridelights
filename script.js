@@ -187,6 +187,13 @@ function sendWhatsAppOrder() {
     message += `\n*Total Bill: ₹${total}*\n\nI am coming to pick it up. Thank you!`;
     window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
     toggleCartModal();
+
+        // --- NEW: Save to Firebase Database ---
+    if (window.saveOrderToFirebase) {
+        window.saveOrderToFirebase(customerName, cart, total);
+    }
+    // --------------------------------------
+
 }
 
 // --- PWA & SHARING LOGIC ---
