@@ -79,6 +79,45 @@
         </div>
     </div>
 
+        <script type="module">
+        // 1. Import Firebase core, Analytics, and Firestore
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-analytics.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+        // 2. Your specific Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC7uuy0yYV3L17RJ0RvbN-mrfqrT4PquMo",
+            authDomain: "devi-sri-delights.firebaseapp.com",
+            projectId: "devi-sri-delights",
+            storageBucket: "devi-sri-delights.firebasestorage.app",
+            messagingSenderId: "73108349440",
+            appId: "1:73108349440:web:8ca038c61c9a85b2b12ee5",
+            measurementId: "G-FSKW9M3WL1"
+        };
+
+        // 3. Initialize Firebase, Analytics, and Firestore Database
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+
+        // 4. Create the function to save orders so script.js can use it
+        window.saveOrderToFirebase = async function(customerName, cartData, totalAmount) {
+            try {
+                const docRef = await addDoc(collection(db, "orders"), {
+                    customerName: customerName,
+                    orderItems: cartData,
+                    totalBill: totalAmount,
+                    timestamp: serverTimestamp(),
+                    status: "Pending"
+                });
+                console.log("Order safely stored in database! ID: ", docRef.id);
+            } catch (error) {
+                console.error("Error saving order to database: ", error);
+            }
+        };
+    </script>
+
     <script src="script.js"></script>
 </body>
 </html>
