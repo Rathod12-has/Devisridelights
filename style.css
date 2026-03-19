@@ -78,51 +78,62 @@ header p {
     padding: 0 1rem;
 }
 
-/* Category Cards */
+/* --- Premium Category Cards --- */
 .category-card {
     background-color: var(--card-bg);
-    border-radius: 12px;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    border-radius: 16px; /* Slightly rounder for a modern, friendly feel */
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* Softer, wider, more elegant shadow */
+    border: 1px solid rgba(0,0,0,0.03);
     overflow: hidden;
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .category-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); /* Dramatically lifts off the page on hover */
 }
 
 .category-image {
     width: 100%;
-    height: 160px;
+    height: 180px; /* Slightly taller to show off the food better */
     object-fit: cover;
     display: block;
-    border-bottom: 2px solid #eee;
+    border-bottom: 3px solid #f8c471; /* Subtle champagne gold accent line */
 }
 
 .category-header {
-    padding: 1rem 1.5rem;
-    font-size: 1.5rem;
-    font-weight: bold;
+    padding: 1.2rem 1.5rem;
+    font-size: 1.6rem;
+    font-family: 'Playfair Display', serif; /* Brings your elegant header font down to the cards */
+    font-weight: 700;
+    color: #2c3e50; /* Deep slate color to match the new vibe */
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: var(--card-bg);
+    transition: background-color 0.3s ease;
+}
+
+.category-header:hover {
+    background-color: #fafafa;
 }
 
 .category-header::after {
     content: '+';
-    font-size: 1.8rem;
-    color: var(--primary-color);
+    font-size: 2rem;
+    font-family: sans-serif; /* Keeps the plus sign clean and legible */
+    color: #f8c471; /* Gold plus sign */
     transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .category-card.active .category-header::after {
     transform: rotate(45deg);
+    color: #bf360c; /* Turns deep orange when open */
 }
 
+/* --- Premium Menu Items --- */
 .item-list {
     display: none;
     padding: 0 1.5rem 1.5rem 1.5rem;
@@ -137,41 +148,55 @@ header p {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 0;
-    border-bottom: 1px dashed #ddd;
+    padding: 1.2rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.06); /* Clean, subtle solid line instead of dashed */
+}
+
+.menu-item:last-child {
+    border-bottom: none; /* Removes the line from the very last item */
 }
 
 .item-info h4 {
-    margin: 0 0 5px 0;
-    font-size: 1.1rem;
+    margin: 0 0 6px 0;
+    font-size: 1.15rem;
+    color: #333;
+    font-weight: 600;
 }
 
 .item-price {
-    color: var(--primary-color);
-    font-weight: bold;
-    font-size: 1.1rem;
+    color: #bf360c; /* Deep, rich burnt orange instead of standard orange */
+    font-weight: 700;
+    font-size: 1.15rem;
 }
 
 .shop-visit-tag {
     font-size: 0.85rem;
-    color: var(--text-muted);
+    color: #888;
     font-style: italic;
-    background: #eee;
-    padding: 4px 8px;
-    border-radius: 4px;
+    background: #f4f4f4;
+    padding: 4px 10px;
+    border-radius: 12px;
 }
 
+/* --- Premium Add Button --- */
 button.add-btn {
-    background-color: var(--primary-color);
-    color: white;
+    background: linear-gradient(135deg, #f8c471 0%, #d4ac0d 100%); /* Classy gold gradient */
+    color: #111; /* Dark text on gold looks very high-end */
     border: none;
-    padding: 8px 18px;
-    border-radius: 6px;
+    padding: 8px 22px;
+    border-radius: 20px; /* Pill shape is very modern */
     cursor: pointer;
-    font-weight: bold;
-    transition: all 0.2s ease;
+    font-weight: 700;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 10px rgba(212, 172, 13, 0.3);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+button.add-btn:hover {
+    transform: translateY(-2px) scale(1.05); /* Satisfying "pop" on hover */
+    box-shadow: 0 6px 15px rgba(212, 172, 13, 0.4);
+    background: linear-gradient(135deg, #f4d03f 0%, #f1c40f 100%); /* Brightens slightly */
+}
 #call-shop-btn {
     position: fixed;
     bottom: 20px;
