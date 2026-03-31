@@ -1,28 +1,26 @@
-// Register the Service Worker
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js')
-    .then(() => console.log("Service Worker Registered"));
-}
-
-let deferredPrompt;
-const installBtn = document.getElementById('install-app-btn');
-
-// This event fires when the browser confirms the site is "Installable"
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    // The button starts as 'display: none', this makes it visible
-    installBtn.style.display = 'block'; 
+// sw.js - This runs in the background to handle notifications
+self.addEventListener('install', (event) => {
+    self.skipWaiting();
 });
 
-installBtn.addEventListener('click', async () => {
-    if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-            console.log('User accepted the install prompt');
-            installBtn.style.display = 'none';
-        }
-        deferredPrompt = null;
-    }
+self.addEventListener('activate', (event) => {
+    event.waitUntil(self.clients.claim());
+});
+
+// If the customer taps the notification banner, this opens your app!
+self.addEventListener('notificationclick', function(event) {
+    event.notification.close();
+    event.waitUntil(
+        clients.matchAll({ type: 'window' }).then(windowClients => {
+            for (var i = 0; i < windowClients.length; i++) {
+                var client = windowClients[i];
+                if (client.url === '/' && 'focus' in client) {
+                    return client.focus();
+                }
+            }
+            if (clients.openWindow) {
+                return clients.openWindow('/');
+            }
+        })
+    );
 });
