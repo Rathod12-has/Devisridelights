@@ -121,8 +121,7 @@
             <button onclick="document.getElementById('login-modal').classList.remove('show')" class="close-text-btn">Cancel</button>
         </div>
         </div>
-    
-<script type="module">
+    <script type="module">
     // --- 1. IMPORT ALL FIREBASE TOOLS ---
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
     import { getFirestore, collection, addDoc, serverTimestamp, doc, onSnapshot, updateDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
@@ -269,10 +268,37 @@
             const orderRef = doc(db, "orders", currentOrderId);
             const unsubscribe = onSnapshot(orderRef, (docSnap) => {
                 if (docSnap.exists() && docSnap.data().status === "Ready") {
-                    const modal =
-        
+                    const modal = document.getElementById('ready-modal');
+                    if(modal) modal.classList.add('show');
+                    unsubscribe();
+                }
+            });
+        } catch (orderError) {
+            console.error("CRITICAL ERROR: ", orderError);
+        }
 
+        // Try getting the push token in the background quietly
+        try {
+            const messaging = getMessaging(app); 
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                const registration = await navigator.serviceWorker.register('sw.js');
+                const customerDeviceToken = await getToken(messaging, { 
+                    vapidKey: "BOIZSaP0X144ThoGFDo2Q6QbrC38PEkqwPaCFC8sic-hSfd0nzIVUMpvBnwLc7Kos0ie-dsI2FYDezrOYNyfDbg",
+                    serviceWorkerRegistration: registration
+                });
+                
+                if (customerDeviceToken && currentOrderId) {
+                    await updateDoc(doc(db, "orders", currentOrderId), { deviceToken: customerDeviceToken });
+                }
+            }
+        } catch (tokenError) {
+            console.warn("Notification setup skipped.");
+        }
+    };
+    </script>
     
+
       <script src="script.js"></script>
     <div id="ready-modal" class="ready-modal-hidden">
         <div class="ready-modal-content">
