@@ -180,27 +180,32 @@ function sendWhatsAppOrder() {
         return; 
     }
 
-    // Calculate the total bill
+    // --- NEW: THE GATEKEEPER ---
+    // Check if the user is verified with Firebase Auth
+    if (!window.currentUser) {
+        // If not logged in, pop open the beautiful login screen!
+        document.getElementById('login-modal').classList.add('show');
+        return; // Stop the checkout process here
+    }
+    // ---------------------------
+
     let total = 0;
     for (let item in cart) {
         total += cart[item].price * cart[item].quantity;
     }
 
-    // Hide the cart popup
     toggleCartModal();
 
-    // --- SEND DIRECTLY TO KITCHEN DASHBOARD (NO WHATSAPP!) ---
     if (window.saveOrderToFirebase) {
         window.saveOrderToFirebase(customerName, cart, total);
     }
 
-    // Show a premium success message to the customer
     alert("✅ Order successfully sent to the kitchen!\n\nPlease wait, your phone will notify you the exact moment it is ready for pickup.");
 
-    // Clear the cart so it's empty for their next order
     cart = {};
     updateCartUI();
 }
+
 
 
 // --- PWA & SHARING LOGIC ---
