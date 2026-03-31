@@ -123,13 +123,13 @@
         </div>
     
 <script type="module">
+    // --- 1. IMPORT ALL FIREBASE TOOLS ---
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp, doc, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, serverTimestamp, doc, onSnapshot, updateDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
     import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-messaging.js";
-    
-    // --- NEW: Import Phone Authentication Tools ---
     import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 
+    // --- 2. YOUR SECURE CONFIGURATION ---
     const firebaseConfig = {
         apiKey: "AIzaSyC7uuy0yYV3L17RJ0RvbN-mrfqrT4PquMo",
         authDomain: "devi-sri-delights.firebaseapp.com",
@@ -140,59 +140,59 @@
         measurementId: "G-FSKW9M3WL1"
     };
 
+    // --- 3. START THE ENGINE ---
     let app, db, auth;
     try {
         app = initializeApp(firebaseConfig);
         db = getFirestore(app);
-        auth = getAuth(app); // Initialize Auth
-        console.log("🔥 Database & Auth connected!");
+        auth = getAuth(app);
+        console.log("🔥 Devi Sri Delights App Engine Started!");
     } catch (e) {
         console.error("Firebase init error:", e);
     }
 
-    // Keep track of who is logged in
+    // --- 4. LISTEN FOR LOGGED-IN USERS ---
     window.currentUser = null;
     onAuthStateChanged(auth, (user) => {
+        const myOrdersBtn = document.getElementById('my-orders-btn');
         if (user) {
             window.currentUser = user;
-            console.log("Customer is logged in with: ", user.phoneNumber);
+            console.log("Customer logged in: ", user.phoneNumber);
+            if (myOrdersBtn) myOrdersBtn.style.display = 'block'; // Show My Orders button
         } else {
             window.currentUser = null;
+            if (myOrdersBtn) myOrdersBtn.style.display = 'none'; // Hide if not logged in
         }
     });
 
-    // --- NEW: Send OTP Function ---
+    // --- 5. PHONE LOGIN: SEND OTP ---
     window.sendOTP = function() {
         const phoneInput = document.getElementById("phone-number").value.trim();
         if (phoneInput.length !== 10) {
             alert("Please enter a valid 10-digit phone number.");
             return;
         }
-        const fullNumber = "+91" + phoneInput; // India country code
+        const fullNumber = "+91" + phoneInput;
 
-        // Create the invisible reCAPTCHA verifier
         if (!window.recaptchaVerifier) {
             window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
                 'size': 'invisible'
             });
         }
 
-        const appVerifier = window.recaptchaVerifier;
-
-        signInWithPhoneNumber(auth, fullNumber, appVerifier)
+        signInWithPhoneNumber(auth, fullNumber, window.recaptchaVerifier)
             .then((confirmationResult) => {
                 window.confirmationResult = confirmationResult;
-                // Hide Step 1, Show Step 2
                 document.getElementById("phone-input-section").style.display = "none";
                 document.getElementById("otp-input-section").style.display = "block";
                 document.getElementById("login-step-1-text").innerText = "OTP sent successfully! 📩";
             }).catch((error) => {
-                console.error("SMS not sent", error);
-                alert("Error sending OTP. Please refresh and try again.");
+                console.error("SMS error:", error);
+                alert("Could not send OTP. Please refresh and try again.");
             });
     };
 
-    // --- NEW: Verify OTP Function ---
+    // --- 6. PHONE LOGIN: VERIFY OTP ---
     window.verifyOTP = function() {
         const code = document.getElementById("otp-code").value.trim();
         if(code.length !== 6) {
@@ -205,22 +205,58 @@
             document.getElementById('login-modal').classList.remove('show');
             alert("✅ Login successful! Click Checkout again to place your order.");
         }).catch((error) => {
-            alert("❌ Invalid OTP. Please check the code and try again.");
+            alert("❌ Invalid OTP. Please try again.");
         });
     };
 
-    // Your existing save order function (Updated to include phone number!)
+    // --- 7. LOAD ORDER HISTORY ---
+    window.openOrderHistory = async function() {
+        if (!window.currentUser) return;
+        
+        document.getElementById('history-modal').classList.add('show');
+        const historyList = document.getElementById('history-list');
+        historyList.innerHTML = "<p style='color: #888;'>Loading your delicious history...</p>";
+
+        try {
+            const q = query(collection(db, "orders"), where("customerPhone", "==", window.currentUser.phoneNumber));
+            const querySnapshot = await getDocs(q);
+            
+            if (querySnapshot.empty) {
+                historyList.innerHTML = "<p style='color: #888;'>No orders found. Time to eat!</p>";
+                return;
+            }
+
+            let html = "";
+            querySnapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                let dateString = data.timestamp ? data.timestamp.toDate().toLocaleDateString() : "Recently";
+                
+                html += `
+                    <div class="history-card">
+                        <strong>Order on ${dateString}</strong>
+                        <p>Total: ₹${data.totalBill}</p>
+                        <span class="status-badge status-${data.status}">${data.status}</span>
+                    </div>
+                `;
+            });
+            historyList.innerHTML = html;
+
+        } catch(error) {
+            console.error("History error: ", error);
+            historyList.innerHTML = "<p style='color: red;'>Could not load history.</p>";
+        }
+    };
+
+    // --- 8. SAVE THE ORDER TO KITCHEN DASHBOARD ---
     window.saveOrderToFirebase = async function(customerName, cartData, totalAmount) {
         if (!db) return;
         let currentOrderId = "";
-        
-        // Grab their verified phone number to send to the kitchen!
         const verifiedPhone = window.currentUser ? window.currentUser.phoneNumber : "No Number";
 
         try {
             const docRef = await addDoc(collection(db, "orders"), {
                 customerName: customerName,
-                customerPhone: verifiedPhone, // <--- SAVED TO KITCHEN!
+                customerPhone: verifiedPhone,
                 orderItems: cartData,
                 totalBill: totalAmount,
                 timestamp: serverTimestamp(),
@@ -233,39 +269,9 @@
             const orderRef = doc(db, "orders", currentOrderId);
             const unsubscribe = onSnapshot(orderRef, (docSnap) => {
                 if (docSnap.exists() && docSnap.data().status === "Ready") {
-                    const modal = document.getElementById('ready-modal');
-                    if(modal) modal.classList.add('show');
-                    unsubscribe();
-                }
-            });
+                    const modal =
+        
 
-        } catch (orderError) {
-            console.error("CRITICAL ERROR: ", orderError);
-        }
-
-        try {
-            const messaging = getMessaging(app); 
-            const permission = await Notification.requestPermission();
-            if (permission === 'granted') {
-                const registration = await navigator.serviceWorker.register('sw.js');
-                const customerDeviceToken = await getToken(messaging, { 
-                    vapidKey: "BOIZSaP0X144ThoGFDo2Q6QbrC38PEkqwPaCFC8sic-hSfd0nzIVUMpvBnwLc7Kos0ie-dsI2FYDezrOYNyfDbg",
-                    serviceWorkerRegistration: registration
-                });
-                
-                if (customerDeviceToken && currentOrderId) {
-                    await updateDoc(doc(db, "orders", currentOrderId), { deviceToken: customerDeviceToken });
-                }
-            }
-        } catch (tokenError) {
-            console.warn("Notification setup skipped.");
-        }
-    };
-                </script>
-    
-    
-    
-    
     
       <script src="script.js"></script>
     <div id="ready-modal" class="ready-modal-hidden">
