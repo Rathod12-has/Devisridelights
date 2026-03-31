@@ -95,11 +95,6 @@
                 
                 <button id="send-otp-btn" class="action-btn" onclick="sendOTP()">Send OTP</button>
             </div>
-                <button id="my-orders-btn" onclick="openOrderHistory()" style="display: none;">
-        📜 My Orders
-    </button>
-
-    <div id="history-modal" class="modal-hidden">
         <div class="history-modal-content">
             <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px;">Order History</h2>
             
@@ -306,6 +301,12 @@
             <p style="color: #ddd; line-height: 1.5;">Your delicious food from Devi Sri Delights is freshly prepared and ready for pickup at the counter!</p>
             <button onclick="document.getElementById('ready-modal').classList.remove('show')" class="close-ready-btn">Awesome, thanks!</button>
         </div>
+    </div>
+    button id=<"my-orders-btn" onclick="openOrderHistory()" style="display: none;">
+        📜 My Orders
+    </button>
+
+    <div id="history-modal" class="modal-hidden">
     </div>
 </body>
 </html>
