@@ -82,43 +82,69 @@
     </div>
 
         <script type="module">
-        // 1. Import Firebase core, Analytics, and Firestore
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-analytics.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+    // 1. Import Firebase core, Analytics, and Firestore
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-analytics.js";
+    // ADDED 'doc' and 'onSnapshot' to the end of this line:
+    import { getFirestore, collection, addDoc, serverTimestamp, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
-        // 2. Your specific Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyC7uuy0yYV3L17RJ0RvbN-mrfqrT4PquMo",
-            authDomain: "devi-sri-delights.firebaseapp.com",
-            projectId: "devi-sri-delights",
-            storageBucket: "devi-sri-delights.firebasestorage.app",
-            messagingSenderId: "73108349440",
-            appId: "1:73108349440:web:8ca038c61c9a85b2b12ee5",
-            measurementId: "G-FSKW9M3WL1"
-        };
+    // 2. Your specific Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyC7uuy0yYV3L17RJ0RvbN-mrfqrT4PquMo",
+        authDomain: "devi-sri-delights.firebaseapp.com",
+        projectId: "devi-sri-delights",
+        storageBucket: "devi-sri-delights.firebasestorage.app",
+        messagingSenderId: "73108349440",
+        appId: "1:73108349440:web:8ca038c61c9a85b2b12ee5",
+        measurementId: "G-FSKW9M3WL1"
+    };
 
-        // 3. Initialize Firebase, Analytics, and Firestore Database
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const db = getFirestore(app);
+    // 3. Initialize Firebase, Analytics, and Firestore Database
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getFirestore(app);
 
-        // 4. Create the function to save orders so script.js can use it
-        window.saveOrderToFirebase = async function(customerName, cartData, totalAmount) {
-            try {
-                const docRef = await addDoc(collection(db, "orders"), {
-                    customerName: customerName,
-                    orderItems: cartData,
-                    totalBill: totalAmount,
-                    timestamp: serverTimestamp(),
-                    status: "Pending"
-                });
-                console.log("Order safely stored in database! ID: ", docRef.id);
-            } catch (error) {
-                console.error("Error saving order to database: ", error);
-            }
-        };
-    </script>
+    // 4. Create the function to save orders so script.js can use it
+    window.saveOrderToFirebase = async function(customerName, cartData, totalAmount) {
+        try {
+            // Save the order to the kitchen exactly like before
+            const docRef = await addDoc(collection(db, "orders"), {
+                customerName: customerName,
+                orderItems: cartData,
+                totalBill: totalAmount,
+                timestamp: serverTimestamp(),
+                status: "Pending"
+            });
+            console.log("Order safely stored in database! ID: ", docRef.id);
+
+            // --- THE NEW LIVE TRACKING LOGIC ---
+            // Grab the exact ID of the order that was just placed
+            const orderRef = doc(db, "orders", docRef.id);
+            
+            // Listen to this specific order in the background
+            const unsubscribe = onSnapshot(orderRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const orderData = docSnap.data();
+                    
+                    // The second you click "Mark as Ready" in the kitchen dashboard:
+                    if (orderData.status === "Ready") {
+                        
+                        // Show the beautiful celebration popup!
+                        document.getElementById('ready-modal').classList.add('show');
+                        
+                        // Stop listening to save your database memory
+                        unsubscribe(); 
+                    }
+                }
+            });
+            // --------------------------------------
+
+        } catch (error) {
+            console.error("Error saving order to database: ", error);
+        }
+    };
+        </script>
+    
 
     <script src="script.js"></script>
     <div id="ready-modal" class="ready-modal-hidden">
