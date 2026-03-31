@@ -80,6 +80,32 @@
             </button>
         </div>
     </div>
+        <div id="login-modal" class="modal-hidden">
+        <div class="login-modal-content">
+            <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0;">Welcome!</h2>
+            <p id="login-step-1-text" style="color: #ddd; line-height: 1.5;">Please enter your phone number to securely place your order.</p>
+
+            <div id="phone-input-section">
+                <div class="phone-input-wrapper">
+                    <span class="country-code">+91</span>
+                    <input type="tel" id="phone-number" placeholder="Enter 10-digit number" maxlength="10">
+                </div>
+                
+                <div id="recaptcha-container" style="margin-bottom: 15px;"></div>
+                
+                <button id="send-otp-btn" class="action-btn" onclick="sendOTP()">Send OTP</button>
+            </div>
+
+            <div id="otp-input-section" style="display: none;">
+                <p style="color: #ddd; line-height: 1.5;">Enter the 6-digit code sent to your phone.</p>
+                <input type="number" id="otp-code" placeholder="------" class="otp-input">
+                <button id="verify-otp-btn" class="action-btn" onclick="verifyOTP()">Verify & Login</button>
+            </div>
+
+            <button onclick="document.getElementById('login-modal').classList.remove('show')" class="close-text-btn">Cancel</button>
+        </div>
+        </div>
+    
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
