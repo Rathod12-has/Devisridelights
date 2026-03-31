@@ -392,3 +392,52 @@ button.add-btn:hover {
     box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
             }
         
+/* --- Phone Login Modal Styling --- */
+#login-modal {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(10, 14, 20, 0.9); z-index: 20000;
+    display: flex; justify-content: center; align-items: center;
+    opacity: 0; visibility: hidden; transition: all 0.3s ease;
+}
+
+#login-modal.show { opacity: 1; visibility: visible; }
+
+.login-modal-content {
+    background: #121212; padding: 30px; border-radius: 15px;
+    text-align: center; border-top: 5px solid #e65100;
+    box-shadow: 0 10px 40px rgba(230, 81, 0, 0.3);
+    width: 90%; max-width: 350px;
+}
+
+.phone-input-wrapper {
+    display: flex; align-items: center; background: #222;
+    border-radius: 8px; padding: 5px 15px; margin-bottom: 20px;
+    border: 1px solid #333;
+}
+
+.country-code { color: #f8c471; font-weight: bold; margin-right: 10px; font-size: 1.1rem; }
+
+#phone-number {
+    background: transparent; border: none; color: white;
+    font-size: 1.1rem; width: 100%; padding: 10px 0; outline: none;
+}
+
+.otp-input {
+    background: #222; border: 1px solid #333; color: white;
+    font-size: 1.5rem; width: 100%; padding: 15px; text-align: center;
+    border-radius: 8px; letter-spacing: 5px; margin-bottom: 20px; outline: none;
+}
+
+.action-btn {
+    background: #e65100; color: white; border: none; padding: 12px 24px;
+    border-radius: 6px; font-weight: bold; cursor: pointer;
+    width: 100%; font-size: 1.1rem; transition: background 0.3s;
+}
+
+.action-btn:hover { background: #ff6d00; }
+
+.close-text-btn {
+    background: none; border: none; color: #888; margin-top: 15px;
+    cursor: pointer; font-size: 0.9rem; text-decoration: underline;
+    }
+    
