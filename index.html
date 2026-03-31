@@ -19,13 +19,11 @@
 
     <a href="tel:6305469979" id="call-shop-btn" title="Call Shop"><span style="font-size: 22px;">📞</span> Call Us</a>
 
-        <header>
+    <header>
         <h1 class="aesthetic-title">Devi Sri<br>Delights & Foods</h1>
         <p>📍 Shivani Nagar, Sanghamitra School road, Zaheerabad</p>
         <p>🕒 Open Every Day: 7:00 AM - 10:00 PM</p>
-        </header>
-    
-
+    </header>
 
     <div class="container" id="menu-container"></div>
 
@@ -33,23 +31,11 @@
         <div class="shop-info">
             <h3>Contact Us</h3>
             <p>Phone / WhatsApp: +91 6305469979</p>
-            
             <div class="app-actions">
                 <button id="install-app-btn" class="action-btn">📲 Download Our App</button>
                 <button id="share-app-btn" class="action-btn">📢 Share App</button>
             </div>
-
-            <p style="margin-top:20px;"><em>Find us right here!</em></p>
-            
-            <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15205.319575306294!2d77.60625554435207!3d17.681869332099453!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bceb5036dd004cb%3A0x370dc5a8eac9f14e!2sDevi%20Sri%20Delights%20And%20Foods!5e0!3m2!1sen!2sin!4v1773851274606!5m2!1sen!2sin" 
-                width="100%" 
-                height="300" 
-                style="border:0; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-top: 15px;" 
-                allowfullscreen="" 
-                loading="lazy" 
-                referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3800.228189689255!2d77.5959!3d17.6833!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTfCsDQxJzAwLjAiTiA3N8KwMzUnNDUuMiJF!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin" width="100%" height="300" style="border:0; border-radius: 12px; margin-top: 15px;" allowfullscreen="" loading="lazy"></iframe>
         </div>
     </div>
 
@@ -57,9 +43,7 @@
         <div class="cart-info">
             <span id="cart-count">0</span> Items | ₹<span id="cart-total">0</span>
         </div>
-        <button class="checkout-btn" onclick="toggleCartModal()">
-            View Order & Checkout
-        </button>
+        <button class="checkout-btn" onclick="toggleCartModal()">View Order & Checkout</button>
     </div>
 
     <div id="cart-modal" class="modal-overlay">
@@ -75,238 +59,134 @@
                 <label for="customer-name">Enter your name:</label>
                 <input type="text" id="customer-name" placeholder="E.g., Arjun Sharma" required>
             </div>
-            <button class="checkout-btn full-width" onclick="sendWhatsAppOrder()">
-                Send Order via WhatsApp
-            </button>
+            <button class="checkout-btn full-width" onclick="sendWhatsAppOrder()">Place Order</button>
         </div>
     </div>
-        <div id="login-modal" class="modal-hidden">
+
+    <div id="login-modal" class="modal-hidden">
         <div class="login-modal-content">
             <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0;">Welcome!</h2>
-            <p id="login-step-1-text" style="color: #ddd; line-height: 1.5;">Please enter your phone number to securely place your order.</p>
+            <p id="login-step-1-text" style="color: #ddd;">Please enter your phone number to place your order.</p>
 
             <div id="phone-input-section">
                 <div class="phone-input-wrapper">
                     <span class="country-code">+91</span>
                     <input type="tel" id="phone-number" placeholder="Enter 10-digit number" maxlength="10">
                 </div>
-                
                 <div id="recaptcha-container" style="margin-bottom: 15px;"></div>
-                
                 <button id="send-otp-btn" class="action-btn" onclick="sendOTP()">Send OTP</button>
             </div>
-        <div class="history-modal-content">
-            <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px;">Order History</h2>
-            
-            <div id="history-list">
-                <p style="color: #888;">Loading your delicious history...</p>
-            </div>
-
-            <button onclick="document.getElementById('history-modal').classList.remove('show')" class="close-ready-btn" style="background: #333; margin-top: 15px;">Close</button>
-        </div>
-    </div>
-            
 
             <div id="otp-input-section" style="display: none;">
-                <p style="color: #ddd; line-height: 1.5;">Enter the 6-digit code sent to your phone.</p>
+                <p style="color: #ddd;">Enter the 6-digit code sent to your phone.</p>
                 <input type="number" id="otp-code" placeholder="------" class="otp-input">
                 <button id="verify-otp-btn" class="action-btn" onclick="verifyOTP()">Verify & Login</button>
             </div>
-
             <button onclick="document.getElementById('login-modal').classList.remove('show')" class="close-text-btn">Cancel</button>
         </div>
+    </div>
+
+    <button id="my-orders-btn" onclick="openOrderHistory()" style="display: none;">📜 My Orders</button>
+
+    <div id="history-modal" class="modal-hidden">
+        <div class="history-modal-content">
+            <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px;">Order History</h2>
+            <div id="history-list">
+                <p style="color: #888;">Loading your delicious history...</p>
+            </div>
+            <button onclick="document.getElementById('history-modal').classList.remove('show')" class="close-ready-btn" style="background: #333; margin-top: 15px;">Close</button>
         </div>
-    <script type="module">
-    // --- 1. IMPORT ALL FIREBASE TOOLS ---
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp, doc, onSnapshot, updateDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
-    import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-messaging.js";
-    import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+    </div>
 
-    // --- 2. YOUR SECURE CONFIGURATION ---
-    const firebaseConfig = {
-        apiKey: "AIzaSyC7uuy0yYV3L17RJ0RvbN-mrfqrT4PquMo",
-        authDomain: "devi-sri-delights.firebaseapp.com",
-        projectId: "devi-sri-delights",
-        storageBucket: "devi-sri-delights.firebasestorage.app",
-        messagingSenderId: "73108349440",
-        appId: "1:73108349440:web:8ca038c61c9a85b2b12ee5",
-        measurementId: "G-FSKW9M3WL1"
-    };
-
-    // --- 3. START THE ENGINE ---
-    let app, db, auth;
-    try {
-        app = initializeApp(firebaseConfig);
-        db = getFirestore(app);
-        auth = getAuth(app);
-        console.log("🔥 Devi Sri Delights App Engine Started!");
-    } catch (e) {
-        console.error("Firebase init error:", e);
-    }
-
-    // --- 4. LISTEN FOR LOGGED-IN USERS ---
-    window.currentUser = null;
-    onAuthStateChanged(auth, (user) => {
-        const myOrdersBtn = document.getElementById('my-orders-btn');
-        if (user) {
-            window.currentUser = user;
-            console.log("Customer logged in: ", user.phoneNumber);
-            if (myOrdersBtn) myOrdersBtn.style.display = 'block'; // Show My Orders button
-        } else {
-            window.currentUser = null;
-            if (myOrdersBtn) myOrdersBtn.style.display = 'none'; // Hide if not logged in
-        }
-    });
-
-    // --- 5. PHONE LOGIN: SEND OTP ---
-    window.sendOTP = function() {
-        const phoneInput = document.getElementById("phone-number").value.trim();
-        if (phoneInput.length !== 10) {
-            alert("Please enter a valid 10-digit phone number.");
-            return;
-        }
-        const fullNumber = "+91" + phoneInput;
-
-        if (!window.recaptchaVerifier) {
-            window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-                'size': 'invisible'
-            });
-        }
-
-        signInWithPhoneNumber(auth, fullNumber, window.recaptchaVerifier)
-            .then((confirmationResult) => {
-                window.confirmationResult = confirmationResult;
-                document.getElementById("phone-input-section").style.display = "none";
-                document.getElementById("otp-input-section").style.display = "block";
-                document.getElementById("login-step-1-text").innerText = "OTP sent successfully! 📩";
-            }).catch((error) => {
-                console.error("SMS error:", error);
-                alert("Could not send OTP. Please refresh and try again.");
-            });
-    };
-
-    // --- 6. PHONE LOGIN: VERIFY OTP ---
-    window.verifyOTP = function() {
-        const code = document.getElementById("otp-code").value.trim();
-        if(code.length !== 6) {
-            alert("Please enter the 6-digit OTP.");
-            return;
-        }
-
-        window.confirmationResult.confirm(code).then((result) => {
-            window.currentUser = result.user;
-            document.getElementById('login-modal').classList.remove('show');
-            alert("✅ Login successful! Click Checkout again to place your order.");
-        }).catch((error) => {
-            alert("❌ Invalid OTP. Please try again.");
-        });
-    };
-
-    // --- 7. LOAD ORDER HISTORY ---
-    window.openOrderHistory = async function() {
-        if (!window.currentUser) return;
-        
-        document.getElementById('history-modal').classList.add('show');
-        const historyList = document.getElementById('history-list');
-        historyList.innerHTML = "<p style='color: #888;'>Loading your delicious history...</p>";
-
-        try {
-            const q = query(collection(db, "orders"), where("customerPhone", "==", window.currentUser.phoneNumber));
-            const querySnapshot = await getDocs(q);
-            
-            if (querySnapshot.empty) {
-                historyList.innerHTML = "<p style='color: #888;'>No orders found. Time to eat!</p>";
-                return;
-            }
-
-            let html = "";
-            querySnapshot.forEach((docSnap) => {
-                const data = docSnap.data();
-                let dateString = data.timestamp ? data.timestamp.toDate().toLocaleDateString() : "Recently";
-                
-                html += `
-                    <div class="history-card">
-                        <strong>Order on ${dateString}</strong>
-                        <p>Total: ₹${data.totalBill}</p>
-                        <span class="status-badge status-${data.status}">${data.status}</span>
-                    </div>
-                `;
-            });
-            historyList.innerHTML = html;
-
-        } catch(error) {
-            console.error("History error: ", error);
-            historyList.innerHTML = "<p style='color: red;'>Could not load history.</p>";
-        }
-    };
-
-    // --- 8. SAVE THE ORDER TO KITCHEN DASHBOARD ---
-    window.saveOrderToFirebase = async function(customerName, cartData, totalAmount) {
-        if (!db) return;
-        let currentOrderId = "";
-        const verifiedPhone = window.currentUser ? window.currentUser.phoneNumber : "No Number";
-
-        try {
-            const docRef = await addDoc(collection(db, "orders"), {
-                customerName: customerName,
-                customerPhone: verifiedPhone,
-                orderItems: cartData,
-                totalBill: totalAmount,
-                timestamp: serverTimestamp(),
-                status: "Pending",
-                deviceToken: "" 
-            });
-            currentOrderId = docRef.id;
-            console.log("✅ Order instantly sent to Kitchen!");
-
-            const orderRef = doc(db, "orders", currentOrderId);
-            const unsubscribe = onSnapshot(orderRef, (docSnap) => {
-                if (docSnap.exists() && docSnap.data().status === "Ready") {
-                    const modal = document.getElementById('ready-modal');
-                    if(modal) modal.classList.add('show');
-                    unsubscribe();
-                }
-            });
-        } catch (orderError) {
-            console.error("CRITICAL ERROR: ", orderError);
-        }
-
-        // Try getting the push token in the background quietly
-        try {
-            const messaging = getMessaging(app); 
-            const permission = await Notification.requestPermission();
-            if (permission === 'granted') {
-                const registration = await navigator.serviceWorker.register('sw.js');
-                const customerDeviceToken = await getToken(messaging, { 
-                    vapidKey: "BOIZSaP0X144ThoGFDo2Q6QbrC38PEkqwPaCFC8sic-hSfd0nzIVUMpvBnwLc7Kos0ie-dsI2FYDezrOYNyfDbg",
-                    serviceWorkerRegistration: registration
-                });
-                
-                if (customerDeviceToken && currentOrderId) {
-                    await updateDoc(doc(db, "orders", currentOrderId), { deviceToken: customerDeviceToken });
-                }
-            }
-        } catch (tokenError) {
-            console.warn("Notification setup skipped.");
-        }
-    };
-    </script>
-    
-
-      <script src="script.js"></script>
     <div id="ready-modal" class="ready-modal-hidden">
         <div class="ready-modal-content">
             <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0;">🎉 Order Ready!</h2>
-            <p style="color: #ddd; line-height: 1.5;">Your delicious food from Devi Sri Delights is freshly prepared and ready for pickup at the counter!</p>
+            <p style="color: #ddd;">Your food is ready for pickup at the counter!</p>
             <button onclick="document.getElementById('ready-modal').classList.remove('show')" class="close-ready-btn">Awesome, thanks!</button>
         </div>
     </div>
-    button id=<"my-orders-btn" onclick="openOrderHistory()" style="display: none;">
-        📜 My Orders
-    </button>
 
-    <div id="history-modal" class="modal-hidden">
-    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, doc, onSnapshot, updateDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+        import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-messaging.js";
+        import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC7uuy0yYV3L17RJ0RvbN-mrfqrT4PquMo",
+            authDomain: "devi-sri-delights.firebaseapp.com",
+            projectId: "devi-sri-delights",
+            storageBucket: "devi-sri-delights.firebasestorage.app",
+            messagingSenderId: "73108349440",
+            appId: "1:73108349440:web:8ca038c61c9a85b2b12ee5",
+            measurementId: "G-FSKW9M3WL1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        window.currentUser = null;
+        onAuthStateChanged(auth, (user) => {
+            const btn = document.getElementById('my-orders-btn');
+            if (user) {
+                window.currentUser = user;
+                if (btn) btn.style.display = 'block';
+            } else {
+                window.currentUser = null;
+                if (btn) btn.style.display = 'none';
+            }
+        });
+
+        window.sendOTP = function() {
+            const phone = document.getElementById("phone-number").value.trim();
+            if (phone.length !== 10) return alert("Enter 10 digits");
+            if (!window.recaptchaVerifier) {
+                window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 'size': 'invisible' });
+            }
+            signInWithPhoneNumber(auth, "+91" + phone, window.recaptchaVerifier)
+                .then(res => {
+                    window.confirmationResult = res;
+                    document.getElementById("phone-input-section").style.display = "none";
+                    document.getElementById("otp-input-section").style.display = "block";
+                }).catch(err => alert("Error sending OTP"));
+        };
+
+        window.verifyOTP = function() {
+            const code = document.getElementById("otp-code").value.trim();
+            window.confirmationResult.confirm(code).then(res => {
+                window.currentUser = res.user;
+                document.getElementById('login-modal').classList.remove('show');
+            }).catch(err => alert("Invalid OTP"));
+        };
+
+        window.openOrderHistory = async function() {
+            if (!window.currentUser) return;
+            document.getElementById('history-modal').classList.add('show');
+            const list = document.getElementById('history-list');
+            list.innerHTML = "Searching...";
+            const q = query(collection(db, "orders"), where("customerPhone", "==", window.currentUser.phoneNumber));
+            const snap = await getDocs(q);
+            let html = "";
+            snap.forEach(d => {
+                const data = d.data();
+                html += `<div class="history-card"><strong>Order: ₹${data.totalBill}</strong><p>Status: ${data.status}</p></div>`;
+            });
+            list.innerHTML = html || "No orders yet.";
+        };
+
+        window.saveOrderToFirebase = async function(name, cart, total) {
+            const phone = window.currentUser ? window.currentUser.phoneNumber : "No Number";
+            const docRef = await addDoc(collection(db, "orders"), {
+                customerName: name, customerPhone: phone, orderItems: cart, totalBill: total, timestamp: serverTimestamp(), status: "Pending"
+            });
+            onSnapshot(doc(db, "orders", docRef.id), (s) => {
+                if (s.exists() && s.data().status === "Ready") document.getElementById('ready-modal').classList.add('show');
+            });
+        };
+    </script>
+
+    <script src="script.js"></script>
+
 </body>
 </html>
