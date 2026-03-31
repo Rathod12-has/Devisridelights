@@ -105,44 +105,36 @@
     const db = getFirestore(app);
 
     // 4. Create the function to save orders so script.js can use it
-    window.saveOrderToFirebase = async function(customerName, cartData, totalAmount) {
-        try {
-            // Save the order to the kitchen exactly like before
-            const docRef = await addDoc(collection(db, "orders"), {
-                customerName: customerName,
-                orderItems: cartData,
-                totalBill: totalAmount,
-                timestamp: serverTimestamp(),
-                status: "Pending"
+    // 2. --- NEW: Send the Device Notification! ---
+if ("Notification" in window) {
+    if (Notification.permission === "granted") {
+        // Try the Service Worker (Mobile optimized way)
+        navigator.serviceWorker.ready.then(function(registration) {
+            registration.showNotification("🎉 Order Ready!", {
+                body: "Your food from Devi Sri Delights is ready for pickup!",
+                icon: "https://cdn-icons-png.flaticon.com/512/3170/3170733.png",
+                vibrate: [200, 100, 200, 100, 200],
+                requireInteraction: true
             });
-            console.log("Order safely stored in database! ID: ", docRef.id);
-
-            // --- THE NEW LIVE TRACKING LOGIC ---
-            // Grab the exact ID of the order that was just placed
-            const orderRef = doc(db, "orders", docRef.id);
-            
-            // Listen to this specific order in the background
-            const unsubscribe = onSnapshot(orderRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    const orderData = docSnap.data();
-                    
-                    // The second you click "Mark as Ready" in the kitchen dashboard:
-                    if (orderData.status === "Ready") {
-                        
-                        // Show the beautiful celebration popup!
-                        document.getElementById('ready-modal').classList.add('show');
-                        
-                        // Stop listening to save your database memory
-                        unsubscribe(); 
-                    }
-                }
+        }).catch(function(error) {
+            // Fallback if Service Worker is acting up
+            console.log("SW Notification failed, trying fallback:", error);
+            new Notification("🎉 Order Ready!", {
+                body: "Your food from Devi Sri Delights is ready for pickup!",
+                icon: "https://cdn-icons-png.flaticon.com/512/3170/3170733.png"
             });
-            // --------------------------------------
+        });
+    } else if (Notification.permission === "denied") {
+        alert("Your phone is blocking notifications! Please enable them in your browser site settings to see when your order is ready.");
+    } else {
+        // It's "default", meaning it hasn't asked yet. Force it to ask again.
+        Notification.requestPermission();
+    }
+} else {
+    console.log("This browser does not support native notifications.");
+}
+// ---------------------------------------------
 
-        } catch (error) {
-            console.error("Error saving order to database: ", error);
-        }
-    };
         </script>
     
 
