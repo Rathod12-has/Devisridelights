@@ -172,29 +172,36 @@ function renderCartModalItems() {
     document.getElementById('modal-total').innerText = total;
 }
 
+// We can keep the function name the same so you don't have to change your HTML button!
 function sendWhatsAppOrder() {
     const customerName = document.getElementById('customer-name').value.trim();
-    if (customerName.length < 2) { alert("Please enter a valid name!"); return; }
+    if (customerName.length < 2) { 
+        alert("Please enter a valid name!"); 
+        return; 
+    }
 
-    const phoneNumber = "916305469979"; 
-    let message = `Hello Devi Sri Delights & Foods! 👋\n\nMy name is *${customerName}* and I would like to pre-order:\n\n`;
+    // Calculate the total bill
     let total = 0;
     for (let item in cart) {
-        let itemTotal = cart[item].price * cart[item].quantity;
-        message += `▪️ ${item} (x${cart[item].quantity}) - ₹${itemTotal}\n`;
-        total += itemTotal;
+        total += cart[item].price * cart[item].quantity;
     }
-    message += `\n*Total Bill: ₹${total}*\n\nI am coming to pick it up. Thank you!`;
-    window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+
+    // Hide the cart popup
     toggleCartModal();
 
-        // --- NEW: Save to Firebase Database ---
+    // --- SEND DIRECTLY TO KITCHEN DASHBOARD (NO WHATSAPP!) ---
     if (window.saveOrderToFirebase) {
         window.saveOrderToFirebase(customerName, cart, total);
     }
-    // --------------------------------------
 
+    // Show a premium success message to the customer
+    alert("✅ Order successfully sent to the kitchen!\n\nPlease wait, your phone will notify you the exact moment it is ready for pickup.");
+
+    // Clear the cart so it's empty for their next order
+    cart = {};
+    updateCartUI();
 }
+
 
 // --- PWA & SHARING LOGIC ---
 if ('serviceWorker' in navigator) {
