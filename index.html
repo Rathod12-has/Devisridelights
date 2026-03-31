@@ -83,9 +83,8 @@
 
     <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
-    
-    // NEW: Import the Messaging tools and getToken
+    // Make sure doc and onSnapshot are imported here again!
+    import { getFirestore, collection, addDoc, serverTimestamp, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
     import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-messaging.js";
 
     const firebaseConfig = {
@@ -105,37 +104,58 @@
     window.saveOrderToFirebase = async function(customerName, cartData, totalAmount) {
         let customerDeviceToken = ""; 
 
+        // STEP 1: Try to get the push token (Safely separated!)
         try {
-            // Ask for permission and get their phone's unique Push Token using your Key!
             const permission = await Notification.requestPermission();
             if (permission === 'granted') {
+                // Wait for the service worker to be fully ready before asking for token
+                const registration = await navigator.serviceWorker.ready;
                 customerDeviceToken = await getToken(messaging, { 
-                    vapidKey: "BOIZSaP0X144ThoGFDo2Q6QbrC38PEkqwPaCFC8sic-hSfd0nzIVUMpvBnwLc7Kos0ie-dsI2FYDezrOYNyfDbg" 
+                    vapidKey: "BOIZSaP0X144ThoGFDo2Q6QbrC38PEkqwPaCFC8sic-hSfd0nzIVUMpvBnwLc7Kos0ie-dsI2FYDezrOYNyfDbg",
+                    serviceWorkerRegistration: registration
                 });
                 console.log("Device Token Secured: ", customerDeviceToken);
             } else {
-                console.log("Notification permission denied by user.");
+                console.log("Customer denied notifications.");
             }
+        } catch (tokenError) {
+            // If this fails, we just ignore it so the order can still go through!
+            console.warn("Notification token failed, but continuing with order...", tokenError);
+        }
 
-            // Save the order AND the Device Token to your kitchen database!
+        // STEP 2: Save the actual order to the Kitchen Dashboard
+        try {
             const docRef = await addDoc(collection(db, "orders"), {
                 customerName: customerName,
                 orderItems: cartData,
                 totalBill: totalAmount,
                 timestamp: serverTimestamp(),
                 status: "Pending",
-                deviceToken: customerDeviceToken // <--- Saved to database!
+                deviceToken: customerDeviceToken // Will just be empty if they denied notifications
             });
-            
-            // Show the in-app popup just in case they leave the app open on their screen
-            const modal = document.getElementById('ready-modal');
-            if(modal) modal.classList.add('show');
+            console.log("Order safely sent to Kitchen! ID: ", docRef.id);
 
-        } catch (error) {
-            console.error("Error saving order: ", error);
+            // STEP 3: Listen for the Kitchen to click "Mark as Ready" (Restored!)
+            const orderRef = doc(db, "orders", docRef.id);
+            const unsubscribe = onSnapshot(orderRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const orderData = docSnap.data();
+                    if (orderData.status === "Ready") {
+                        // Show the beautiful in-app popup celebration!
+                        const modal = document.getElementById('ready-modal');
+                        if(modal) modal.classList.add('show');
+                        unsubscribe(); // Stop listening
+                    }
+                }
+            });
+
+        } catch (orderError) {
+            console.error("CRITICAL ERROR: Could not save order: ", orderError);
+            alert("Connection error! Please try placing your order again.");
         }
     };
-        </script>
+                </script>
+    
     
       <script src="script.js"></script>
     <div id="ready-modal" class="ready-modal-hidden">
