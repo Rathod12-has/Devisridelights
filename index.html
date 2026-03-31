@@ -81,10 +81,10 @@
         </div>
     </div>
 
-    <script type="module">
+<script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-    // Make sure doc and onSnapshot are imported here again!
-    import { getFirestore, collection, addDoc, serverTimestamp, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+    // NEW: Added 'updateDoc' here!
+    import { getFirestore, collection, addDoc, serverTimestamp, doc, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
     import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-messaging.js";
 
     const firebaseConfig = {
@@ -102,28 +102,9 @@
     const messaging = getMessaging(app);
 
     window.saveOrderToFirebase = async function(customerName, cartData, totalAmount) {
-        let customerDeviceToken = ""; 
+        let currentOrderId = "";
 
-        // STEP 1: Try to get the push token (Safely separated!)
-        try {
-            const permission = await Notification.requestPermission();
-            if (permission === 'granted') {
-                // Wait for the service worker to be fully ready before asking for token
-                const registration = await navigator.serviceWorker.ready;
-                customerDeviceToken = await getToken(messaging, { 
-                    vapidKey: "BOIZSaP0X144ThoGFDo2Q6QbrC38PEkqwPaCFC8sic-hSfd0nzIVUMpvBnwLc7Kos0ie-dsI2FYDezrOYNyfDbg",
-                    serviceWorkerRegistration: registration
-                });
-                console.log("Device Token Secured: ", customerDeviceToken);
-            } else {
-                console.log("Customer denied notifications.");
-            }
-        } catch (tokenError) {
-            // If this fails, we just ignore it so the order can still go through!
-            console.warn("Notification token failed, but continuing with order...", tokenError);
-        }
-
-        // STEP 2: Save the actual order to the Kitchen Dashboard
+        // STEP 1: IMMEDIATELY SAVE THE ORDER TO THE KITCHEN
         try {
             const docRef = await addDoc(collection(db, "orders"), {
                 customerName: customerName,
@@ -131,30 +112,56 @@
                 totalBill: totalAmount,
                 timestamp: serverTimestamp(),
                 status: "Pending",
-                deviceToken: customerDeviceToken // Will just be empty if they denied notifications
+                deviceToken: "" // Leave empty for now
             });
-            console.log("Order safely sent to Kitchen! ID: ", docRef.id);
+            currentOrderId = docRef.id;
+            console.log("✅ Order instantly sent to Kitchen! ID: ", currentOrderId);
 
-            // STEP 3: Listen for the Kitchen to click "Mark as Ready" (Restored!)
-            const orderRef = doc(db, "orders", docRef.id);
+            // Start listening for the kitchen to click "Ready"
+            const orderRef = doc(db, "orders", currentOrderId);
             const unsubscribe = onSnapshot(orderRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    const orderData = docSnap.data();
-                    if (orderData.status === "Ready") {
-                        // Show the beautiful in-app popup celebration!
-                        const modal = document.getElementById('ready-modal');
-                        if(modal) modal.classList.add('show');
-                        unsubscribe(); // Stop listening
-                    }
+                if (docSnap.exists() && docSnap.data().status === "Ready") {
+                    const modal = document.getElementById('ready-modal');
+                    if(modal) modal.classList.add('show');
+                    unsubscribe();
                 }
             });
 
         } catch (orderError) {
             console.error("CRITICAL ERROR: Could not save order: ", orderError);
             alert("Connection error! Please try placing your order again.");
+            return; // Stop here if the order failed
+        }
+
+        // STEP 2: TRY TO GET THE PUSH TOKEN IN THE BACKGROUND
+        // (If this fails, it doesn't matter, the kitchen already has the order!)
+        try {
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                // Register the worker directly here to ensure it doesn't freeze
+                const registration = await navigator.serviceWorker.register('sw.js');
+                
+                const customerDeviceToken = await getToken(messaging, { 
+                    vapidKey: "BOIZSaP0X144ThoGFDo2Q6QbrC38PEkqwPaCFC8sic-hSfd0nzIVUMpvBnwLc7Kos0ie-dsI2FYDezrOYNyfDbg",
+                    serviceWorkerRegistration: registration
+                });
+                
+                if (customerDeviceToken) {
+                    console.log("📱 Device Token Secured: ", customerDeviceToken);
+                    // Update the order we just created with the customer's phone token
+                    await updateDoc(doc(db, "orders", currentOrderId), {
+                        deviceToken: customerDeviceToken
+                    });
+                }
+            } else {
+                console.log("Customer denied notifications.");
+            }
+        } catch (tokenError) {
+            console.warn("Notification token failed, but order is already in the kitchen!", tokenError);
         }
     };
-                </script>
+</script>
+    
     
     
       <script src="script.js"></script>
