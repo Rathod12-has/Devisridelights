@@ -81,14 +81,13 @@
         </div>
     </div>
 
-        <script type="module">
-    // 1. Import Firebase core, Analytics, and Firestore
+    <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-analytics.js";
-    // ADDED 'doc' and 'onSnapshot' to the end of this line:
-    import { getFirestore, collection, addDoc, serverTimestamp, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+    
+    // NEW: Import the Messaging tools and getToken
+    import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-messaging.js";
 
-    // 2. Your specific Firebase configuration
     const firebaseConfig = {
         apiKey: "AIzaSyC7uuy0yYV3L17RJ0RvbN-mrfqrT4PquMo",
         authDomain: "devi-sri-delights.firebaseapp.com",
@@ -99,46 +98,46 @@
         measurementId: "G-FSKW9M3WL1"
     };
 
-    // 3. Initialize Firebase, Analytics, and Firestore Database
     const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
     const db = getFirestore(app);
+    const messaging = getMessaging(app);
 
-    // 4. Create the function to save orders so script.js can use it
-    // 2. --- NEW: Send the Device Notification! ---
-if ("Notification" in window) {
-    if (Notification.permission === "granted") {
-        // Try the Service Worker (Mobile optimized way)
-        navigator.serviceWorker.ready.then(function(registration) {
-            registration.showNotification("🎉 Order Ready!", {
-                body: "Your food from Devi Sri Delights is ready for pickup!",
-                icon: "https://cdn-icons-png.flaticon.com/512/3170/3170733.png",
-                vibrate: [200, 100, 200, 100, 200],
-                requireInteraction: true
-            });
-        }).catch(function(error) {
-            // Fallback if Service Worker is acting up
-            console.log("SW Notification failed, trying fallback:", error);
-            new Notification("🎉 Order Ready!", {
-                body: "Your food from Devi Sri Delights is ready for pickup!",
-                icon: "https://cdn-icons-png.flaticon.com/512/3170/3170733.png"
-            });
-        });
-    } else if (Notification.permission === "denied") {
-        alert("Your phone is blocking notifications! Please enable them in your browser site settings to see when your order is ready.");
-    } else {
-        // It's "default", meaning it hasn't asked yet. Force it to ask again.
-        Notification.requestPermission();
-    }
-} else {
-    console.log("This browser does not support native notifications.");
-}
-// ---------------------------------------------
+    window.saveOrderToFirebase = async function(customerName, cartData, totalAmount) {
+        let customerDeviceToken = ""; 
 
+        try {
+            // Ask for permission and get their phone's unique Push Token using your Key!
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                customerDeviceToken = await getToken(messaging, { 
+                    vapidKey: "BOIZSaP0X144ThoGFDo2Q6QbrC38PEkqwPaCFC8sic-hSfd0nzIVUMpvBnwLc7Kos0ie-dsI2FYDezrOYNyfDbg" 
+                });
+                console.log("Device Token Secured: ", customerDeviceToken);
+            } else {
+                console.log("Notification permission denied by user.");
+            }
+
+            // Save the order AND the Device Token to your kitchen database!
+            const docRef = await addDoc(collection(db, "orders"), {
+                customerName: customerName,
+                orderItems: cartData,
+                totalBill: totalAmount,
+                timestamp: serverTimestamp(),
+                status: "Pending",
+                deviceToken: customerDeviceToken // <--- Saved to database!
+            });
+            
+            // Show the in-app popup just in case they leave the app open on their screen
+            const modal = document.getElementById('ready-modal');
+            if(modal) modal.classList.add('show');
+
+        } catch (error) {
+            console.error("Error saving order: ", error);
+        }
+    };
         </script>
     
-
-    <script src="script.js"></script>
+      <script src="script.js"></script>
     <div id="ready-modal" class="ready-modal-hidden">
         <div class="ready-modal-content">
             <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0;">🎉 Order Ready!</h2>
