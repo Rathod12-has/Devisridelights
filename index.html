@@ -155,8 +155,10 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        // Track Login Status
+                // Track Login Status & Active Orders
         window.currentUser = null;
+        window.activeOrderUnsubscribe = null; // Keeps track of the live listener
+
         onAuthStateChanged(auth, (user) => {
             const myOrdersBtn = document.getElementById('my-orders-btn');
             const loginBtn = document.getElementById('login-btn');
@@ -166,14 +168,75 @@
                 window.currentUser = user;
                 if (myOrdersBtn) myOrdersBtn.style.display = 'block';
                 if (loginBtn) loginBtn.style.display = 'none';
-                if (myAccountBtn) myAccountBtn.style.display = 'block'; // Show Account
+                if (myAccountBtn) myAccountBtn.style.display = 'block';
+                
+                // Start tracking their order in real-time
+                trackActiveOrder(user.phoneNumber);
             } else {
                 window.currentUser = null;
                 if (myOrdersBtn) myOrdersBtn.style.display = 'none';
                 if (loginBtn) loginBtn.style.display = 'block';
-                if (myAccountBtn) myAccountBtn.style.display = 'none'; // Hide Account
+                if (myAccountBtn) myAccountBtn.style.display = 'none';
+                
+                // Stop tracking if they log out
+                if (window.activeOrderUnsubscribe) window.activeOrderUnsubscribe();
+                document.getElementById('active-order-status').style.display = 'none';
             }
         });
+
+        // The Real-Time Tracker Function
+        function trackActiveOrder(phone) {
+            const q = query(collection(db, "orders"), where("customerPhone", "==", phone));
+            
+            // onSnapshot constantly listens to the database without refreshing
+            window.activeOrderUnsubscribe = onSnapshot(q, (snap) => {
+                let latestOrder = null;
+                let latestTime = 0;
+
+                // Find their most recent order
+                snap.forEach(doc => {
+                    let data = doc.data();
+                    let time = data.timestamp ? data.timestamp.toMillis() : Date.now();
+                    if (time > latestTime) {
+                        latestTime = time;
+                        latestOrder = data;
+                    }
+                });
+
+                const statusTracker = document.getElementById('active-order-status');
+                const statusText = document.getElementById('status-text');
+                const statusDot = document.querySelector('.status-dot');
+
+                if (latestOrder) {
+                    let status = latestOrder.status || "Pending";
+                    
+                    // Update the UI based on the database status
+                    if (status === "Pending") {
+                        statusTracker.style.display = 'flex';
+                        statusText.innerText = "Order Placed";
+                        statusDot.className = "status-dot";
+                    } else if (status === "Ready") {
+                        statusTracker.style.display = 'flex';
+                        statusText.innerText = "Ready for Pickup!";
+                        statusDot.className = "status-dot ready";
+                    } else if (status === "Picked up" || status === "Completed") {
+                        statusTracker.style.display = 'flex';
+                        statusText.innerText = "Picked Up";
+                        statusDot.className = "status-dot picked-up";
+                        
+                        // Automatically hide the tracker 10 seconds after they pick it up
+                        setTimeout(() => { statusTracker.style.display = 'none'; }, 10000);
+                    } else {
+                        // Catch-all for any other status you might type in Firebase
+                        statusTracker.style.display = 'flex';
+                        statusText.innerText = status;
+                        statusDot.className = "status-dot";
+                    }
+                } else {
+                    statusTracker.style.display = 'none';
+                }
+            });
+        }
         
         // OTP Functions
         window.sendOTP = function() {
