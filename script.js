@@ -107,7 +107,7 @@ menuCategories.forEach(category => {
     category.items.forEach(item => {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'menu-item';
-        let priceDisplay = (item.price === "Shop Visit") ? `<span class="shop-visit-tag">Price at Shop</span>` : `<span class="item-price">₹${item.price}</span>`;
+        let priceDisplay = (item.price === "Shop Visit") ? `<span class="shop-visit-tag">Price at Shop</span>` : `<span class="item-price">â‚¹${item.price}</span>`;
         let buttonHTML = (item.price === "Shop Visit") ? '' : `<button class="add-btn" onclick="addToCart('${item.name}', ${item.price})">Add</button>`;
 
         itemDiv.innerHTML = `<div class="item-info"><h4>${item.name}</h4>${priceDisplay}</div>${buttonHTML}`;
@@ -167,12 +167,11 @@ function renderCartModalItems() {
     for (let item in cart) {
         let itemTotal = cart[item].price * cart[item].quantity;
         total += itemTotal;
-        list.innerHTML += `<div class="cart-item-row"><div><strong>${item}</strong><br><small>₹${cart[item].price} x ${cart[item].quantity}</small></div><div style="text-align: right;"><strong style="display:block;">₹${itemTotal}</strong><button class="remove-btn" onclick="removeFromCart('${item}')">Remove</button></div></div>`;
+        list.innerHTML += `<div class="cart-item-row"><div><strong>${item}</strong><br><small>â‚¹${cart[item].price} x ${cart[item].quantity}</small></div><div style="text-align: right;"><strong style="display:block;">â‚¹${itemTotal}</strong><button class="remove-btn" onclick="removeFromCart('${item}')">Remove</button></div></div>`;
     }
     document.getElementById('modal-total').innerText = total;
 }
 
-// We can keep the function name the same so you don't have to change your HTML button!
 function sendWhatsAppOrder() {
     const customerName = document.getElementById('customer-name').value.trim();
     if (customerName.length < 2) { 
@@ -180,14 +179,10 @@ function sendWhatsAppOrder() {
         return; 
     }
 
-    // --- NEW: THE GATEKEEPER ---
-    // Check if the user is verified with Firebase Auth
     if (!window.currentUser) {
-        // If not logged in, pop open the beautiful login screen!
         document.getElementById('login-modal').classList.add('show');
-        return; // Stop the checkout process here
+        return;
     }
-    // ---------------------------
 
     let total = 0;
     for (let item in cart) {
@@ -200,13 +195,11 @@ function sendWhatsAppOrder() {
         window.saveOrderToFirebase(customerName, cart, total);
     }
 
-    alert("✅ Order successfully sent to the kitchen!\n\nPlease wait, your phone will notify you the exact moment it is ready for pickup.");
+    alert("âœ… Order successfully sent to the kitchen!\n\nPlease wait, your phone will notify you the exact moment it is ready for pickup.");
 
     cart = {};
     updateCartUI();
 }
-
-
 
 // --- PWA & SHARING LOGIC ---
 if ('serviceWorker' in navigator) {
@@ -239,4 +232,3 @@ document.getElementById('share-app-btn').addEventListener('click', () => {
         window.open(`https://wa.me/?text=${encodeURIComponent(shareData.text + " " + shareData.url)}`);
     }
 });
-      
