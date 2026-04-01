@@ -10,13 +10,24 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <button id="login-btn" onclick="document.getElementById('login-modal').classList.add('show')">
+    
+     <button id="login-btn" onclick="document.getElementById('login-modal').classList.add('show')">
         👤 Login
     </button>
     
-        <button id="my-account-btn" onclick="openAccountModal()" style="display: none;">
-        👤 My Account
-    </button>
+    <div id="my-account-profile-widget" onclick="openAccountModal()" style="display: none;">
+        <div class="profile-avatar-area">
+            <span id="profile-initial">A</span>
+        </div>
+        <div class="profile-info-area">
+            <div id="profile-display-name">Customer</div>
+            <div id="profile-display-phone">+91 ----------</div>
+        </div>
+        <div class="profile-arrow-area">
+            <span class="profile-arrow">›</span>
+        </div>
+    </div>
+
     
     <div id="active-order-status" style="display: none;">
         <span class="status-dot"></span> <span id="status-text">Order Placed</span>
