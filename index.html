@@ -85,10 +85,6 @@
             <button onclick="document.getElementById('login-modal').classList.remove('show')" class="close-text-btn">Cancel</button>
         </div>
     </div>
-
-    <button id="my-orders-btn" onclick="openOrderHistory()" style="display: none;">📜 My Orders</button>
-
-    <div id="history-modal" class="modal-hidden">
         <div class="history-modal-content">
             <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px;">Order History</h2>
             <div id="history-list">
@@ -187,6 +183,34 @@
     </script>
 
     <script src="script.js"></script>
+                <button id="my-orders-btn" onclick="openOrderHistory()" style="display: none;">
+        📜 My Orders
+    </button>
+
+    <div id="history-modal" class="modal-hidden">
+        <div class="history-modal-content">
+            <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px;">Order History</h2>
+            <div id="history-list">
+                <p style="color: #888;">Loading your delicious history...</p>
+            </div>
+            <button onclick="document.getElementById('history-modal').classList.remove('show')" class="close-ready-btn" style="background: #333; margin-top: 15px;">Close</button>
+        </div>
+    </div>
+
+    <script type="module">
+        // Keep your existing Firebase code here...
+        // Ensure the Auth listener checks for 'my-orders-btn' correctly
+    </script>
+
+    <script src="script.js"></script>
+
+    <div id="ready-modal" class="ready-modal-hidden">
+        <div class="ready-modal-content">
+            <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0;">🎉 Order Ready!</h2>
+            <p style="color: #ddd;">Your food is ready for pickup at the counter!</p>
+            <button onclick="document.getElementById('ready-modal').classList.remove('show')" class="close-ready-btn">Awesome, thanks!</button>
+        </div>
+    </div>
 
 </body>
 </html>
