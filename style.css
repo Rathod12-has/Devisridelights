@@ -191,6 +191,7 @@ button.add-btn:hover {
     display: flex; align-items: center; gap: 8px;
 }
 
+/* --- General Modal Styling --- */
 .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); z-index: 2000; }
 .modal-content { background-color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 500px; max-height: 85vh; overflow-y: auto; padding: 1.5rem; border-radius: 12px; box-sizing: border-box; }
 .modal-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
@@ -208,9 +209,8 @@ button.add-btn:hover {
 @keyframes popIn { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
 .shop-info { text-align: center; margin-top: 3rem; padding: 2rem; background: white; border-radius: 12px; color: var(--text-muted); line-height: 1.6; }
-.shop-location-img { max-width: 100%; height: auto; border-radius: 8px; margin-top: 1.5rem; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
 
-/* --- Modals --- */
+/* --- Specific Modals --- */
 #ready-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 14, 20, 0.9); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: all 0.4s ease; }
 #ready-modal.show { opacity: 1; visibility: visible; }
 .ready-modal-content { background: #121212; padding: 40px 30px; border-radius: 15px; text-align: center; border-top: 5px solid #e65100; box-shadow: 0 10px 40px rgba(230, 81, 0, 0.3); max-width: 90%; width: 350px; transform: translateY(20px); transition: transform 0.4s ease; }
@@ -226,117 +226,63 @@ button.add-btn:hover {
 .otp-input { background: #222; border: 1px solid #333; color: white; font-size: 1.5rem; width: 100%; padding: 15px; text-align: center; border-radius: 8px; letter-spacing: 5px; margin-bottom: 20px; outline: none; }
 .close-text-btn { background: none; border: none; color: #888; margin-top: 15px; cursor: pointer; font-size: 0.9rem; text-decoration: underline; }
 
-#my-orders-btn { position: fixed; bottom: 95px; right: 20px; z-index: 1002; background: #2c3e50; color: #f8c471; border: 1px solid #f8c471; padding: 12px 20px; border-radius: 30px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.4); cursor: pointer; display: none; }
 #history-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 14, 20, 0.95); z-index: 20000; display: flex; justify-content: center; align-items: flex-start; padding-top: 10vh; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
 #history-modal.show { opacity: 1; visibility: visible; }
 .history-modal-content { background: #121212; padding: 25px; border-radius: 15px; width: 90%; max-width: 400px; max-height: 80vh; overflow-y: auto; border: 1px solid #333; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
 .history-card { background: #1e1e1e; border-radius: 8px; padding: 15px; margin-bottom: 15px; border-left: 4px solid #e65100; text-align: left; }
 .history-card strong { color: #fff; font-size: 1.1rem; display: block; margin-bottom: 5px; }
 .history-card p { color: #aaa; margin: 5px 0; font-size: 0.9rem; }
-.status-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; margin-top: 5px; }
-.status-Pending { background: #ff980022; color: #ff9800; border: 1px solid #ff9800; }
-.status-Ready { background: #4caf5022; color: #4caf50; border: 1px solid #4caf50; }
-#login-btn { position: fixed; top: 60px; right: 20px; z-index: 1000; background: linear-gradient(135deg, #f8c471 0%, #d4ac0d 100%); color: #111; border: none; padding: 8px 18px; border-radius: 20px; font-weight: 800; letter-spacing: 0.5px; cursor: pointer; box-shadow: 0 4px 12px rgba(212, 172, 13, 0.4); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-#login-btn:hover { background: linear-gradient(135deg, #f4d03f 0%, #f1c40f 100%); transform: translateY(-3px) scale(1.05); box-shadow: 0 6px 16px rgba(212, 172, 13, 0.5); }
+
+#account-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 14, 20, 0.95); z-index: 20000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+#account-modal.show { opacity: 1; visibility: visible; }
+.account-modal-content { background: #121212; padding: 25px; border-radius: 15px; width: 90%; max-width: 350px; text-align: center; border: 1px solid #333; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+
+/* Bottom Left Orders Button */
+#my-orders-btn { position: fixed; bottom: 95px; right: 20px; z-index: 1002; background: #2c3e50; color: #f8c471; border: 1px solid #f8c471; padding: 12px 20px; border-radius: 30px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.4); cursor: pointer; display: none; }
+
 /* --- Floating Login Button (Gold Theme) --- */
 #login-btn { position: fixed; top: 60px; right: 20px; z-index: 1000; background: linear-gradient(135deg, #f8c471 0%, #d4ac0d 100%); color: #111; border: none; padding: 8px 18px; border-radius: 20px; font-weight: 800; letter-spacing: 0.5px; cursor: pointer; box-shadow: 0 4px 12px rgba(212, 172, 13, 0.4); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 #login-btn:hover { background: linear-gradient(135deg, #f4d03f 0%, #f1c40f 100%); transform: translateY(-3px) scale(1.05); box-shadow: 0 6px 16px rgba(212, 172, 13, 0.5); }
 
-/* --- Floating My Account Profile Widget (Restructured Design - Old Theme) --- */
+/* --- Floating My Account Profile Widget (Restructured Design) --- */
 #my-account-profile-widget {
     position: fixed;
-    top: 60px; /* Sits below announcement bar */
+    top: 60px;
     right: 20px;
     z-index: 1000;
     cursor: pointer;
     display: none; /* Hidden by default in JS */
-    
-    /* Retaining Old Frosted Glass Theme */
-    background: rgba(20, 20, 20, 0.65); /* Transparent dark base */
-    backdrop-filter: blur(8px); /* Frosted blur effect */
+    background: rgba(20, 20, 20, 0.65);
+    backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(248, 196, 113, 0.3); /* Subtle gold border */
-    border-radius: 50px; /* Oval pill shape like Design */
+    border: 1px solid rgba(248, 196, 113, 0.3);
+    border-radius: 50px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-    
-    /* Layout Structure (Design Match) */
     width: auto;
-    max-width: 280px;
-    padding: 10px 15px;
-    display: flex;
+    max-width: 250px;
+    padding: 6px 10px; /* Snug padding to match design */
     align-items: center;
-    gap: 12px; /* Spacing between areas */
+    gap: 10px;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 #my-account-profile-widget:hover {
     transform: translateY(-3px);
-    background: rgba(248, 196, 113, 0.15); /* Soft gold highlight on hover */
+    background: rgba(248, 196, 113, 0.15);
     border: 1px solid rgba(248, 196, 113, 0.6);
 }
 
-/* 1. Avatar Area */
 .profile-avatar-area {
-    width: 45px;
-    height: 45px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%); /* Dark gradient for avatar */
-    border: 2px solid #f8c471; /* Gold ring like Design */
+    background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+    border: 2px solid #f8c471;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-shrink: 0; /* Prevents shrinking */
+    flex-shrink: 0;
     box-shadow: inset 0 0 10px rgba(248, 196, 113, 0.2);
-}
-
-#profile-initial {
-    color: #f8c471; /* Gold text */
-    font-size: 1.4rem;
-    font-weight: bold;
-    font-family: 'Playfair Display', serif; /* Matching title font */
-}
-
-/* 2. Info Area (Name & Number) */
-.profile-info-area {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    flex-grow: 1; /* Takes available space */
-    overflow: hidden; /* Prevents overflow */
-}
-
-#profile-display-name {
-    color: #ffffff; /* White text for name like design */
-    font-size: 1.05rem;
-    font-weight: 700;
-    margin: 0;
-    line-height: 1.2;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; /* Handles long names smoothly */
-}
-
-#profile-display-phone {
-    color: #f8c471; /* Gold text for number like design accents */
-    font-size: 0.85rem;
-    font-weight: 500;
-    margin: 0;
-    opacity: 0.9;
-    white-space: nowrap;
-}
-
-/* 3. Arrow Area */
-.profile-arrow-area {
-    color: rgba(248, 196, 113, 0.7); /* Subtle gold arrow */
-    font-size: 1.8rem;
-    font-weight: lighter;
-    margin-right: 5px;
-    transition: transform 0.3s ease;
-}
-
-#my-account-profile-widget:hover .profile-arrow-area {
-    transform: translateX(3px); /* Subtle nudge on hover */
-    color: #f8c471; /* Brighter arrow on hover */
 }
 
 #profile-initial { color: #f8c471; font-size: 1.2rem; font-weight: bold; font-family: 'Playfair Display', serif; }
@@ -345,17 +291,6 @@ button.add-btn:hover {
 #profile-display-phone { color: #f8c471; font-size: 0.75rem; font-weight: 500; margin: 0; opacity: 0.9; white-space: nowrap; }
 .profile-arrow-area { color: rgba(248, 196, 113, 0.7); font-size: 1.5rem; font-weight: lighter; margin-right: 5px; transition: transform 0.3s ease; line-height: 1; }
 #my-account-profile-widget:hover .profile-arrow-area { transform: translateX(3px); color: #f8c471; }
-
-/* --- Account Modal Styling --- */
-#account-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 14, 20, 0.95); z-index: 20000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
-#account-modal.show { opacity: 1; visibility: visible; }
-.account-modal-content { background: #121212; padding: 25px; border-radius: 15px; width: 90%; max-width: 350px; text-align: center; border: 1px solid #333; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
-            
-
-#account-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 14, 20, 0.95); z-index: 20000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
-#account-modal.show { opacity: 1; visibility: visible; }
-.account-modal-content { background: #121212; padding: 25px; border-radius: 15px; width: 90%; max-width: 350px; text-align: center; border: 1px solid #333; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
-
 
 /* --- Active Order Status Tracker --- */
 #active-order-status {
@@ -373,7 +308,7 @@ button.add-btn:hover {
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    display: flex; /* Kept flex so you can test it if you unhide it in JS */
+    display: flex; 
     align-items: center;
     gap: 10px;
     transition: all 0.3s ease;
@@ -399,8 +334,8 @@ button.add-btn:hover {
 
 @media (max-width: 600px) {
     #active-order-status {
-        left: 20px; /* Forces left side on mobile too */
+        left: 20px; 
         font-size: 0.85rem;
         padding: 6px 12px;
     }
-    }
+}
