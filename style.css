@@ -563,8 +563,8 @@ button.add-btn:hover {
 /* --- Active Order Status Tracker --- */
 #active-order-status {
     position: fixed;
-    top: 60px;
-    right: 180px; /* Sits to the left of the My Account button */
+    top: 60px; /* Same height as the My Account button */
+    left: 20px; /* Moved to the opposite side of the screen */
     z-index: 1000;
     background: rgba(20, 20, 20, 0.6);
     color: #f8c471;
@@ -610,11 +610,10 @@ button.add-btn:hover {
     100% { transform: scale(1.3); opacity: 1; }
 }
 
-/* On mobile phones, move it directly below the Account button */
+/* Optional: Shrink slightly on very small mobile screens so it fits perfectly */
 @media (max-width: 600px) {
     #active-order-status {
-        top: 105px; 
-        right: 20px;
+        font-size: 0.85rem;
+        padding: 6px 12px;
     }
-    }
-    
+}
