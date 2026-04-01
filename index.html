@@ -101,11 +101,31 @@
             <button onclick="document.getElementById('ready-modal').classList.remove('show')" class="close-ready-btn">Awesome, thanks!</button>
         </div>
     </div>
+        <button id="my-orders-btn" onclick="openOrderHistory()" style="display: none;">
+        📜 My Orders
+    </button>
+
+    <div id="history-modal" class="modal-hidden">
+        <div class="history-modal-content">
+            <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px;">Order History</h2>
+            <div id="history-list">
+                <p style="color: #888;">Loading your history...</p>
+            </div>
+            <button onclick="document.getElementById('history-modal').classList.remove('show')" class="close-ready-btn" style="background: #333; margin-top: 15px;">Close</button>
+        </div>
+    </div>
+
+    <div id="ready-modal" class="ready-modal-hidden">
+        <div class="ready-modal-content">
+            <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0;">🎉 Order Ready!</h2>
+            <p style="color: #ddd;">Your food is ready for pickup at the counter!</p>
+            <button onclick="document.getElementById('ready-modal').classList.remove('show')" class="close-ready-btn">Awesome, thanks!</button>
+        </div>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, serverTimestamp, doc, onSnapshot, updateDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
-        import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-messaging.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, doc, onSnapshot, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
         import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 
         const firebaseConfig = {
@@ -122,6 +142,7 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
+        // Track Login Status
         window.currentUser = null;
         onAuthStateChanged(auth, (user) => {
             const btn = document.getElementById('my-orders-btn');
@@ -134,6 +155,7 @@
             }
         });
 
+        // OTP Functions
         window.sendOTP = function() {
             const phone = document.getElementById("phone-number").value.trim();
             if (phone.length !== 10) return alert("Enter 10 digits");
@@ -156,6 +178,7 @@
             }).catch(err => alert("Invalid OTP"));
         };
 
+        // History Function
         window.openOrderHistory = async function() {
             if (!window.currentUser) return;
             document.getElementById('history-modal').classList.add('show');
@@ -166,11 +189,12 @@
             let html = "";
             snap.forEach(d => {
                 const data = d.data();
-                html += `<div class="history-card"><strong>Order: ₹${data.totalBill}</strong><p>Status: ${data.status}</p></div>`;
+                html += `<div class="history-card" style="background:#222; padding:10px; margin-bottom:10px; border-radius:8px; border-left:4px solid #e65100;"><strong>Order: ₹${data.totalBill}</strong><p>Status: ${data.status}</p></div>`;
             });
             list.innerHTML = html || "No orders yet.";
         };
 
+        // Save Order Function
         window.saveOrderToFirebase = async function(name, cart, total) {
             const phone = window.currentUser ? window.currentUser.phoneNumber : "No Number";
             const docRef = await addDoc(collection(db, "orders"), {
@@ -183,34 +207,5 @@
     </script>
 
     <script src="script.js"></script>
-                <button id="my-orders-btn" onclick="openOrderHistory()" style="display: none;">
-        📜 My Orders
-    </button>
-
-    <div id="history-modal" class="modal-hidden">
-        <div class="history-modal-content">
-            <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px;">Order History</h2>
-            <div id="history-list">
-                <p style="color: #888;">Loading your delicious history...</p>
-            </div>
-            <button onclick="document.getElementById('history-modal').classList.remove('show')" class="close-ready-btn" style="background: #333; margin-top: 15px;">Close</button>
-        </div>
-    </div>
-
-    <script type="module">
-        // Keep your existing Firebase code here...
-        // Ensure the Auth listener checks for 'my-orders-btn' correctly
-    </script>
-
-    <script src="script.js"></script>
-
-    <div id="ready-modal" class="ready-modal-hidden">
-        <div class="ready-modal-content">
-            <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0;">🎉 Order Ready!</h2>
-            <p style="color: #ddd;">Your food is ready for pickup at the counter!</p>
-            <button onclick="document.getElementById('ready-modal').classList.remove('show')" class="close-ready-btn">Awesome, thanks!</button>
-        </div>
-    </div>
-
 </body>
 </html>
