@@ -559,3 +559,62 @@ button.add-btn:hover {
     width: 90%; max-width: 350px; text-align: center;
     border: 1px solid #333; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
                   }
+
+/* --- Active Order Status Tracker --- */
+#active-order-status {
+    position: fixed;
+    top: 60px;
+    right: 180px; /* Sits to the left of the My Account button */
+    z-index: 1000;
+    background: rgba(20, 20, 20, 0.6);
+    color: #f8c471;
+    border: 1px solid rgba(248, 196, 113, 0.5);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    display: flex; /* Hidden by default in JS */
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+/* The Glowing Pulse Dot */
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #f8c471; /* Gold for Preparing */
+    box-shadow: 0 0 8px #f8c471;
+    animation: pulseDot 1.5s infinite alternate;
+}
+
+/* Green dot when ready */
+.status-dot.ready { 
+    background-color: #25D366; 
+    box-shadow: 0 0 8px #25D366; 
+}
+
+/* Gray dot when finished */
+.status-dot.picked-up { 
+    background-color: #888; 
+    box-shadow: none; 
+    animation: none; 
+}
+
+@keyframes pulseDot {
+    0% { transform: scale(1); opacity: 0.7; }
+    100% { transform: scale(1.3); opacity: 1; }
+}
+
+/* On mobile phones, move it directly below the Account button */
+@media (max-width: 600px) {
+    #active-order-status {
+        top: 105px; 
+        right: 20px;
+    }
+    }
+    
