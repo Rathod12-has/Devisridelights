@@ -14,7 +14,7 @@ body {
     color: var(--text-main);
     margin: 0;
     padding: 0;
-    padding-bottom: 120px; /* Gives extra space at the bottom to scroll past buttons */
+    padding-bottom: 120px; 
     animation: fadeInPage 0.8s ease-out;
 }
 
@@ -70,38 +70,25 @@ header {
     line-height: 1.15;
     text-transform: uppercase;
     letter-spacing: 4px;
-    
-    /* The New Look: Frosted Glass & Gold */
-    color: #f8c471; /* Champagne gold text */
+    color: #f8c471; 
     text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-    background: rgba(20, 20, 20, 0.45); /* Semi-transparent dark base */
-    backdrop-filter: blur(8px); /* The frosted glass blur effect */
-    -webkit-backdrop-filter: blur(8px); /* For Safari support */
-    
-    /* Elegant accented borders */
+    background: rgba(20, 20, 20, 0.45); 
+    backdrop-filter: blur(8px); 
+    -webkit-backdrop-filter: blur(8px); 
     border-top: 2px solid rgba(248, 196, 113, 0.6);
     border-bottom: 2px solid rgba(248, 196, 113, 0.6);
     border-left: 1px solid rgba(255, 255, 255, 0.1);
     border-right: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-    
-    /* Smooth floating animation */
     animation: gentleGlassFloat 4s ease-in-out infinite;
 }
 
 @keyframes gentleGlassFloat {
-    0%, 100% { 
-        transform: translateY(0); 
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); 
-    }
-    50% { 
-        transform: translateY(-5px); /* Lifts up slightly */
-        box-shadow: 0 15px 40px rgba(248, 196, 113, 0.25); /* Gold glow expands */
-    }
+    0%, 100% { transform: translateY(0); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); }
+    50% { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(248, 196, 113, 0.25); }
 }
 
-/* Keeps it looking sharp on mobile phones */
 @media (max-width: 600px) {
     .aesthetic-title {
         font-size: 2.4rem;
@@ -110,18 +97,9 @@ header {
     }
 }
 
+header p { margin: 5px 0 0 0; font-size: 1.1rem; opacity: 0.95; }
 
-header p {
-    margin: 5px 0 0 0;
-    font-size: 1.1rem;
-    opacity: 0.95;
-}
-
-.container {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-}
+.container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
 
 /* --- Premium Category Cards --- */
 .category-card {
@@ -140,99 +118,36 @@ header p {
 }
 
 .category-image {
-    width: 100%;
-    height: 180px; 
-    object-fit: cover;
-    display: block;
+    width: 100%; height: 180px; object-fit: cover; display: block;
     border-bottom: 3px solid #f8c471; 
 }
 
 .category-header {
-    padding: 1.2rem 1.5rem;
-    font-size: 1.6rem;
-    font-family: 'Playfair Display', serif; 
-    font-weight: 700;
-    color: #2c3e50; 
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--card-bg);
-    transition: background-color 0.3s ease;
+    padding: 1.2rem 1.5rem; font-size: 1.6rem;
+    font-family: 'Playfair Display', serif; font-weight: 700;
+    color: #2c3e50; cursor: pointer; display: flex;
+    justify-content: space-between; align-items: center;
+    background-color: var(--card-bg); transition: background-color 0.3s ease;
 }
 
-.category-header:hover {
-    background-color: #fafafa;
-}
+.category-header:hover { background-color: #fafafa; }
+.category-header::after { content: '+'; font-size: 2rem; font-family: sans-serif; color: #f8c471; transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+.category-card.active .category-header::after { transform: rotate(45deg); color: #bf360c; }
 
-.category-header::after {
-    content: '+';
-    font-size: 2rem;
-    font-family: sans-serif; 
-    color: #f8c471; 
-    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
+.item-list { display: none; padding: 0 1.5rem 1.5rem 1.5rem; }
+.category-card.active .item-list { display: block; animation: slideDownFade 0.4s ease forwards; }
 
-.category-card.active .category-header::after {
-    transform: rotate(45deg);
-    color: #bf360c; 
-}
-
-/* --- Premium Menu Items --- */
-.item-list {
-    display: none;
-    padding: 0 1.5rem 1.5rem 1.5rem;
-}
-
-.category-card.active .item-list {
-    display: block;
-    animation: slideDownFade 0.4s ease forwards;
-}
-
-.menu-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.2rem 0;
-    border-bottom: 1px solid rgba(0,0,0,0.06); 
-}
-
-.menu-item:last-child {
-    border-bottom: none; 
-}
-
-.item-info h4 {
-    margin: 0 0 6px 0;
-    font-size: 1.15rem;
-    color: #333;
-    font-weight: 600;
-}
-
-.item-price {
-    color: #bf360c; 
-    font-weight: 700;
-    font-size: 1.15rem;
-}
-
-.shop-visit-tag {
-    font-size: 0.85rem;
-    color: #888;
-    font-style: italic;
-    background: #f4f4f4;
-    padding: 4px 10px;
-    border-radius: 12px;
-}
+.menu-item { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 0; border-bottom: 1px solid rgba(0,0,0,0.06); }
+.menu-item:last-child { border-bottom: none; }
+.item-info h4 { margin: 0 0 6px 0; font-size: 1.15rem; color: #333; font-weight: 600; }
+.item-price { color: #bf360c; font-weight: 700; font-size: 1.15rem; }
+.shop-visit-tag { font-size: 0.85rem; color: #888; font-style: italic; background: #f4f4f4; padding: 4px 10px; border-radius: 12px; }
 
 /* --- Premium Add Button --- */
 button.add-btn {
     background: linear-gradient(135deg, #f8c471 0%, #d4ac0d 100%); 
-    color: #111; 
-    border: none;
-    padding: 8px 22px;
-    border-radius: 20px; 
-    cursor: pointer;
-    font-weight: 700;
-    font-size: 0.95rem;
+    color: #111; border: none; padding: 8px 22px; border-radius: 20px; 
+    cursor: pointer; font-weight: 700; font-size: 0.95rem;
     box-shadow: 0 4px 10px rgba(212, 172, 13, 0.3);
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -244,24 +159,13 @@ button.add-btn:hover {
 }
 
 #call-shop-btn {
-    position: fixed;
-    bottom: 95px; /* Floats above cart */
-    left: 20px;
+    position: fixed; bottom: 95px; left: 20px;
     background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-    color: #ffffff;
-    padding: 12px 24px; 
-    border-radius: 30px; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px; 
+    color: #ffffff; padding: 12px 24px; border-radius: 30px; 
+    display: flex; justify-content: center; align-items: center; gap: 10px; 
     box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4), inset 0 0 0 2px rgba(255, 255, 255, 0.2);
-    z-index: 1002;
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 1002; text-decoration: none; font-size: 16px; font-weight: 600;
+    letter-spacing: 0.5px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 #call-shop-btn:hover {
@@ -270,80 +174,25 @@ button.add-btn:hover {
     background: linear-gradient(135deg, #28e06d 0%, #15a393 100%);
 }
 
-/* App Action Buttons */
-.app-actions {
-    margin-top: 15px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-}
-
-.action-btn {
-    padding: 10px 20px;
-    border-radius: 6px;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-
+.app-actions { margin-top: 15px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.action-btn { padding: 10px 20px; border-radius: 6px; border: none; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
 #install-app-btn { background-color: #333; color: white; display: none; }
 #share-app-btn { background-color: #25D366; color: white; }
 
 #floating-cart {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: white;
-    box-shadow: 0 -4px 15px rgba(0,0,0,0.15);
-    padding: 1rem 2rem;
-    display: none;
-    justify-content: space-between;
-    align-items: center;
-    box-sizing: border-box;
-    z-index: 1000;
+    position: fixed; bottom: 0; left: 0; width: 100%; background-color: white;
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.15); padding: 1rem 2rem; display: none;
+    justify-content: space-between; align-items: center; box-sizing: border-box; z-index: 1000;
 }
 
 .checkout-btn {
-    background-color: #25D366; 
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    font-size: 1.1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    background-color: #25D366; color: white; border: none; padding: 12px 24px;
+    font-size: 1.1rem; border-radius: 8px; cursor: pointer; font-weight: bold;
+    display: flex; align-items: center; gap: 8px;
 }
 
-.modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.6);
-    z-index: 2000;
-}
-
-.modal-content {
-    background-color: white;
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 500px;
-    max-height: 85vh;
-    overflow-y: auto;
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-sizing: border-box;
-}
-
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); z-index: 2000; }
+.modal-content { background-color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 500px; max-height: 85vh; overflow-y: auto; padding: 1.5rem; border-radius: 12px; box-sizing: border-box; }
 .modal-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
 .clear-cart-btn { background: none; border: 1px solid #ccc; padding: 5px 10px; border-radius: 4px; cursor: pointer; color: #666; font-size: 0.85rem; }
 .close-btn { font-size: 28px; font-weight: bold; color: #aaa; cursor: pointer; }
@@ -355,216 +204,54 @@ button.add-btn:hover {
 
 @keyframes fadeInPage { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideDownFade { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes slideDownBar { from { transform: translateY(-100%); } to { transform: translateY(0); } }
 .animate-pop { animation: popIn 0.3s ease-out; }
 @keyframes popIn { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
 .shop-info { text-align: center; margin-top: 3rem; padding: 2rem; background: white; border-radius: 12px; color: var(--text-muted); line-height: 1.6; }
 .shop-location-img { max-width: 100%; height: auto; border-radius: 8px; margin-top: 1.5rem; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
 
-/* --- Live Order Ready Modal --- */
-#ready-modal {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(10, 14, 20, 0.9); 
-    z-index: 10000;
-    display: flex; justify-content: center; align-items: center;
-    opacity: 0; visibility: hidden; 
-    transition: all 0.4s ease;
-}
+/* --- Modals --- */
+#ready-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 14, 20, 0.9); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: all 0.4s ease; }
+#ready-modal.show { opacity: 1; visibility: visible; }
+.ready-modal-content { background: #121212; padding: 40px 30px; border-radius: 15px; text-align: center; border-top: 5px solid #e65100; box-shadow: 0 10px 40px rgba(230, 81, 0, 0.3); max-width: 90%; width: 350px; transform: translateY(20px); transition: transform 0.4s ease; }
+#ready-modal.show .ready-modal-content { transform: translateY(0); }
+.close-ready-btn { background: #25D366; color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 20px; width: 100%; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); }
 
-#ready-modal.show {
-    opacity: 1; visibility: visible;
-}
-
-.ready-modal-content {
-    background: #121212; 
-    padding: 40px 30px; 
-    border-radius: 15px;
-    text-align: center; 
-    border-top: 5px solid #e65100;
-    box-shadow: 0 10px 40px rgba(230, 81, 0, 0.3);
-    max-width: 90%; width: 350px;
-    transform: translateY(20px);
-    transition: transform 0.4s ease;
-}
-
-#ready-modal.show .ready-modal-content {
-    transform: translateY(0);
-}
-
-.close-ready-btn {
-    background: #25D366; 
-    color: white; border: none; padding: 12px 24px;
-    border-radius: 6px; font-weight: bold; cursor: pointer; 
-    margin-top: 20px; width: 100%; font-size: 1.1rem;
-    box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
-}
-        
-/* --- Phone Login Modal Styling --- */
-#login-modal {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(10, 14, 20, 0.9); z-index: 20000;
-    display: flex; justify-content: center; align-items: center;
-    opacity: 0; visibility: hidden; transition: all 0.3s ease;
-}
-
+#login-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 14, 20, 0.9); z-index: 20000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
 #login-modal.show { opacity: 1; visibility: visible; }
-
-.login-modal-content {
-    background: #121212; padding: 30px; border-radius: 15px;
-    text-align: center; border-top: 5px solid #e65100;
-    box-shadow: 0 10px 40px rgba(230, 81, 0, 0.3);
-    width: 90%; max-width: 350px;
-}
-
-.phone-input-wrapper {
-    display: flex; align-items: center; background: #222;
-    border-radius: 8px; padding: 5px 15px; margin-bottom: 20px;
-    border: 1px solid #333;
-}
-
+.login-modal-content { background: #121212; padding: 30px; border-radius: 15px; text-align: center; border-top: 5px solid #e65100; box-shadow: 0 10px 40px rgba(230, 81, 0, 0.3); width: 90%; max-width: 350px; }
+.phone-input-wrapper { display: flex; align-items: center; background: #222; border-radius: 8px; padding: 5px 15px; margin-bottom: 20px; border: 1px solid #333; }
 .country-code { color: #f8c471; font-weight: bold; margin-right: 10px; font-size: 1.1rem; }
+#phone-number { background: transparent; border: none; color: white; font-size: 1.1rem; width: 100%; padding: 10px 0; outline: none; }
+.otp-input { background: #222; border: 1px solid #333; color: white; font-size: 1.5rem; width: 100%; padding: 15px; text-align: center; border-radius: 8px; letter-spacing: 5px; margin-bottom: 20px; outline: none; }
+.close-text-btn { background: none; border: none; color: #888; margin-top: 15px; cursor: pointer; font-size: 0.9rem; text-decoration: underline; }
 
-#phone-number {
-    background: transparent; border: none; color: white;
-    font-size: 1.1rem; width: 100%; padding: 10px 0; outline: none;
-}
-
-.otp-input {
-    background: #222; border: 1px solid #333; color: white;
-    font-size: 1.5rem; width: 100%; padding: 15px; text-align: center;
-    border-radius: 8px; letter-spacing: 5px; margin-bottom: 20px; outline: none;
-}
-
-.action-btn {
-    background: #e65100; color: white; border: none; padding: 12px 24px;
-    border-radius: 6px; font-weight: bold; cursor: pointer;
-    width: 100%; font-size: 1.1rem; transition: background 0.3s;
-}
-
-.action-btn:hover { background: #ff6d00; }
-
-.close-text-btn {
-    background: none; border: none; color: #888; margin-top: 15px;
-    cursor: pointer; font-size: 0.9rem; text-decoration: underline;
-}
-    
-/* --- My Orders Button & Modal --- */
-#my-orders-btn {
-    position: fixed; 
-    bottom: 95px; /* Matches Call Shop button height */
-    right: 20px; 
-    z-index: 1002; 
-    background: #2c3e50; 
-    color: #f8c471; 
-    border: 1px solid #f8c471;
-    padding: 12px 20px; 
-    border-radius: 30px; 
-    font-weight: bold;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.4); 
-    cursor: pointer;
-    display: none; 
-}
-
-
-#history-modal {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(10, 14, 20, 0.95); z-index: 20000;
-    display: flex; justify-content: center; align-items: flex-start;
-    padding-top: 10vh; opacity: 0; visibility: hidden; transition: all 0.3s ease;
-}
-
+#my-orders-btn { position: fixed; bottom: 95px; right: 20px; z-index: 1002; background: #2c3e50; color: #f8c471; border: 1px solid #f8c471; padding: 12px 20px; border-radius: 30px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.4); cursor: pointer; display: none; }
+#history-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 14, 20, 0.95); z-index: 20000; display: flex; justify-content: center; align-items: flex-start; padding-top: 10vh; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
 #history-modal.show { opacity: 1; visibility: visible; }
-
-.history-modal-content {
-    background: #121212; padding: 25px; border-radius: 15px;
-    width: 90%; max-width: 400px; max-height: 80vh; overflow-y: auto;
-    border: 1px solid #333; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-}
-
-.history-card {
-    background: #1e1e1e; border-radius: 8px; padding: 15px;
-    margin-bottom: 15px; border-left: 4px solid #e65100; text-align: left;
-}
-
+.history-modal-content { background: #121212; padding: 25px; border-radius: 15px; width: 90%; max-width: 400px; max-height: 80vh; overflow-y: auto; border: 1px solid #333; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+.history-card { background: #1e1e1e; border-radius: 8px; padding: 15px; margin-bottom: 15px; border-left: 4px solid #e65100; text-align: left; }
 .history-card strong { color: #fff; font-size: 1.1rem; display: block; margin-bottom: 5px; }
 .history-card p { color: #aaa; margin: 5px 0; font-size: 0.9rem; }
-
-.status-badge {
-    display: inline-block; padding: 4px 10px; border-radius: 20px;
-    font-size: 0.8rem; font-weight: bold; margin-top: 5px;
-}
+.status-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; margin-top: 5px; }
 .status-Pending { background: #ff980022; color: #ff9800; border: 1px solid #ff9800; }
 .status-Ready { background: #4caf5022; color: #4caf50; border: 1px solid #4caf50; }
-/* --- Floating Login Button (Gold Theme) --- */
-#login-btn {
-    position: fixed;
-    top: 60px; /* Sits just below the announcement bar */
-    right: 20px;
-    z-index: 1000;
-    background: linear-gradient(135deg, #f8c471 0%, #d4ac0d 100%); /* Classy gold gradient */
-    color: #111; /* Dark text for high contrast and readability */
-    border: none;
-    padding: 8px 18px;
-    border-radius: 20px;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(212, 172, 13, 0.4);
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
 
-#login-btn:hover {
-    background: linear-gradient(135deg, #f4d03f 0%, #f1c40f 100%); /* Brighter on hover */
-    transform: translateY(-3px) scale(1.05); /* Satisfying pop effect */
-    box-shadow: 0 6px 16px rgba(212, 172, 13, 0.5);
-}
+#login-btn { position: fixed; top: 60px; right: 20px; z-index: 1000; background: linear-gradient(135deg, #f8c471 0%, #d4ac0d 100%); color: #111; border: none; padding: 8px 18px; border-radius: 20px; font-weight: 800; letter-spacing: 0.5px; cursor: pointer; box-shadow: 0 4px 12px rgba(212, 172, 13, 0.4); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+#login-btn:hover { background: linear-gradient(135deg, #f4d03f 0%, #f1c40f 100%); transform: translateY(-3px) scale(1.05); box-shadow: 0 6px 16px rgba(212, 172, 13, 0.5); }
+#my-account-btn { position: fixed; top: 60px; right: 20px; z-index: 1000; background: rgba(20, 20, 20, 0.6); color: #f8c471; border: 1px solid rgba(248, 196, 113, 0.5); padding: 8px 16px; border-radius: 20px; font-weight: bold; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: all 0.3s ease; }
+#my-account-btn:hover { background: rgba(248, 196, 113, 0.2); transform: translateY(-2px); }
 
-/* --- Floating My Account Button --- */
-#my-account-btn {
-    position: fixed;
-    top: 60px; /* Sits exactly where the Login button was */
-    right: 20px;
-    z-index: 1000;
-    background: rgba(20, 20, 20, 0.6);
-    color: #f8c471;
-    border: 1px solid rgba(248, 196, 113, 0.5);
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-weight: bold;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    transition: all 0.3s ease;
-}
-
-#my-account-btn:hover {
-    background: rgba(248, 196, 113, 0.2);
-    transform: translateY(-2px);
-}
-
-/* --- Account Modal Styling --- */
-#account-modal {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(10, 14, 20, 0.95); z-index: 20000;
-    display: flex; justify-content: center; align-items: center;
-    opacity: 0; visibility: hidden; transition: all 0.3s ease;
-}
-
+#account-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 14, 20, 0.95); z-index: 20000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
 #account-modal.show { opacity: 1; visibility: visible; }
+.account-modal-content { background: #121212; padding: 25px; border-radius: 15px; width: 90%; max-width: 350px; text-align: center; border: 1px solid #333; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
 
-.account-modal-content {
-    background: #121212; padding: 25px; border-radius: 15px;
-    width: 90%; max-width: 350px; text-align: center;
-    border: 1px solid #333; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-                  }
 
 /* --- Active Order Status Tracker --- */
 #active-order-status {
     position: fixed;
-    top: 60px; /* Same height as the My Account button */
-    left: 20px; /* Moved to the opposite side of the screen */
+    top: 60px; 
+    left: 20px; /* FIRMLY SET TO THE LEFT SIDE */
     z-index: 1000;
     background: rgba(20, 20, 20, 0.6);
     color: #f8c471;
@@ -576,7 +263,7 @@ button.add-btn:hover {
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    display: flex; /* Hidden by default in JS */
+    display: flex; /* Kept flex so you can test it if you unhide it in JS */
     align-items: center;
     gap: 10px;
     transition: all 0.3s ease;
@@ -587,33 +274,23 @@ button.add-btn:hover {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: #f8c471; /* Gold for Preparing */
+    background-color: #f8c471; 
     box-shadow: 0 0 8px #f8c471;
     animation: pulseDot 1.5s infinite alternate;
 }
 
-/* Green dot when ready */
-.status-dot.ready { 
-    background-color: #25D366; 
-    box-shadow: 0 0 8px #25D366; 
-}
-
-/* Gray dot when finished */
-.status-dot.picked-up { 
-    background-color: #888; 
-    box-shadow: none; 
-    animation: none; 
-}
+.status-dot.ready { background-color: #25D366; box-shadow: 0 0 8px #25D366; }
+.status-dot.picked-up { background-color: #888; box-shadow: none; animation: none; }
 
 @keyframes pulseDot {
     0% { transform: scale(1); opacity: 0.7; }
     100% { transform: scale(1.3); opacity: 1; }
 }
 
-/* Optional: Shrink slightly on very small mobile screens so it fits perfectly */
 @media (max-width: 600px) {
     #active-order-status {
+        left: 20px; /* Forces left side on mobile too */
         font-size: 0.85rem;
         padding: 6px 12px;
     }
-}
+    }
