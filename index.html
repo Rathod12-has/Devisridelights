@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-        <button id="login-btn" onclick="document.getElementById('login-modal').classList.add('show')">
+    <button id="login-btn" onclick="document.getElementById('login-modal').classList.add('show')">
         👤 Login
     </button>
     
@@ -24,12 +24,12 @@
     </div>
    </div>
    
-    <a href="tel:6305469979" id="call-shop-btn" title="Call Shop"><span style="font-size: 22px;">ðŸ“ž</span> Call Us</a>
+    <a href="tel:6305469979" id="call-shop-btn" title="Call Shop"><span style="font-size: 22px;">📞</span> Call Us</a>
 
     <header>
         <h1 class="aesthetic-title">Devi Sri<br>Delights & Foods</h1>
-        <p>ðŸ“ Shivani Nagar, Sanghamitra School road, Zaheerabad</p>
-        <p>ðŸ•’ Open Every Day: 7:00 AM - 10:00 PM</p>
+        <p>📍 Shivani Nagar, Sanghamitra School road, Zaheerabad</p>
+        <p>🕒 Open Every Day: 7:00 AM - 10:00 PM</p>
     </header>
 
     <div class="container" id="menu-container"></div>
@@ -39,8 +39,8 @@
             <h3>Contact Us</h3>
             <p>Phone / WhatsApp: +91 6305469979</p>
             <div class="app-actions">
-                <button id="install-app-btn" class="action-btn">ðŸ“² Download Our App</button>
-                <button id="share-app-btn" class="action-btn">ðŸ“¢ Share App</button>
+                <button id="install-app-btn" class="action-btn">📲 Download Our App</button>
+                <button id="share-app-btn" class="action-btn">📢 Share App</button>
             </div>
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3801.2800756662455!2d77.62558797429936!3d17.684224594187757!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bceb5036dd004cb%3A0x370dc5a8eac9f14e!2sDevi%20Sri%20Delights%20And%20Foods!5e0!3m2!1sen!2sin!4v1775061036146!5m2!1sen!2sin" width="100%" height="300" style="border:0; border-radius: 12px; margin-top: 15px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
@@ -48,7 +48,7 @@
 
     <div id="floating-cart">
         <div class="cart-info">
-            <span id="cart-count">0</span> Items | â‚¹<span id="cart-total">0</span>
+            <span id="cart-count">0</span> Items | ₹<span id="cart-total">0</span>
         </div>
         <button class="checkout-btn" onclick="toggleCartModal()">View Order & Checkout</button>
     </div>
@@ -58,10 +58,10 @@
             <div class="modal-header-flex">
                 <h2>Your Order</h2>
                 <button class="clear-cart-btn" onclick="clearCart()">Clear All</button>
-                <span class="close-btn" onclick="toggleCartModal()">Ã—</span>
+                <span class="close-btn" onclick="toggleCartModal()">×</span>
             </div>
             <div id="cart-items-list"></div>
-            <h3 style="text-align: right; color: var(--primary-color);">Total: â‚¹<span id="modal-total">0</span></h3>
+            <h3 style="text-align: right; color: var(--primary-color);">Total: ₹<span id="modal-total">0</span></h3>
             <div class="customer-info">
                 <label for="customer-name">Enter your name:</label>
                 <input type="text" id="customer-name" placeholder="E.g., Arjun Sharma" required>
@@ -94,9 +94,10 @@
     </div>
 
     <button id="my-orders-btn" onclick="openOrderHistory()" style="display: none;">
-        ðŸ“œ My Orders
+        📜 My Orders
     </button>
-        <div id="account-modal" class="modal-hidden">
+
+    <div id="account-modal" class="modal-hidden">
         <div class="account-modal-content">
             <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px;">My Profile</h2>
             
@@ -110,7 +111,6 @@
         </div>
     </div>
     
-
     <div id="history-modal" class="modal-hidden">
         <div class="history-modal-content">
             <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px;">Order History</h2>
@@ -125,7 +125,7 @@
 
     <div id="ready-modal" class="ready-modal-hidden">
         <div class="ready-modal-content">
-            <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0;">ðŸŽ‰ Order Ready!</h2>
+            <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0;">🎉 Order Ready!</h2>
             <p style="color: #ddd;">Your food is ready for pickup at the counter!</p>
             <button onclick="document.getElementById('ready-modal').classList.remove('show')" class="close-ready-btn">Awesome, thanks!</button>
         </div>
@@ -204,7 +204,7 @@
             let html = "";
             snap.forEach(d => {
                 const data = d.data();
-                html += `<div class="history-card" style="background:#222; padding:10px; margin-bottom:10px; border-radius:8px; border-left:4px solid #e65100;"><strong>Order: â‚¹${data.totalBill}</strong><p>Status: ${data.status}</p></div>`;
+                html += `<div class="history-card" style="background:#222; padding:10px; margin-bottom:10px; border-radius:8px; border-left:4px solid #e65100;"><strong>Order: ₹${data.totalBill}</strong><p>Status: ${data.status}</p></div>`;
             });
             list.innerHTML = html || "No orders yet.";
         };
@@ -219,7 +219,8 @@
                 if (s.exists() && s.data().status === "Ready") document.getElementById('ready-modal').classList.add('show');
             });
         };
-                   // Open Account Modal & Fetch Details
+        
+        // Open Account Modal & Fetch Details
         window.openAccountModal = async function() {
             if (!window.currentUser) return;
             
@@ -248,11 +249,11 @@
             `;
         };
         
-                // Logout Function
         // Logout Function
         window.logoutUser = function() {
             auth.signOut().then(() => {
                 document.getElementById('account-modal').classList.remove('show');
+                document.getElementById('history-modal').classList.remove('show');
             }).catch((error) => {
                 console.error("Logout Error:", error);
             });
@@ -262,4 +263,4 @@
 
     <script src="script.js"></script>
 </body>
-    </html>
+</html>
