@@ -1,4 +1,4 @@
-        const menuCategories = [
+const menuCategories = [
     {
         name: "Foods",
         image: "https://tse4.mm.bing.net/th/id/OIP.EEc_OHCl8Ls9SxecF-BXAAHaFj?rs=1&pid=ImgDetMain&o=7&rm=3",
@@ -107,7 +107,8 @@ menuCategories.forEach(category => {
     category.items.forEach(item => {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'menu-item';
-        let priceDisplay = (item.price === "Shop Visit") ? `<span class="shop-visit-tag">Price at Shop</span>` : `<span class="item-price">₹${item.price}</span>`;
+        // Using &#8377; here to guarantee the Rupee symbol shows up
+        let priceDisplay = (item.price === "Shop Visit") ? `<span class="shop-visit-tag">Price at Shop</span>` : `<span class="item-price">&#8377;${item.price}</span>`;
         let buttonHTML = (item.price === "Shop Visit") ? '' : `<button class="add-btn" onclick="addToCart('${item.name}', ${item.price})">Add</button>`;
 
         itemDiv.innerHTML = `<div class="item-info"><h4>${item.name}</h4>${priceDisplay}</div>${buttonHTML}`;
@@ -167,7 +168,8 @@ function renderCartModalItems() {
     for (let item in cart) {
         let itemTotal = cart[item].price * cart[item].quantity;
         total += itemTotal;
-        list.innerHTML += `<div class="cart-item-row"><div><strong>${item}</strong><br><small>₹${cart[item].price} x ${cart[item].quantity}</small></div><div style="text-align: right;"><strong style="display:block;">₹${itemTotal}</strong><button class="remove-btn" onclick="removeFromCart('${item}')">Remove</button></div></div>`;
+        // Using &#8377; here to guarantee the Rupee symbol shows up
+        list.innerHTML += `<div class="cart-item-row"><div><strong>${item}</strong><br><small>&#8377;${cart[item].price} x ${cart[item].quantity}</small></div><div style="text-align: right;"><strong style="display:block;">&#8377;${itemTotal}</strong><button class="remove-btn" onclick="removeFromCart('${item}')">Remove</button></div></div>`;
     }
     document.getElementById('modal-total').innerText = total;
 }
