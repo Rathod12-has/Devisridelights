@@ -170,30 +170,71 @@
         window.currentUser = null;
         window.activeOrderUnsubscribe = null; // Keeps track of the live listener
 
-        onAuthStateChanged(auth, (user) => {
-            const myOrdersBtn = document.getElementById('my-orders-btn');
+                // Track Login Status & Active Orders
+        window.currentUser = null;
+        window.activeOrderUnsubscribe = null; // Keeps track of the live listener
+
+        onAuthStateChanged(auth, async (user) => {
             const loginBtn = document.getElementById('login-btn');
-            const myAccountBtn = document.getElementById('my-account-btn');
+            // Select the new widget instead of old button
+            const myAccountWidget = document.getElementById('my-account-profile-widget'); 
             
             if (user) {
                 window.currentUser = user;
-                if (myOrdersBtn) myOrdersBtn.style.display = 'block';
-                if (loginBtn) loginBtn.style.display = 'none';
-                if (myAccountBtn) myAccountBtn.style.display = 'block';
+                loginBtn.style.display = 'none'; // Hide Login
                 
-                // Start tracking their order in real-time
+                // --- NEW: Populate Floating Widget Details ---
+                // We show it first to allow DOM rendering before querying
+                myAccountWidget.style.display = 'flex'; 
+
+                // 1. Phone number is immediately available
+                document.getElementById('profile-display-phone').innerText = user.phoneNumber;
+
+                // 2. Fetch Name from Firebase (just like in the modal logic)
+                // We search their order history once to find a name they used.
+                const qName = query(collection(db, "orders"), where("customerPhone", "==", user.phoneNumber));
+                const nameSnap = await getDocs(qName);
+                
+                let displayName = "Customer"; // Default placeholder name
+                let initial = "C";
+
+                // If they ordered before, grab the name from the most recent order
+                if (!nameSnap.empty) {
+                    displayName = nameSnap.docs[0].data().customerName || "Customer";
+                    
+                    // Sanitize the name and grab the first initial
+                    let cleanedName = displayName.trim();
+                    if(cleanedName.length > 0) {
+                        initial = cleanedName.charAt(0).toUpperCase();
+                    }
+                }
+
+                // Update the floating widget UI
+                document.getElementById('profile-display-name').innerText = displayName;
+                document.getElementById('profile-initial').innerText = initial;
+
+
+                // --- Order History Button (Bottom right) ---
+                const myOrdersBtn = document.getElementById('my-orders-btn');
+                if (myOrdersBtn) myOrdersBtn.style.display = 'block';
+
+                // Start tracking their active order in real-time (Top Left)
                 trackActiveOrder(user.phoneNumber);
             } else {
                 window.currentUser = null;
+                loginBtn.style.display = 'block'; // Show Login
+                myAccountWidget.style.display = 'none'; // Hide Account Widget
+
+                // Hide historical elements
+                const myOrdersBtn = document.getElementById('my-orders-btn');
                 if (myOrdersBtn) myOrdersBtn.style.display = 'none';
-                if (loginBtn) loginBtn.style.display = 'block';
-                if (myAccountBtn) myAccountBtn.style.display = 'none';
                 
                 // Stop tracking if they log out
                 if (window.activeOrderUnsubscribe) window.activeOrderUnsubscribe();
                 document.getElementById('active-order-status').style.display = 'none';
             }
         });
+        
 
         // The Real-Time Tracker Function
         function trackActiveOrder(phone) {
