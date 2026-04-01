@@ -10,19 +10,26 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-   <div id="announcement-bar">
+        <button id="login-btn" onclick="document.getElementById('login-modal').classList.add('show')">
+        👤 Login
+    </button>
+    
+    <button id="my-account-btn" onclick="openAccountModal()" style="display: none;">
+        👤 My Account
+    </button>
+    
+    <div id="announcement-bar">
     <div class="announcement-text">
-        ✨ Pre-order on WhatsApp to save time. We'll have your hot food ready! ✨
+        🌟 Skip the wait! Order ahead online and we'll have your hot food ready for pickup. 🌟
     </div>
    </div>
-
-    <a href="tel:6305469979" id="call-shop-btn" title="Call Shop"><span style="font-size: 22px;">📞</span> Call Us</a>
+   
+    <a href="tel:6305469979" id="call-shop-btn" title="Call Shop"><span style="font-size: 22px;">ðŸ“ž</span> Call Us</a>
 
     <header>
         <h1 class="aesthetic-title">Devi Sri<br>Delights & Foods</h1>
-        <p>📍 Shivani Nagar, Sanghamitra School road, Zaheerabad</p>
-        <p>🕒 Open Every Day: 7:00 AM - 10:00 PM</p>
+        <p>ðŸ“ Shivani Nagar, Sanghamitra School road, Zaheerabad</p>
+        <p>ðŸ•’ Open Every Day: 7:00 AM - 10:00 PM</p>
     </header>
 
     <div class="container" id="menu-container"></div>
@@ -32,16 +39,16 @@
             <h3>Contact Us</h3>
             <p>Phone / WhatsApp: +91 6305469979</p>
             <div class="app-actions">
-                <button id="install-app-btn" class="action-btn">📲 Download Our App</button>
-                <button id="share-app-btn" class="action-btn">📢 Share App</button>
+                <button id="install-app-btn" class="action-btn">ðŸ“² Download Our App</button>
+                <button id="share-app-btn" class="action-btn">ðŸ“¢ Share App</button>
             </div>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3800.228189689255!2d77.5959!3d17.6833!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTfCsDQxJzAwLjAiTiA3N8KwMzUnNDUuMiJF!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin" width="100%" height="300" style="border:0; border-radius: 12px; margin-top: 15px;" allowfullscreen="" loading="lazy"></iframe>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3801.2800756662455!2d77.62558797429936!3d17.684224594187757!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bceb5036dd004cb%3A0x370dc5a8eac9f14e!2sDevi%20Sri%20Delights%20And%20Foods!5e0!3m2!1sen!2sin!4v1775061036146!5m2!1sen!2sin" width="100%" height="300" style="border:0; border-radius: 12px; margin-top: 15px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
     </div>
 
     <div id="floating-cart">
         <div class="cart-info">
-            <span id="cart-count">0</span> Items | ₹<span id="cart-total">0</span>
+            <span id="cart-count">0</span> Items | â‚¹<span id="cart-total">0</span>
         </div>
         <button class="checkout-btn" onclick="toggleCartModal()">View Order & Checkout</button>
     </div>
@@ -51,10 +58,10 @@
             <div class="modal-header-flex">
                 <h2>Your Order</h2>
                 <button class="clear-cart-btn" onclick="clearCart()">Clear All</button>
-                <span class="close-btn" onclick="toggleCartModal()">×</span>
+                <span class="close-btn" onclick="toggleCartModal()">Ã—</span>
             </div>
             <div id="cart-items-list"></div>
-            <h3 style="text-align: right; color: var(--primary-color);">Total: ₹<span id="modal-total">0</span></h3>
+            <h3 style="text-align: right; color: var(--primary-color);">Total: â‚¹<span id="modal-total">0</span></h3>
             <div class="customer-info">
                 <label for="customer-name">Enter your name:</label>
                 <input type="text" id="customer-name" placeholder="E.g., Arjun Sharma" required>
@@ -85,25 +92,24 @@
             <button onclick="document.getElementById('login-modal').classList.remove('show')" class="close-text-btn">Cancel</button>
         </div>
     </div>
-        <div class="history-modal-content">
-            <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px;">Order History</h2>
-            <div id="history-list">
-                <p style="color: #888;">Loading your delicious history...</p>
-            </div>
-            <button onclick="document.getElementById('history-modal').classList.remove('show')" class="close-ready-btn" style="background: #333; margin-top: 15px;">Close</button>
-        </div>
-    </div>
 
-    <div id="ready-modal" class="ready-modal-hidden">
-        <div class="ready-modal-content">
-            <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0;">🎉 Order Ready!</h2>
-            <p style="color: #ddd;">Your food is ready for pickup at the counter!</p>
-            <button onclick="document.getElementById('ready-modal').classList.remove('show')" class="close-ready-btn">Awesome, thanks!</button>
+    <button id="my-orders-btn" onclick="openOrderHistory()" style="display: none;">
+        ðŸ“œ My Orders
+    </button>
+        <div id="account-modal" class="modal-hidden">
+        <div class="account-modal-content">
+            <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px;">My Profile</h2>
+            
+            <div id="account-details" style="text-align: left; color: #ddd; font-size: 1.1rem; line-height: 1.8; margin-bottom: 20px;">
+                <p style="text-align: center; color: #888;">Loading your details...</p>
+            </div>
+
+            <button onclick="logoutUser()" style="background: #ff4d4d; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-bottom: 15px;">🚪 Logout</button>
+            
+            <button onclick="document.getElementById('account-modal').classList.remove('show')" class="close-ready-btn" style="background: #333; margin-top: 0;">Close</button>
         </div>
     </div>
-        <button id="my-orders-btn" onclick="openOrderHistory()" style="display: none;">
-        📜 My Orders
-    </button>
+    
 
     <div id="history-modal" class="modal-hidden">
         <div class="history-modal-content">
@@ -111,13 +117,15 @@
             <div id="history-list">
                 <p style="color: #888;">Loading your history...</p>
             </div>
-            <button onclick="document.getElementById('history-modal').classList.remove('show')" class="close-ready-btn" style="background: #333; margin-top: 15px;">Close</button>
+            <button onclick="logoutUser()" style="background: #ff4d4d; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 20px; width: 100%;">🚪 Logout</button>
+            
+            <button onclick="document.getElementById('history-modal').classList.remove('show')" class="close-ready-btn" style="background: #333; margin-top: 10px;">Close</button>
         </div>
     </div>
 
     <div id="ready-modal" class="ready-modal-hidden">
         <div class="ready-modal-content">
-            <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0;">🎉 Order Ready!</h2>
+            <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0;">ðŸŽ‰ Order Ready!</h2>
             <p style="color: #ddd;">Your food is ready for pickup at the counter!</p>
             <button onclick="document.getElementById('ready-modal').classList.remove('show')" class="close-ready-btn">Awesome, thanks!</button>
         </div>
@@ -145,16 +153,23 @@
         // Track Login Status
         window.currentUser = null;
         onAuthStateChanged(auth, (user) => {
-            const btn = document.getElementById('my-orders-btn');
+            const myOrdersBtn = document.getElementById('my-orders-btn');
+            const loginBtn = document.getElementById('login-btn');
+            const myAccountBtn = document.getElementById('my-account-btn');
+            
             if (user) {
                 window.currentUser = user;
-                if (btn) btn.style.display = 'block';
+                if (myOrdersBtn) myOrdersBtn.style.display = 'block';
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (myAccountBtn) myAccountBtn.style.display = 'block'; // Show Account
             } else {
                 window.currentUser = null;
-                if (btn) btn.style.display = 'none';
+                if (myOrdersBtn) myOrdersBtn.style.display = 'none';
+                if (loginBtn) loginBtn.style.display = 'block';
+                if (myAccountBtn) myAccountBtn.style.display = 'none'; // Hide Account
             }
         });
-
+        
         // OTP Functions
         window.sendOTP = function() {
             const phone = document.getElementById("phone-number").value.trim();
@@ -189,7 +204,7 @@
             let html = "";
             snap.forEach(d => {
                 const data = d.data();
-                html += `<div class="history-card" style="background:#222; padding:10px; margin-bottom:10px; border-radius:8px; border-left:4px solid #e65100;"><strong>Order: ₹${data.totalBill}</strong><p>Status: ${data.status}</p></div>`;
+                html += `<div class="history-card" style="background:#222; padding:10px; margin-bottom:10px; border-radius:8px; border-left:4px solid #e65100;"><strong>Order: â‚¹${data.totalBill}</strong><p>Status: ${data.status}</p></div>`;
             });
             list.innerHTML = html || "No orders yet.";
         };
@@ -204,8 +219,47 @@
                 if (s.exists() && s.data().status === "Ready") document.getElementById('ready-modal').classList.add('show');
             });
         };
+                   // Open Account Modal & Fetch Details
+        window.openAccountModal = async function() {
+            if (!window.currentUser) return;
+            
+            // Open the modal immediately
+            document.getElementById('account-modal').classList.add('show');
+            const detailsDiv = document.getElementById('account-details');
+            detailsDiv.innerHTML = "<p style='text-align:center; color:#888;'>Gathering your details...</p>";
+            
+            // Ask Firebase for all orders matching this phone number
+            const q = query(collection(db, "orders"), where("customerPhone", "==", window.currentUser.phoneNumber));
+            const snap = await getDocs(q);
+            
+            let totalOrders = snap.size; // Counts how many orders exist
+            let customerName = "Not provided yet";
+            
+            // If they have ordered before, grab the name they used on their last order!
+            if (totalOrders > 0) {
+                customerName = snap.docs[0].data().customerName || "Not provided yet";
+            }
+            
+            // Update the HTML inside the modal
+            detailsDiv.innerHTML = `
+                <p style="margin-bottom: 10px;"><strong>👤 Name:</strong> <span style="color:#f8c471;">${customerName}</span></p>
+                <p style="margin-bottom: 10px;"><strong>📞 Phone:</strong> <span style="color:#f8c471;">${window.currentUser.phoneNumber}</span></p>
+                <p style="margin-bottom: 10px;"><strong>🛍️ Total Orders:</strong> <span style="color:#f8c471;">${totalOrders}</span></p>
+            `;
+        };
+        
+                // Logout Function
+        // Logout Function
+        window.logoutUser = function() {
+            auth.signOut().then(() => {
+                document.getElementById('account-modal').classList.remove('show');
+            }).catch((error) => {
+                console.error("Logout Error:", error);
+            });
+        };
+        
     </script>
 
     <script src="script.js"></script>
 </body>
-</html>
+    </html>
