@@ -80,21 +80,14 @@
     <div id="login-modal" class="modal-hidden">
         <div class="login-modal-content">
             <h2 style="font-family: 'Playfair Display', serif; color: #f8c471; margin-top: 0;">Welcome!</h2>
-            <p id="login-step-1-text" style="color: #ddd;">Please enter your phone number to place your order.</p>
+            <p style="color: #ddd;">Enter your phone number to continue.</p>
 
             <div id="phone-input-section">
                 <div class="phone-input-wrapper">
                     <span class="country-code">+91</span>
                     <input type="tel" id="phone-number" placeholder="Enter 10-digit number" maxlength="10">
                 </div>
-                <div id="recaptcha-container" style="margin-bottom: 15px;"></div>
-                <button id="send-otp-btn" class="action-btn" onclick="sendOTP()">Send OTP</button>
-            </div>
-
-            <div id="otp-input-section" style="display: none;">
-                <p style="color: #ddd;">Enter the 6-digit code sent to your phone.</p>
-                <input type="number" id="otp-code" placeholder="------" class="otp-input">
-                <button id="verify-otp-btn" class="action-btn" onclick="verifyOTP()">Verify & Login</button>
+                <button id="simple-login-btn" class="action-btn" onclick="simpleLogin()" style="margin-top: 15px;">Login / Continue</button>
             </div>
             <button onclick="document.getElementById('login-modal').classList.remove('show')" class="close-text-btn">Cancel</button>
         </div>
@@ -140,8 +133,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+        // Removed Firebase Auth imports! We don't need them anymore.
         import { getFirestore, collection, addDoc, serverTimestamp, doc, onSnapshot, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
-        import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyC7uuy0yYV3L17RJ0RvbN-mrfqrT4PquMo",
@@ -149,73 +142,90 @@
             projectId: "devi-sri-delights",
             storageBucket: "devi-sri-delights.firebasestorage.app",
             messagingSenderId: "73108349440",
-            appId: "1:73108349440:web:8ca038c61c9a85b2b12ee5",
-            measurementId: "G-FSKW9M3WL1"
+            appId: "1:73108349440:web:8ca038c61c9a85b2b12ee5"
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const auth = getAuth(app);
-        // --- NEW: Fetch Live Menu from Firebase ---
+
+        // --- Fetch Live Menu from Firebase ---
         document.getElementById('menu-container').innerHTML = "<p style='text-align:center; padding: 40px; color: #666;'>Loading delicious menu...</p>";
         
-                async function loadCustomerMenu() {
+        async function loadCustomerMenu() {
             const menuRef = collection(db, "menu");
             const snap = await getDocs(menuRef);
             let categories = [];
             
             snap.forEach(doc => {
                 let cat = doc.data();
-                // Safety check: if an old category doesn't have an order number, push it to the bottom
                 if (typeof cat.order === 'undefined') cat.order = 999;
                 categories.push(cat);
             });
 
-            // ⭐ THE MAGIC FIX: Sort the array using the order number from your Editor!
             categories.sort((a, b) => a.order - b.order);
             
-            // If we found the menu, send the perfectly sorted list to script.js to render!
             if(categories.length > 0) {
                 window.renderMenu(categories);
             } else {
                 document.getElementById('menu-container').innerHTML = "<p style='text-align:center; padding: 40px; color: #ff4d4d;'>Menu is currently unavailable. Please check back soon!</p>";
             }
-                }
-        
+        }
         loadCustomerMenu();
-        // ------------------------------------------
 
-        // Track Login Status & Active Orders
+        // --- NEW: Simple Login System (Using Local Storage) ---
         window.currentUser = null;
         window.activeOrderUnsubscribe = null; 
 
-        onAuthStateChanged(auth, (user) => {
-            const loginBtn = document.getElementById('login-btn');
-            const myAccountBtn = document.getElementById('my-account-btn'); 
-            const myOrdersBtn = document.getElementById('my-orders-btn');
-            
-            if (user) {
-                window.currentUser = user;
-                if (loginBtn) loginBtn.style.display = 'none'; 
-                if (myAccountBtn) myAccountBtn.style.display = 'flex'; // Shows Hamburger
-                if (myOrdersBtn) myOrdersBtn.style.display = 'block';
-
-                // Start tracking their active order (Top Left)
-                trackActiveOrder(user.phoneNumber);
-            } else {
-                window.currentUser = null;
-                if (loginBtn) loginBtn.style.display = 'block'; 
-                if (myAccountBtn) myAccountBtn.style.display = 'none'; 
-                if (myOrdersBtn) myOrdersBtn.style.display = 'none';
-                
-                // Stop tracking if they log out
-                if (window.activeOrderUnsubscribe) window.activeOrderUnsubscribe();
-                const tracker = document.getElementById('active-order-status');
-                if (tracker) tracker.style.display = 'none';
+        // Check if user is already logged in when the page loads
+        window.onload = function() {
+            const savedPhone = localStorage.getItem('customerPhone');
+            if (savedPhone) {
+                setLoggedInState(savedPhone);
             }
-        });
+        };
 
-        // The Real-Time Tracker Function
+        window.simpleLogin = function() {
+            const phoneInput = document.getElementById("phone-number").value.trim();
+            if (phoneInput.length !== 10 || isNaN(phoneInput)) {
+                return alert("Please enter a valid 10-digit phone number.");
+            }
+            
+            const formattedPhone = "+91" + phoneInput;
+            
+            // Save to browser memory
+            localStorage.setItem('customerPhone', formattedPhone);
+            
+            // Log them in
+            setLoggedInState(formattedPhone);
+            document.getElementById('login-modal').classList.remove('show');
+        };
+
+        function setLoggedInState(phone) {
+            window.currentUser = { phoneNumber: phone };
+            
+            document.getElementById('login-btn').style.display = 'none'; 
+            document.getElementById('my-account-btn').style.display = 'flex'; 
+            document.getElementById('my-orders-btn').style.display = 'block';
+
+            trackActiveOrder(phone);
+        }
+
+        window.logoutUser = function() {
+            window.currentUser = null;
+            localStorage.removeItem('customerPhone'); // Clear browser memory
+            
+            document.getElementById('login-btn').style.display = 'block'; 
+            document.getElementById('my-account-btn').style.display = 'none'; 
+            document.getElementById('my-orders-btn').style.display = 'none';
+            
+            if (window.activeOrderUnsubscribe) window.activeOrderUnsubscribe();
+            document.getElementById('active-order-status').style.display = 'none';
+
+            document.getElementById('account-modal').classList.remove('show');
+            document.getElementById('history-modal').classList.remove('show');
+        };
+
+        // --- Real-Time Tracker Function ---
         function trackActiveOrder(phone) {
             const q = query(collection(db, "orders"), where("customerPhone", "==", phone));
             
@@ -262,54 +272,17 @@
                 }
             });
         }
-        
-        // OTP Functions
-                window.sendOTP = function() {
-            const phone = document.getElementById("phone-number").value.trim();
-            if (phone.length !== 10) return alert("Enter 10 digits");
-            
-            // Change button text so you know it's working
-            const btn = document.getElementById("send-otp-btn");
-            btn.innerText = "Sending...";
-            btn.disabled = true;
 
-            if (!window.recaptchaVerifier) {
-                window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 
-                    'size': 'invisible' 
-                });
-            }
-            
-            signInWithPhoneNumber(auth, "+91" + phone, window.recaptchaVerifier)
-                .then(res => {
-                    window.confirmationResult = res;
-                    document.getElementById("phone-input-section").style.display = "none";
-                    document.getElementById("otp-input-section").style.display = "block";
-                    btn.innerText = "Send OTP";
-                    btn.disabled = false;
-                }).catch(err => {
-                    // THIS WILL SHOW US THE EXACT ERROR!
-                    console.error("OTP Error:", err);
-                    alert("Firebase Error: " + err.message);
-                    
-                    // Reset reCAPTCHA so you can try again without refreshing
-                    if(window.recaptchaVerifier) {
-                        window.recaptchaVerifier.clear();
-                        window.recaptchaVerifier = null;
-                    }
-                    btn.innerText = "Send OTP";
-                    btn.disabled = false;
-                });
-        };
-                                                                 
-
-        // History Function
+        // --- History Function ---
         window.openOrderHistory = async function() {
             if (!window.currentUser) return;
             document.getElementById('history-modal').classList.add('show');
             const list = document.getElementById('history-list');
             list.innerHTML = "Searching...";
+            
             const q = query(collection(db, "orders"), where("customerPhone", "==", window.currentUser.phoneNumber));
             const snap = await getDocs(q);
+            
             let html = "";
             snap.forEach(d => {
                 const data = d.data();
@@ -318,18 +291,22 @@
             list.innerHTML = html || "No orders yet.";
         };
 
-        // Save Order Function
+        // --- Save Order Function ---
         window.saveOrderToFirebase = async function(name, cart, total) {
             const phone = window.currentUser ? window.currentUser.phoneNumber : "No Number";
             const docRef = await addDoc(collection(db, "orders"), {
                 customerName: name, customerPhone: phone, orderItems: cart, totalBill: total, timestamp: serverTimestamp(), status: "Pending"
             });
+            
+            // Listen for order status changes
             onSnapshot(doc(db, "orders", docRef.id), (s) => {
-                if (s.exists() && s.data().status === "Ready") document.getElementById('ready-modal').classList.add('show');
+                if (s.exists() && s.data().status === "Ready") {
+                    document.getElementById('ready-modal').classList.add('show');
+                }
             });
         };
         
-        // Open Account Modal & Fetch Details
+        // --- Open Account Modal & Fetch Details ---
         window.openAccountModal = async function() {
             if (!window.currentUser) return;
             
@@ -344,7 +321,8 @@
             let customerName = "Not provided yet";
             
             if (totalOrders > 0) {
-                customerName = snap.docs[0].data().customerName || "Not provided yet";
+                // Get the name from their most recent order
+                customerName = snap.docs[totalOrders - 1].data().customerName || "Not provided yet";
             }
             
             detailsDiv.innerHTML = `
@@ -354,18 +332,9 @@
             `;
         };
         
-        // Logout Function
-        window.logoutUser = function() {
-            auth.signOut().then(() => {
-                document.getElementById('account-modal').classList.remove('show');
-                document.getElementById('history-modal').classList.remove('show');
-            }).catch((error) => {
-                console.error("Logout Error:", error);
-            });
-        };
-        
     </script>
 
     <script src="script.js"></script>
 </body>
-</html>
+    </html>
+    
