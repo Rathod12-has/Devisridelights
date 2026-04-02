@@ -264,27 +264,43 @@
         }
         
         // OTP Functions
-        window.sendOTP = function() {
+                window.sendOTP = function() {
             const phone = document.getElementById("phone-number").value.trim();
             if (phone.length !== 10) return alert("Enter 10 digits");
+            
+            // Change button text so you know it's working
+            const btn = document.getElementById("send-otp-btn");
+            btn.innerText = "Sending...";
+            btn.disabled = true;
+
             if (!window.recaptchaVerifier) {
-                window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 'size': 'invisible' });
+                window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 
+                    'size': 'invisible' 
+                });
             }
+            
             signInWithPhoneNumber(auth, "+91" + phone, window.recaptchaVerifier)
                 .then(res => {
                     window.confirmationResult = res;
                     document.getElementById("phone-input-section").style.display = "none";
                     document.getElementById("otp-input-section").style.display = "block";
-                }).catch(err => alert("Error sending OTP"));
+                    btn.innerText = "Send OTP";
+                    btn.disabled = false;
+                }).catch(err => {
+                    // THIS WILL SHOW US THE EXACT ERROR!
+                    console.error("OTP Error:", err);
+                    alert("Firebase Error: " + err.message);
+                    
+                    // Reset reCAPTCHA so you can try again without refreshing
+                    if(window.recaptchaVerifier) {
+                        window.recaptchaVerifier.clear();
+                        window.recaptchaVerifier = null;
+                    }
+                    btn.innerText = "Send OTP";
+                    btn.disabled = false;
+                });
         };
-
-        window.verifyOTP = function() {
-            const code = document.getElementById("otp-code").value.trim();
-            window.confirmationResult.confirm(code).then(res => {
-                window.currentUser = res.user;
-                document.getElementById('login-modal').classList.remove('show');
-            }).catch(err => alert("Invalid OTP"));
-        };
+                                                                 
 
         // History Function
         window.openOrderHistory = async function() {
