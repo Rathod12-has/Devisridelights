@@ -159,19 +159,29 @@
         // --- NEW: Fetch Live Menu from Firebase ---
         document.getElementById('menu-container').innerHTML = "<p style='text-align:center; padding: 40px; color: #666;'>Loading delicious menu...</p>";
         
-        async function loadCustomerMenu() {
+                async function loadCustomerMenu() {
             const menuRef = collection(db, "menu");
             const snap = await getDocs(menuRef);
             let categories = [];
-            snap.forEach(doc => categories.push(doc.data()));
             
-            // If we found the menu, send it to script.js to render!
+            snap.forEach(doc => {
+                let cat = doc.data();
+                // Safety check: if an old category doesn't have an order number, push it to the bottom
+                if (typeof cat.order === 'undefined') cat.order = 999;
+                categories.push(cat);
+            });
+
+            // ⭐ THE MAGIC FIX: Sort the array using the order number from your Editor!
+            categories.sort((a, b) => a.order - b.order);
+            
+            // If we found the menu, send the perfectly sorted list to script.js to render!
             if(categories.length > 0) {
                 window.renderMenu(categories);
             } else {
                 document.getElementById('menu-container').innerHTML = "<p style='text-align:center; padding: 40px; color: #ff4d4d;'>Menu is currently unavailable. Please check back soon!</p>";
             }
-        }
+                }
+        
         loadCustomerMenu();
         // ------------------------------------------
 
