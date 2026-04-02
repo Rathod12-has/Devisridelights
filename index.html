@@ -156,6 +156,24 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
+        // --- NEW: Fetch Live Menu from Firebase ---
+        document.getElementById('menu-container').innerHTML = "<p style='text-align:center; padding: 40px; color: #666;'>Loading delicious menu...</p>";
+        
+        async function loadCustomerMenu() {
+            const menuRef = collection(db, "menu");
+            const snap = await getDocs(menuRef);
+            let categories = [];
+            snap.forEach(doc => categories.push(doc.data()));
+            
+            // If we found the menu, send it to script.js to render!
+            if(categories.length > 0) {
+                window.renderMenu(categories);
+            } else {
+                document.getElementById('menu-container').innerHTML = "<p style='text-align:center; padding: 40px; color: #ff4d4d;'>Menu is currently unavailable. Please check back soon!</p>";
+            }
+        }
+        loadCustomerMenu();
+        // ------------------------------------------
 
         // Track Login Status & Active Orders
         window.currentUser = null;
