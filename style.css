@@ -282,4 +282,40 @@ button[onclick="logoutUser()"] {
 /* Animations */
 @keyframes fadeInPage { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideDownFade { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-                                                                                                                                                                                                                                                                    
+
+/* ==========================================================
+   ATTENTION-GRABBING CART ANIMATIONS
+   ========================================================== */
+
+/* 1. The pop animation when an item is added (keeps cart centered!) */
+.animate-pop { 
+    animation: cartPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+}
+
+@keyframes cartPop { 
+    0% { transform: translateX(-50%) scale(1); } 
+    50% { transform: translateX(-50%) scale(1.08); } 
+    100% { transform: translateX(-50%) scale(1); } 
+}
+
+/* 2. A continuous, subtle heartbeat glow on the checkout button */
+#floating-cart .checkout-btn {
+    animation: heartbeatGlow 2s infinite;
+}
+
+@keyframes heartbeatGlow {
+    0% { 
+        box-shadow: 0 4px 15px rgba(230, 81, 0, 0.3); 
+        transform: scale(1); 
+    }
+    50% { 
+        box-shadow: 0 4px 25px rgba(248, 196, 113, 0.8); 
+        transform: scale(1.03); 
+        border-color: rgba(248, 196, 113, 0.8);
+    }
+    100% { 
+        box-shadow: 0 4px 15px rgba(230, 81, 0, 0.3); 
+        transform: scale(1); 
+    }
+}
+
