@@ -250,24 +250,31 @@ button.add-btn:active {
     cursor: pointer; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-/* --- GLASS GREEN CALL BUTTON --- */
+/* --- COMPACT GREEN CALL BUTTON --- */
 #call-shop-btn {
     position: fixed; bottom: 95px; left: 20px;
-    background: rgba(37, 211, 102, 0.15); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(37, 211, 102, 0.4); color: #0d7a42; 
-    padding: 12px 24px; border-radius: 30px; 
-    display: flex; justify-content: center; align-items: center; gap: 10px; 
-    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.2);
-    z-index: 1002; text-decoration: none; font-size: 16px; font-weight: 800;
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: #ffffff; 
+    padding: 8px 16px; /* Shrinks the height and width */
+    border-radius: 30px; 
+    display: flex; justify-content: center; align-items: center; gap: 6px; /* Brings text closer to icon */
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    z-index: 1002; text-decoration: none; 
+    font-size: 0.85rem; /* Smaller text */
+    font-weight: 600;
     letter-spacing: 0.5px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-#call-shop-btn:hover {
-    transform: translateY(-4px) scale(1.05);
-    box-shadow: 0 12px 25px rgba(37, 211, 102, 0.3);
-    background: rgba(37, 211, 102, 0.25);
-    border-color: rgba(37, 211, 102, 0.7);
+#call-shop-btn span {
+    font-size: 16px !important; /* Shrinks the 📞 emoji */
 }
+
+#call-shop-btn:hover {
+    transform: translateY(-3px) scale(1.05); /* Slightly softer hover bounce */
+    box-shadow: 0 8px 18px rgba(37, 211, 102, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+    background: linear-gradient(135deg, #28e06d 0%, #15a393 100%);
+}
+
 
 /* --- GLASS LOGOUT BUTTON OVERRIDE --- */
 button[onclick="logoutUser()"] {
