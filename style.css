@@ -273,9 +273,8 @@ button.add-btn:active {
     transform: translateY(-3px) scale(1.05); /* Slightly softer hover bounce */
     box-shadow: 0 8px 18px rgba(37, 211, 102, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.3);
     background: linear-gradient(135deg, #28e06d 0%, #15a393 100%);
-}
-
-
+    }
+    
 /* --- GLASS LOGOUT BUTTON OVERRIDE --- */
 button[onclick="logoutUser()"] {
     background: rgba(255, 77, 77, 0.15) !important;
