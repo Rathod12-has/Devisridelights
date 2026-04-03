@@ -16,6 +16,7 @@ window.renderMenu = function(menuCategories) {
         const header = document.createElement('div');
         header.className = 'category-header';
         header.innerText = category.name;
+        // This toggle triggers the 2-column grid to expand to full width!
         header.onclick = () => card.classList.toggle('active');
         card.appendChild(header);
 
@@ -38,8 +39,6 @@ window.renderMenu = function(menuCategories) {
     });
 };
 
-// ... KEEP the rest of your script.js code below this line (let cart = {}; etc) ...
-
 let cart = {};
 
 function addToCart(itemName, price) {
@@ -53,7 +52,11 @@ function removeFromCart(itemName) {
         if (cart[itemName].quantity <= 0) delete cart[itemName];
         updateCartUI();
         renderCartModalItems();
-        if (Object.keys(cart).length === 0) toggleCartModal();
+        
+        // If cart is empty, close the slide-up modal smoothly
+        if (Object.keys(cart).length === 0) {
+            document.getElementById('cart-modal').classList.remove('show');
+        }
     }
 }
 
@@ -61,7 +64,8 @@ function clearCart() {
     if (confirm("Are you sure you want to clear your entire order?")) {
         cart = {};
         updateCartUI();
-        toggleCartModal();
+        // Close the slide-up modal smoothly
+        document.getElementById('cart-modal').classList.remove('show');
     }
 }
 
@@ -70,18 +74,28 @@ function updateCartUI() {
     let totalPrice = Object.values(cart).reduce((sum, item) => sum + (item.price * item.quantity), 0);
     document.getElementById('cart-count').innerText = totalItems;
     document.getElementById('cart-total').innerText = totalPrice;
+    
     const cartBar = document.getElementById('floating-cart');
     if (totalItems > 0) {
         cartBar.style.display = 'flex';
-        cartBar.classList.remove('animate-pop'); void cartBar.offsetWidth; cartBar.classList.add('animate-pop');
-    } else { cartBar.style.display = 'none'; }
+        cartBar.classList.remove('animate-pop'); 
+        void cartBar.offsetWidth; // Trigger reflow to restart animation
+        cartBar.classList.add('animate-pop');
+    } else { 
+        cartBar.style.display = 'none'; 
+    }
 }
 
-function toggleCartModal() {
+// UPDATED: Now uses classList.toggle('show') for the smooth slide-up animation
+window.toggleCartModal = function() {
     const modal = document.getElementById('cart-modal');
-    if (modal.style.display === "block") { modal.style.display = "none"; } 
-    else { renderCartModalItems(); modal.style.display = "block"; }
-}
+    if (modal.classList.contains('show')) {
+        modal.classList.remove('show');
+    } else {
+        renderCartModalItems();
+        modal.classList.add('show');
+    }
+};
 
 function renderCartModalItems() {
     const list = document.getElementById('cart-items-list');
@@ -90,19 +104,30 @@ function renderCartModalItems() {
     for (let item in cart) {
         let itemTotal = cart[item].price * cart[item].quantity;
         total += itemTotal;
-        // Using &#8377; here to guarantee the Rupee symbol shows up
-        list.innerHTML += `<div class="cart-item-row"><div><strong>${item}</strong><br><small>&#8377;${cart[item].price} x ${cart[item].quantity}</small></div><div style="text-align: right;"><strong style="display:block;">&#8377;${itemTotal}</strong><button class="remove-btn" onclick="removeFromCart('${item}')">Remove</button></div></div>`;
+        list.innerHTML += `
+            <div class="cart-item-row">
+                <div>
+                    <strong>${item}</strong><br>
+                    <small>&#8377;${cart[item].price} x ${cart[item].quantity}</small>
+                </div>
+                <div style="text-align: right;">
+                    <strong style="display:block; margin-bottom: 5px;">&#8377;${itemTotal}</strong>
+                    <button class="remove-btn" onclick="removeFromCart('${item}')">Remove</button>
+                </div>
+            </div>`;
     }
     document.getElementById('modal-total').innerText = total;
 }
 
-function sendWhatsAppOrder() {
+// We attach this to the window object so the HTML buttons can find it easily
+window.sendWhatsAppOrder = function() {
     const customerName = document.getElementById('customer-name').value.trim();
     if (customerName.length < 2) { 
         alert("Please enter a valid name!"); 
         return; 
     }
 
+    // Check if the user is logged in
     if (!window.currentUser) {
         document.getElementById('login-modal').classList.add('show');
         return;
@@ -113,8 +138,10 @@ function sendWhatsAppOrder() {
         total += cart[item].price * cart[item].quantity;
     }
 
-    toggleCartModal();
+    // Close the cart modal smoothly
+    document.getElementById('cart-modal').classList.remove('show');
 
+    // Trigger the Firebase save function defined in index.html
     if (window.saveOrderToFirebase) {
         window.saveOrderToFirebase(customerName, cart, total);
     }
@@ -123,7 +150,7 @@ function sendWhatsAppOrder() {
 
     cart = {};
     updateCartUI();
-}
+};
 
 // --- PWA & SHARING LOGIC ---
 if ('serviceWorker' in navigator) {
@@ -156,4 +183,3 @@ document.getElementById('share-app-btn').addEventListener('click', () => {
         window.open(`https://wa.me/?text=${encodeURIComponent(shareData.text + " " + shareData.url)}`);
     }
 });
-            
