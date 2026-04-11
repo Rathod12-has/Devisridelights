@@ -226,9 +226,15 @@
         };
 
         // --- Real-Time Tracker Function ---
+// --- Load the Order Ready Sound ---
+        const readySound = new Audio("https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3");
+
         function trackActiveOrder(phone) {
             const q = query(collection(db, "orders"), where("customerPhone", "==", phone));
             
+            // We create a memory variable so the sound only plays ONCE when the status changes
+            let previousStatus = null; 
+
             window.activeOrderUnsubscribe = onSnapshot(q, (snap) => {
                 let latestOrder = null;
                 let latestTime = 0;
@@ -249,6 +255,14 @@
                 if (latestOrder) {
                     let status = latestOrder.status || "Pending";
                     
+                    // --- NEW: Play sound if status JUST changed to Ready ---
+                    if (status === "Ready" && previousStatus !== "Ready") {
+                        readySound.play().catch(err => console.log("Browser blocked auto-play"));
+                    }
+                    // Update our memory variable for the next time Firebase checks in
+                    previousStatus = status; 
+                    // -------------------------------------------------------
+
                     if (status === "Pending") {
                         statusTracker.style.display = 'flex';
                         statusText.innerText = "Order Placed";
