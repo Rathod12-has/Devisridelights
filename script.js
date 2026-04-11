@@ -41,9 +41,17 @@ window.renderMenu = function(menuCategories) {
 
 let cart = {};
 
+// --- Load the Add to Cart Sound ---
+const popSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3");
+popSound.volume = 0.5; // Keeps it at a nice, soft volume
+
 function addToCart(itemName, price) {
     cart[itemName] = cart[itemName] ? { ...cart[itemName], quantity: cart[itemName].quantity + 1 } : { price, quantity: 1 };
     updateCartUI();
+    
+    // Play the pop sound!
+    popSound.currentTime = 0; // Rewinds the sound so fast tapping works
+    popSound.play().catch(err => console.log("Audio blocked by browser until user taps"));
 }
 
 function removeFromCart(itemName) {
