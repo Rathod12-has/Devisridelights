@@ -305,8 +305,7 @@
                 }
             });
         };
-        
-        // --- Open Account Modal & Fetch Details ---
+        // Open Account Modal & Fetch Details
         window.openAccountModal = async function() {
             if (!window.currentUser) return;
             
@@ -314,23 +313,32 @@
             const detailsDiv = document.getElementById('account-details');
             detailsDiv.innerHTML = "<p style='text-align:center; color:#888;'>Gathering your details...</p>";
             
-            const q = query(collection(db, "orders"), where("customerPhone", "==", window.currentUser.phoneNumber));
-            const snap = await getDocs(q);
-            
-            let totalOrders = snap.size; 
-            let customerName = "Not provided yet";
-            
-            if (totalOrders > 0) {
-                // Get the name from their most recent order
-                customerName = snap.docs[totalOrders - 1].data().customerName || "Not provided yet";
+            try {
+                // Try to ask Firebase for the orders
+                const q = query(collection(db, "orders"), where("customerPhone", "==", window.currentUser.phoneNumber));
+                const snap = await getDocs(q);
+                
+                let totalOrders = snap.size; 
+                let customerName = "Not provided yet";
+                if (totalOrders > 0) {
+                    customerName = snap.docs[0].data().customerName || "Not provided yet";
+                }
+                
+                // If successful, show the profile!
+                detailsDiv.innerHTML = `
+                    <p style="margin-bottom: 10px;"><strong>👤 Name:</strong> <span style="color:#f8c471;">${customerName}</span></p>
+                    <p style="margin-bottom: 10px;"><strong>📞 Phone:</strong> <span style="color:#f8c471;">${window.currentUser.phoneNumber}</span></p>
+                    <p style="margin-bottom: 10px;"><strong>🛍️ Total Orders:</strong> <span style="color:#f8c471;">${totalOrders}</span></p>
+                `;
+            } catch (error) {
+                // If Firebase blocks us, show this error instead of freezing!
+                console.error("Firebase Error:", error);
+                detailsDiv.innerHTML = `
+                    <p style='text-align:center; color:#ff4d4d;'><strong>Access Denied by Firebase.</strong><br><br>Please update your Firestore Security Rules in the Firebase Console.</p>
+                `;
             }
-            
-            detailsDiv.innerHTML = `
-                <p style="margin-bottom: 10px;"><strong>👤 Name:</strong> <span style="color:#f8c471;">${customerName}</span></p>
-                <p style="margin-bottom: 10px;"><strong>📞 Phone:</strong> <span style="color:#f8c471;">${window.currentUser.phoneNumber}</span></p>
-                <p style="margin-bottom: 10px;"><strong>🛍️ Total Orders:</strong> <span style="color:#f8c471;">${totalOrders}</span></p>
-            `;
         };
+
         
     </script>
 
