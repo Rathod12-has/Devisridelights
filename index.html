@@ -68,7 +68,7 @@
                 <span class="close-btn" onclick="toggleCartModal()">×</span>
             </div>
             <div id="cart-items-list"></div>
-            <h3 style="text-align: right; color: var(--primary-color);">Total: ₹<span id="modal-total">0</span></h3>
+            <h3 style="text-align: right; color: var(--gold-light);">Total: ₹<span id="modal-total">0</span></h3>
             <div class="customer-info">
                 <label for="customer-name">Enter your name:</label>
                 <input type="text" id="customer-name" placeholder="E.g., Arjun Sharma" required>
@@ -133,7 +133,6 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-        // Removed Firebase Auth imports! We don't need them anymore.
         import { getFirestore, collection, addDoc, serverTimestamp, doc, onSnapshot, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -226,7 +225,6 @@
         };
 
         // --- Real-Time Tracker Function ---
-// --- Load the Order Ready Sound ---
         const readySound = new Audio("https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3");
 
         function trackActiveOrder(phone) {
@@ -319,6 +317,7 @@
                 }
             });
         };
+        
         // Open Account Modal & Fetch Details
         window.openAccountModal = async function() {
             if (!window.currentUser) return;
@@ -353,7 +352,6 @@
             }
         };
 
-        
     </script>
 
     <script src="script.js"></script>
