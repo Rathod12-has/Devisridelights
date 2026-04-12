@@ -1,4 +1,5 @@
-// Remove the hardcoded array! We will now render the menu dynamically from Firebase
+let cart = {};
+
 const container = document.getElementById('menu-container');
 
 // Global function triggered by Firebase in index.html
@@ -16,8 +17,27 @@ window.renderMenu = function(menuCategories) {
         const header = document.createElement('div');
         header.className = 'category-header';
         header.innerText = category.name;
-        // This toggle triggers the 2-column grid to expand to full width!
-        header.onclick = () => card.classList.toggle('active');
+        
+        // --- AUTO-SCROLLING ACCORDION LOGIC ADDED HERE ---
+        header.onclick = () => {
+            const isCurrentlyActive = card.classList.contains('active');
+
+            // 1. Close all other open categories
+            document.querySelectorAll('.category-card.active').forEach(c => {
+                c.classList.remove('active');
+            });
+
+            // 2. Open the newly clicked one and slide into view
+            if (!isCurrentlyActive) {
+                card.classList.add('active');
+                
+                setTimeout(() => {
+                    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 200); 
+            }
+        };
+        // ------------------------------------------------
+        
         card.appendChild(header);
 
         const itemList = document.createElement('div');
@@ -39,22 +59,20 @@ window.renderMenu = function(menuCategories) {
     });
 };
 
-let cart = {};
-
 // --- Load the Add to Cart Sound ---
 const popSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3");
 popSound.volume = 0.5; // Keeps it at a nice, soft volume
 
-function addToCart(itemName, price) {
+window.addToCart = function(itemName, price) {
     cart[itemName] = cart[itemName] ? { ...cart[itemName], quantity: cart[itemName].quantity + 1 } : { price, quantity: 1 };
     updateCartUI();
     
     // Play the pop sound!
     popSound.currentTime = 0; // Rewinds the sound so fast tapping works
     popSound.play().catch(err => console.log("Audio blocked by browser until user taps"));
-}
+};
 
-function removeFromCart(itemName) {
+window.removeFromCart = function(itemName) {
     if (cart[itemName]) {
         cart[itemName].quantity -= 1;
         if (cart[itemName].quantity <= 0) delete cart[itemName];
@@ -66,18 +84,18 @@ function removeFromCart(itemName) {
             document.getElementById('cart-modal').classList.remove('show');
         }
     }
-}
+};
 
-function clearCart() {
+window.clearCart = function() {
     if (confirm("Are you sure you want to clear your entire order?")) {
         cart = {};
         updateCartUI();
         // Close the slide-up modal smoothly
         document.getElementById('cart-modal').classList.remove('show');
     }
-}
+};
 
-function updateCartUI() {
+window.updateCartUI = function() {
     let totalItems = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
     let totalPrice = Object.values(cart).reduce((sum, item) => sum + (item.price * item.quantity), 0);
     document.getElementById('cart-count').innerText = totalItems;
@@ -92,9 +110,8 @@ function updateCartUI() {
     } else { 
         cartBar.style.display = 'none'; 
     }
-}
+};
 
-// UPDATED: Now uses classList.toggle('show') for the smooth slide-up animation
 window.toggleCartModal = function() {
     const modal = document.getElementById('cart-modal');
     if (modal.classList.contains('show')) {
@@ -105,7 +122,7 @@ window.toggleCartModal = function() {
     }
 };
 
-function renderCartModalItems() {
+window.renderCartModalItems = function() {
     const list = document.getElementById('cart-items-list');
     list.innerHTML = '';
     let total = 0;
@@ -125,9 +142,8 @@ function renderCartModalItems() {
             </div>`;
     }
     document.getElementById('modal-total').innerText = total;
-}
+};
 
-// We attach this to the window object so the HTML buttons can find it easily
 window.sendWhatsAppOrder = function() {
     const customerName = document.getElementById('customer-name').value.trim();
     if (customerName.length < 2) { 
