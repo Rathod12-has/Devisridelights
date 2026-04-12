@@ -87,6 +87,7 @@ header p { margin: 5px 0 0 0; font-size: 1.1rem; opacity: 0.95; }
     transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
     display: flex;
     flex-direction: column;
+    scroll-margin-top: 100px; /* <--- AUTO-SCROLL FIX ADDED HERE */
 }
 
 .category-card:hover { 
@@ -255,25 +256,21 @@ button.add-btn:active {
     position: fixed; bottom: 95px; left: 20px;
     background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
     color: #ffffff; 
-    padding: 8px 16px; /* Shrinks the height and width */
+    padding: 8px 16px;
     border-radius: 30px; 
-    display: flex; justify-content: center; align-items: center; gap: 6px; /* Brings text closer to icon */
+    display: flex; justify-content: center; align-items: center; gap: 6px; 
     box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
     z-index: 1002; text-decoration: none; 
-    font-size: 0.85rem; /* Smaller text */
+    font-size: 0.85rem; 
     font-weight: 600;
     letter-spacing: 0.5px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-
-#call-shop-btn span {
-    font-size: 16px !important; /* Shrinks the 📞 emoji */
-}
-
+#call-shop-btn span { font-size: 16px !important; }
 #call-shop-btn:hover {
-    transform: translateY(-3px) scale(1.05); /* Slightly softer hover bounce */
+    transform: translateY(-3px) scale(1.05); 
     box-shadow: 0 8px 18px rgba(37, 211, 102, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.3);
     background: linear-gradient(135deg, #28e06d 0%, #15a393 100%);
-    }
+}
     
 /* --- GLASS LOGOUT BUTTON OVERRIDE --- */
 button[onclick="logoutUser()"] {
@@ -294,34 +291,14 @@ button[onclick="logoutUser()"] {
    ========================================================== */
 
 /* 1. The pop animation when an item is added (keeps cart centered!) */
-.animate-pop { 
-    animation: cartPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-}
-
-@keyframes cartPop { 
-    0% { transform: translateX(-50%) scale(1); } 
-    50% { transform: translateX(-50%) scale(1.08); } 
-    100% { transform: translateX(-50%) scale(1); } 
-}
+.animate-pop { animation: cartPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+@keyframes cartPop { 0% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.08); } 100% { transform: translateX(-50%) scale(1); } }
 
 /* 2. A continuous, subtle heartbeat glow on the checkout button */
-#floating-cart .checkout-btn {
-    animation: heartbeatGlow 2s infinite;
-}
-
+#floating-cart .checkout-btn { animation: heartbeatGlow 2s infinite; }
 @keyframes heartbeatGlow {
-    0% { 
-        box-shadow: 0 4px 15px rgba(230, 81, 0, 0.3); 
-        transform: scale(1); 
-    }
-    50% { 
-        box-shadow: 0 4px 25px rgba(248, 196, 113, 0.8); 
-        transform: scale(1.03); 
-        border-color: rgba(248, 196, 113, 0.8);
-    }
-    100% { 
-        box-shadow: 0 4px 15px rgba(230, 81, 0, 0.3); 
-        transform: scale(1); 
-    }
-}
-
+    0% { box-shadow: 0 4px 15px rgba(230, 81, 0, 0.3); transform: scale(1); }
+    50% { box-shadow: 0 4px 25px rgba(248, 196, 113, 0.8); transform: scale(1.03); border-color: rgba(248, 196, 113, 0.8); }
+    100% { box-shadow: 0 4px 15px rgba(230, 81, 0, 0.3); transform: scale(1); }
+                                                     }
+            
