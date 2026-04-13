@@ -1,14 +1,13 @@
 let cart = {};
-
 const container = document.getElementById('menu-container');
 
-// Global function triggered by Firebase in index.html
 window.renderMenu = function(menuCategories) {
-    container.innerHTML = ''; // Clear loading text
+    container.innerHTML = ''; 
     
     menuCategories.forEach(category => {
         const card = document.createElement('div');
         card.className = 'category-card';
+        
         const img = document.createElement('img');
         img.className = 'category-image';
         img.src = category.image;
@@ -16,41 +15,59 @@ window.renderMenu = function(menuCategories) {
 
         const header = document.createElement('div');
         header.className = 'category-header';
-        header.innerText = category.name;
         
-        // --- AUTO-SCROLLING ACCORDION LOGIC ADDED HERE ---
+        header.innerHTML = `
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 0; pointer-events: none;">
+                <div class="bg-shape shape-3" style="transform: scale(0.4); top: -15px; left: 10px; opacity: 0.6;"></div>
+                <div class="bg-shape shape-8" style="transform: scale(0.5); bottom: -20px; right: 40px; opacity: 0.6;"></div>
+            </div>
+            <span style="position: relative; z-index: 2;">${category.name}</span>
+        `;
+        
         header.onclick = () => {
             const isCurrentlyActive = card.classList.contains('active');
-
-            // 1. Close all other open categories
+            
             document.querySelectorAll('.category-card.active').forEach(c => {
                 c.classList.remove('active');
             });
 
-            // 2. Open the newly clicked one and slide into view
             if (!isCurrentlyActive) {
                 card.classList.add('active');
-                
                 setTimeout(() => {
                     card.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }, 200); 
             }
         };
-        // ------------------------------------------------
         
         card.appendChild(header);
 
         const itemList = document.createElement('div');
         itemList.className = 'item-list';
+        itemList.style.position = "relative";
+        itemList.style.overflow = "hidden";
+
+        const shapeContainer = document.createElement('div');
+        shapeContainer.style.cssText = "position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; border-radius: 0 0 16px 16px;";
+        shapeContainer.innerHTML = `
+            <div class="bg-shape shape-2" style="transform: scale(0.6); top: 10px; left: -10px; opacity: 0.5;"></div>
+            <div class="bg-shape shape-5" style="transform: scale(0.5); bottom: 15%; right: -15px; opacity: 0.5;"></div>
+            <div class="bg-shape shape-7" style="transform: scale(0.4); top: 40%; left: 30%; opacity: 0.5;"></div>
+            <div class="bg-shape shape-1" style="transform: scale(0.5); bottom: 5px; left: 10px; opacity: 0.5;"></div>
+            <div class="bg-shape shape-3" style="transform: scale(0.4); top: 20px; right: 20px; opacity: 0.5;"></div>
+        `;
+        itemList.appendChild(shapeContainer);
 
         if(category.items) {
             category.items.forEach(item => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'menu-item';
-                let priceDisplay = (item.price === "Shop Visit") ? `<span class="shop-visit-tag">Price at Shop</span>` : `<span class="item-price">&#8377;${item.price}</span>`;
+                itemDiv.style.position = "relative";
+                itemDiv.style.zIndex = "2";
+
+                let priceDisplay = (item.price === "Shop Visit") ? `<span class="shop-visit-tag">Price at Shop</span>` : `<span class="item-price">₹${item.price}</span>`;
                 let buttonHTML = (item.price === "Shop Visit") ? '' : `<button class="add-btn" onclick="addToCart('${item.name}', ${item.price})">Add</button>`;
 
-                itemDiv.innerHTML = `<div class="item-info"><h4>${item.name}</h4>${priceDisplay}</div>${buttonHTML}`;
+                itemDiv.innerHTML = `<div class="item-info"><h4 style="color: var(--text-dark); margin-bottom: 4px;">${item.name}</h4>${priceDisplay}</div>${buttonHTML}`;
                 itemList.appendChild(itemDiv);
             });
         }
@@ -59,16 +76,14 @@ window.renderMenu = function(menuCategories) {
     });
 };
 
-// --- Load the Add to Cart Sound ---
 const popSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3");
-popSound.volume = 0.5; // Keeps it at a nice, soft volume
+popSound.volume = 0.5; 
 
 window.addToCart = function(itemName, price) {
     cart[itemName] = cart[itemName] ? { ...cart[itemName], quantity: cart[itemName].quantity + 1 } : { price, quantity: 1 };
     updateCartUI();
     
-    // Play the pop sound!
-    popSound.currentTime = 0; // Rewinds the sound so fast tapping works
+    popSound.currentTime = 0; 
     popSound.play().catch(err => console.log("Audio blocked by browser until user taps"));
 };
 
@@ -79,7 +94,6 @@ window.removeFromCart = function(itemName) {
         updateCartUI();
         renderCartModalItems();
         
-        // If cart is empty, close the slide-up modal smoothly
         if (Object.keys(cart).length === 0) {
             document.getElementById('cart-modal').classList.remove('show');
         }
@@ -90,7 +104,6 @@ window.clearCart = function() {
     if (confirm("Are you sure you want to clear your entire order?")) {
         cart = {};
         updateCartUI();
-        // Close the slide-up modal smoothly
         document.getElementById('cart-modal').classList.remove('show');
     }
 };
@@ -105,7 +118,7 @@ window.updateCartUI = function() {
     if (totalItems > 0) {
         cartBar.style.display = 'flex';
         cartBar.classList.remove('animate-pop'); 
-        void cartBar.offsetWidth; // Trigger reflow to restart animation
+        void cartBar.offsetWidth; 
         cartBar.classList.add('animate-pop');
     } else { 
         cartBar.style.display = 'none'; 
@@ -130,13 +143,13 @@ window.renderCartModalItems = function() {
         let itemTotal = cart[item].price * cart[item].quantity;
         total += itemTotal;
         list.innerHTML += `
-            <div class="cart-item-row">
+            <div class="cart-item-row" style="position: relative; z-index: 2;">
                 <div>
-                    <strong>${item}</strong><br>
-                    <small>&#8377;${cart[item].price} x ${cart[item].quantity}</small>
+                    <strong style="color: var(--text-dark);">${item}</strong><br>
+                    <small style="color: #64748B;">₹${cart[item].price} x ${cart[item].quantity}</small>
                 </div>
                 <div style="text-align: right;">
-                    <strong style="display:block; margin-bottom: 5px;">&#8377;${itemTotal}</strong>
+                    <strong style="display:block; margin-bottom: 5px; color: var(--text-accent);">₹${itemTotal}</strong>
                     <button class="remove-btn" onclick="removeFromCart('${item}')">Remove</button>
                 </div>
             </div>`;
@@ -151,7 +164,6 @@ window.sendWhatsAppOrder = function() {
         return; 
     }
 
-    // Check if the user is logged in
     if (!window.currentUser) {
         document.getElementById('login-modal').classList.add('show');
         return;
@@ -162,10 +174,8 @@ window.sendWhatsAppOrder = function() {
         total += cart[item].price * cart[item].quantity;
     }
 
-    // Close the cart modal smoothly
     document.getElementById('cart-modal').classList.remove('show');
 
-    // Trigger the Firebase save function defined in index.html
     if (window.saveOrderToFirebase) {
         window.saveOrderToFirebase(customerName, cart, total);
     }
@@ -176,9 +186,8 @@ window.sendWhatsAppOrder = function() {
     updateCartUI();
 };
 
-// --- PWA & SHARING LOGIC ---
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
+    navigator.serviceWorker.register('sw.js').catch(err => console.log("SW failed:", err));
 }
 
 let deferredPrompt;
