@@ -35,7 +35,7 @@ window.renderMenu = function(menuCategories) {
                 card.classList.add('active');
                 setTimeout(() => {
                     card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 200); 
+                }, 450); 
             }
         };
         
@@ -216,3 +216,4 @@ document.getElementById('share-app-btn').addEventListener('click', () => {
         window.open(`https://wa.me/?text=${encodeURIComponent(shareData.text + " " + shareData.url)}`);
     }
 });
+        
