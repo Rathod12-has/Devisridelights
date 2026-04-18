@@ -20,11 +20,10 @@
         <span></span>
         <span></span>
     </button>
-        <div id="active-order-status" style="display: none;">
+    <div id="active-order-status" style="display: none;">
         <span class="status-dot"></span> <span id="status-text">Order Placed</span>
     </div>
     
-   
     <div class="shop-hero-section">
         <div class="hero-overlay"></div>
         <div class="animated-title-container">
@@ -111,12 +110,12 @@
 
                 <div class="card-label-wrapper">
                     <div class="card-label-line"></div>
-                    <div class="card-label-text-wrapper"><span class="card-label-text">ACCOUNT</span></div>
+                    <div class="card-label-text-wrapper"><span class="card-label-text">REWARDS</span></div>
                 </div>
 
                 <h3 class="card-title">My Account</h3>
                 <div id="carousel-account-content" style="width: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; flex-grow: 1; position: relative; z-index: 2;">
-                    <p style="color: #64748B; margin-bottom: 15px; text-align: center;">Login to view your details</p>
+                    <p style="color: #64748B; margin-bottom: 15px; text-align: center;">Login to view rewards & details</p>
                     <button class="action-btn" onclick="document.getElementById('login-modal').classList.add('show')" style="margin-top: 0; padding: 10px;">Login Now</button>
                 </div>
             </div>
@@ -196,6 +195,9 @@
     <button id="my-orders-btn" onclick="openOrderHistory()" style="display: none;">
         📜 My Orders
     </button>
+    <button id="call-shop-btn" style="display: none;">
+         📞 Call
+    </button>
 
     <div id="account-modal" class="modal-hidden">
         <div class="account-modal-content">
@@ -248,6 +250,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp, doc, onSnapshot, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+        // NEW: Imported Firebase Messaging
+        import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-messaging.js"; 
 
         const firebaseConfig = {
             apiKey: "AIzaSyC7uuy0yYV3L17RJ0RvbN-mrfqrT4PquMo",
@@ -260,6 +264,32 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        
+        // NEW: Initialize Messaging
+        const messaging = getMessaging(app);
+
+        // NEW: Function to ask for Notification Permission and get Token
+        window.requestPushPermissions = async function() {
+            try {
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    const token = await getToken(messaging, { 
+                        vapidKey: 'BNbdGAVX43lRrTqP0k4SisvEL806gFn5Jr_09LBaCxSR0tU1VxsRXu27uS25zn5dKeGbeCTz4jvIUEJKmHBKXHU' 
+                    });
+                    console.log("FCM Device Token generated:", token);
+                    // This token represents this specific phone. In the future, we save this to Firestore.
+                } else {
+                    console.log("Notification permission denied by user.");
+                }
+            } catch (error) {
+                console.error("Error getting notification token:", error);
+            }
+        };
+                            // NEW: Listen for messages when the user has the app open
+        onMessage(messaging, (payload) => {
+            console.log('Message received in foreground: ', payload);
+            alert(`🛎️ ${payload.notification.title}\n${payload.notification.body}`);
+        });
 
         document.getElementById('menu-container').innerHTML = "<p style='text-align:center; padding: 40px; color: var(--text-dark); font-weight: 600;'>Loading delicious menu...</p>";
         
@@ -303,6 +333,11 @@
             document.getElementById('my-orders-btn').style.display = 'block';
             trackActiveOrder(phone);
             updateCarouselAccount(); 
+            
+            // NEW: Automatically ask for push notification permission once logged in
+            if (window.requestPushPermissions) {
+                window.requestPushPermissions();
+            }
         }
 
         window.logoutUser = function() {
@@ -322,7 +357,7 @@
 
         const readySound = new Audio("https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3");
 
-              function trackActiveOrder(phone) {
+        function trackActiveOrder(phone) {
             const q = query(collection(db, "orders"), where("customerPhone", "==", phone));
             let previousStatus = null; 
 
@@ -345,7 +380,6 @@
                     if (status === "Ready" && previousStatus !== "Ready") readySound.play().catch(e => console.log("Blocked"));
                     previousStatus = status; 
                     
-                    // 1. UPDATE THE TOP-LEFT FLOATING BUTTON
                     statusTracker.style.display = 'flex';
                     if (status === "Pending") {
                         statusText.innerText = "Order Placed"; statusDot.className = "status-dot";
@@ -355,7 +389,6 @@
                         statusText.innerText = status; statusDot.className = "status-dot";
                     }
 
-                    // 2. UPDATE THE CAROUSEL CARD
                     let d = new Date(latestOrder.timestamp ? latestOrder.timestamp.toMillis() : Date.now());
                     let timeStr = d.toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
                     let dateStr = d.toLocaleString('en-IN', { day: '2-digit', month: 'short' });
@@ -377,19 +410,17 @@
                         </a>
                     `;
                 } else {
-                    // Hide the floating top button and clear the carousel card if no active order
                     statusTracker.style.display = 'none';
                     carouselOrderContent.innerHTML = `<p style="color: #64748B; text-align: center;">No active orders right now.</p>`;
                 }
             });
         }
         
-
         window.updateCarouselAccount = async function() {
             const accContent = document.getElementById('carousel-account-content');
             if (!window.currentUser) {
                 accContent.innerHTML = `
-                    <p style="color: #64748B; margin-bottom: 15px; text-align: center;">Login to view your details</p>
+                    <p style="color: #64748B; margin-bottom: 15px; text-align: center;">Login to view rewards & details</p>
                     <button class="action-btn" onclick="document.getElementById('login-modal').classList.add('show')" style="margin-top: 0; padding: 10px;">Login Now</button>
                 `;
                 return;
@@ -400,6 +431,13 @@
                 const q = query(collection(db, "orders"), where("customerPhone", "==", window.currentUser.phoneNumber));
                 const snap = await getDocs(q);
                 let totalOrders = snap.size;
+                let totalSpent = 0;
+                
+                snap.forEach(doc => {
+                    totalSpent += doc.data().totalBill || 0;
+                });
+                
+                let points = Math.floor(totalSpent / 100);
                 
                 if (!customerName) {
                     customerName = totalOrders > 0 ? snap.docs[0].data().customerName : "Guest User";
@@ -409,9 +447,10 @@
                     <div style="width: 100%; box-sizing: border-box; text-align: left; background: var(--inner-card-bg); padding: 15px; border-radius: var(--radius-md); border: 1px solid rgba(126, 34, 206, 0.1);">
                         <p style="margin: 0 0 8px 0; font-size: 0.95rem; color: #475569;"><strong>👤</strong> <span style="color: var(--text-dark);">${customerName}</span></p>
                         <p style="margin: 0 0 8px 0; font-size: 0.95rem; color: #475569;"><strong>📞</strong> <span style="color: var(--text-dark);">${window.currentUser.phoneNumber}</span></p>
-                        <div style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed rgba(126, 34, 206, 0.2); display: flex; justify-content: space-between;">
-                            <strong style="color: var(--text-dark); font-size: 0.9rem;">Total Orders</strong>
-                            <span style="color: var(--text-accent); font-weight: 800; font-size: 1rem;">${totalOrders}</span>
+                        
+                        <div style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed rgba(126, 34, 206, 0.2); display: flex; justify-content: space-between; align-items: center;">
+                            <strong style="color: var(--text-dark); font-size: 0.9rem;">⭐ Points</strong>
+                            <span class="points-badge">${points} pts</span>
                         </div>
                     </div>
                 `;
@@ -420,7 +459,6 @@
             }
         }
 
-        // --- NEW: Edit Profile Name Function ---
         window.saveProfileName = function() {
             const inputField = document.getElementById('profile-name-input');
             if(!inputField) return;
@@ -431,8 +469,8 @@
             }
             localStorage.setItem('customerName', newName);
             alert("✅ Profile name updated successfully!");
-            updateCarouselAccount(); // Update the carousel card
-            openAccountModal(); // Re-render the modal
+            updateCarouselAccount(); 
+            openAccountModal(); 
         };
 
         window.openAccountModal = async function() {
@@ -445,13 +483,33 @@
                 const q = query(collection(db, "orders"), where("customerPhone", "==", window.currentUser.phoneNumber));
                 const snap = await getDocs(q);
                 let totalOrders = snap.size; 
+                let totalSpent = 0;
+                
+                snap.forEach(doc => {
+                    totalSpent += doc.data().totalBill || 0;
+                });
+                
+                let points = Math.floor(totalSpent / 100);
+                let dessertsEarned = Math.floor(points / 10);
                 
                 if (!customerName) {
                     customerName = totalOrders > 0 ? snap.docs[0].data().customerName : "Guest User";
                 }
                 
+                let rewardsHTML = `<div class="rewards-banner" style="margin-bottom: 15px;">
+                    <p style="margin: 0; font-size: 0.85rem;">Earn 1 point per ₹100 spent.<br><strong>10 Points = 1 Free Dessert!</strong></p>
+                    <h3 style="margin: 5px 0 0 0; color: #7E22CE;">Your Points: ${points}</h3>
+                </div>`;
+                
+                if (dessertsEarned > 0) {
+                    rewardsHTML += `<div style="background: #D1FAE5; color: #059669; padding: 12px; border-radius: 8px; text-align: center; font-weight: 800; border: 1px solid #10B981; margin-bottom: 15px; animation: heartbeatGlow 2s infinite;">
+                        🎉 You have earned ${dessertsEarned} Free Dessert(s)!<br><span style="font-size: 0.8rem; font-weight: 600;">Show this screen at the counter to claim.</span>
+                    </div>`;
+                }
+                
                 detailsDiv.innerHTML = `
                 <div style="position: relative; z-index: 2;">
+                    ${rewardsHTML}
                     <div style="background: var(--inner-card-bg); padding: 15px; border-radius: var(--radius-md); border: 1px solid rgba(126, 34, 206, 0.1); margin-bottom: 15px;">
                         <label style="font-size: 0.85rem; font-weight: 700; color: #64748B;">Edit Your Name:</label>
                         <div style="display: flex; gap: 10px; margin-top: 5px;">
@@ -466,7 +524,6 @@
                 detailsDiv.innerHTML = `<p style='text-align:center; color:#E11D48; position: relative; z-index: 2;'><strong>Access Denied.</strong><br>Check permissions.</p>`;
             }
         };
-
         window.allUserOrders = [];
         window.currentHistoryIndex = 0;
 
@@ -589,7 +646,6 @@
         window.saveOrderToFirebase = async function(name, cart, total) {
             const phone = window.currentUser ? window.currentUser.phoneNumber : "No Number";
             
-            // Save the user's name for future orders seamlessly
             localStorage.setItem('customerName', name);
 
             const docRef = await addDoc(collection(db, "orders"), {
