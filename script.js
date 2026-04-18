@@ -186,9 +186,11 @@ window.sendWhatsAppOrder = function() {
     updateCartUI();
 };
 
+// Register the new combined file
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').catch(err => console.log("SW failed:", err));
+    navigator.serviceWorker.register('firebase-messaging-sw.js').catch(err => console.log("SW failed:", err));
 }
+
 
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt', (e) => {
