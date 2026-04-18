@@ -496,7 +496,7 @@
                     customerName = totalOrders > 0 ? snap.docs[0].data().customerName : "Guest User";
                 }
                 
-                let rewardsHTML = `<div class="rewards-banner" style="margin-bottom: 15px;">
+                                let rewardsHTML = `<div class="rewards-banner" style="margin-bottom: 15px;">
                     <p style="margin: 0; font-size: 0.85rem;">Earn 1 point per ₹100 spent.<br><strong>10 Points = 1 Free Dessert!</strong></p>
                     <h3 style="margin: 5px 0 0 0; color: #7E22CE;">Your Points: ${points}</h3>
                 </div>`;
@@ -506,6 +506,12 @@
                         🎉 You have earned ${dessertsEarned} Free Dessert(s)!<br><span style="font-size: 0.8rem; font-weight: 600;">Show this screen at the counter to claim.</span>
                     </div>`;
                 }
+
+                // NEW: Add a manual button to request notifications
+                if (Notification.permission !== 'granted') {
+                    rewardsHTML += `<button onclick="requestPushPermissions()" class="action-btn" style="background: #10B981; margin-bottom: 15px; padding: 10px;">🔔 Turn On Order Alerts</button>`;
+                }
+                
                 
                 detailsDiv.innerHTML = `
                 <div style="position: relative; z-index: 2;">
