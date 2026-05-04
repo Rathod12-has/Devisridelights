@@ -14,11 +14,8 @@
     <button id="login-btn" onclick="document.getElementById('login-modal').classList.add('show')">
         👤 Login
     </button>
-    
     <button id="my-account-btn" onclick="openAccountModal()" style="display: none;">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
     </button>
 
     <div id="active-order-status" style="display: none;">
@@ -32,72 +29,46 @@
         </div>
     </div>
 
+    <!-- Animated Swipe Hint -->
     <div class="carousel-hint">Swipe to explore 👉</div>
+    
     <div class="carousel-wrapper">
         <div class="carousel-track">
-            <!-- Carousel Card 1: Order -->
+            <!-- Order Card -->
             <div class="carousel-card" style="text-align: center;">
                 <div class="bg-shape shape-1"></div><div class="bg-shape shape-2"></div>
                 <div class="bg-shape shape-3"></div><div class="bg-shape shape-4"></div>
-                
-                <div class="card-label-wrapper">
-                    <div class="card-label-line"></div>
-                    <div class="card-label-text-wrapper"><span class="card-label-text">ORDER</span></div>
-                </div>
-
+                <div class="card-label-wrapper"><div class="card-label-line"></div><div class="card-label-text-wrapper"><span class="card-label-text">ORDER</span></div></div>
                 <h3 class="card-title">Order Online</h3>
                 <div class="card-badges-wrapper" style="margin-bottom: 12px; position: relative; z-index: 2;">
-                    <div class="hero-badge">
-                        <span class="badge-icon">📍</span><span class="badge-text" style="font-size: 0.7rem;">Shivani Nagar, Zaheerabad</span>
-                    </div>
-                    <div class="hero-badge" style="margin-top: 6px;">
-                        <span class="badge-icon">🕒</span><span class="badge-text" style="font-size: 0.7rem;"><span class="badge-status">Open</span> • 7AM - 10PM</span>
-                    </div>
+                    <div class="hero-badge"><span class="badge-icon">📍</span><span class="badge-text" style="font-size: 0.7rem;">Shivani Nagar, Zaheerabad</span></div>
+                    <div class="hero-badge" style="margin-top: 6px;"><span class="badge-icon">🕒</span><span class="badge-text" style="font-size: 0.7rem;"><span class="badge-status">Open</span> • 7AM - 10PM</span></div>
                 </div>
-
-                <p style="color: #475569; font-weight: 600; line-height: 1.4; font-size: 0.85rem; margin-bottom: 15px; position: relative; z-index: 2;">
-                    🌟 Skip the wait! Order ahead online and we'll have your hot food ready.
-                </p>
-                <a href="#menu-container" class="scroll-down-arrow" style="position: relative; z-index: 2; margin-top: auto;">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
-                </a>
+                <p style="color: #475569; font-weight: 600; line-height: 1.4; font-size: 0.85rem; margin-bottom: 15px; position: relative; z-index: 2;">🌟 Skip the wait! Order ahead online and we'll have your hot food ready.</p>
+                <a href="#menu-container" class="scroll-down-arrow" style="position: relative; z-index: 2; margin-top: auto;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></a>
             </div>
-
-            <!-- Carousel Card 2: Track -->
+            <!-- Track Card -->
             <div class="carousel-card">
                 <div class="bg-shape shape-5"></div><div class="bg-shape shape-6"></div>
                 <div class="bg-shape shape-7"></div><div class="bg-shape shape-8"></div>
-                <div class="card-label-wrapper">
-                    <div class="card-label-line"></div>
-                    <div class="card-label-text-wrapper"><span class="card-label-text">TRACKING</span></div>
-                </div>
+                <div class="card-label-wrapper"><div class="card-label-line"></div><div class="card-label-text-wrapper"><span class="card-label-text">TRACKING</span></div></div>
                 <h3 class="card-title">Track Order</h3>
                 <div id="carousel-order-content" style="width: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; flex-grow: 1; position: relative; z-index: 2;">
                     <p style="color: #64748B; text-align: center;">No active orders right now.</p>
                 </div>
             </div>
-
-            <!-- Carousel Card 3: Special -->
+            <!-- Special Card -->
             <div class="carousel-card" style="background: linear-gradient(135deg, var(--inner-card-bg), #FFFFFF);">
                 <div class="bg-shape shape-1"></div><div class="bg-shape shape-2"></div>
-                <div class="card-label-wrapper">
-                    <div class="card-label-line"></div>
-                    <div class="card-label-text-wrapper"><span class="card-label-text">SPECIAL</span></div>
-                </div>
+                <div class="card-label-wrapper"><div class="card-label-line"></div><div class="card-label-text-wrapper"><span class="card-label-text">SPECIAL</span></div></div>
                 <span style="font-size: 2.5rem; margin-bottom: 5px; position: relative; z-index: 2; margin-top: 25px;">🌟</span>
                 <h3 class="card-title" style="color: var(--text-accent); margin-top: 5px !important;">Today's Special</h3>
-                <p style="text-align: center; color: #475569; font-weight: 600; line-height: 1.4; margin: 0; font-size: 0.95rem; position: relative; z-index: 2;">
-                    Special items will be available soon.!.
-                </p>
+                <p style="text-align: center; color: #475569; font-weight: 600; line-height: 1.4; margin: 0; font-size: 0.95rem; position: relative; z-index: 2;">Special items will be available soon.!</p>
             </div>
-
-            <!-- Carousel Card 4: Rewards / Profile Info -->
+            <!-- Rewards Card -->
             <div class="carousel-card">
                 <div class="bg-shape shape-3"></div><div class="bg-shape shape-4"></div>
-                <div class="card-label-wrapper">
-                    <div class="card-label-line"></div>
-                    <div class="card-label-text-wrapper"><span class="card-label-text">REWARDS</span></div>
-                </div>
+                <div class="card-label-wrapper"><div class="card-label-line"></div><div class="card-label-text-wrapper"><span class="card-label-text">REWARDS</span></div></div>
                 <h3 class="card-title">My Account</h3>
                 <div id="carousel-account-content" style="width: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; flex-grow: 1; position: relative; z-index: 2;">
                     <p style="color: #64748B; margin-bottom: 15px; text-align: center;">Login to view rewards & details</p>
@@ -110,14 +81,18 @@
     <!-- MAIN MENU CONTAINER -->
     <div class="container" id="menu-container"></div>
 
-    <!-- CONTACT INFO -->
+    <!-- CONTACT INFO & GOOGLE MAP -->
     <div class="container">
-        <div class="shop-info inner-card" style="position: relative; overflow: hidden;">
+        <div class="shop-info inner-card" style="position: relative; overflow: hidden; margin-bottom: 30px;">
             <h3 style="color: var(--text-accent); margin-top: 0; position: relative; z-index: 2;">Contact Us</h3>
             <p style="color: var(--text-dark); font-weight: 600; position: relative; z-index: 2;">Phone / WhatsApp: +91 6305469979</p>
-            <div class="app-actions" style="position: relative; z-index: 2;">
+            <div class="app-actions" style="position: relative; z-index: 2; margin-bottom: 20px;">
                 <button id="install-app-btn" class="action-btn">📲 Download Our App</button>
                 <button id="share-app-btn" class="action-btn" style="background: var(--btn-secondary); margin-top: 10px;">📢 Share App</button>
+            </div>
+            <!-- The Shop Map -->
+            <div style="position: relative; z-index: 2; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-inner);">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3801.2800756662455!2d77.62558797429936!3d17.684224594187757!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bceb5036dd004cb%3A0x370dc5a8eac9f14e!2sDevi%20Sri%20Delights%20And%20Foods!5e0!3m2!1sen!2sin!4v1775061036146!5m2!1sen!2sin" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
     </div>
@@ -145,7 +120,23 @@
         </div>
     </div>
 
-    <!-- 1. GOOGLE LOGIN MODAL -->
+    <!-- NEW ORDER PLACED CELEBRATION MODAL -->
+    <div id="placed-modal" class="ready-modal-hidden">
+        <div class="ready-modal-content" style="text-align: center;">
+            <div style="font-size: 4rem; margin-bottom: 10px; animation: bounceContinuous 2s infinite;">🎉</div>
+            <h2 style="color: var(--text-accent);">Order Placed!</h2>
+            <p class="modal-subtitle">Your delicious food is being prepared.</p>
+            
+            <div id="install-suggestion-container" style="display: none; background: #F8FAFC; padding: 15px; border-radius: 12px; margin: 20px 0; border: 1px dashed var(--text-accent);">
+                <p style="margin:0 0 10px 0; font-size: 0.9rem; font-weight: 700; color: var(--text-dark);">📲 Get live tracking & free rewards!</p>
+                <button id="modal-install-btn" class="action-btn" style="width: 100%;">Install Our App</button>
+            </div>
+
+            <button onclick="document.getElementById('placed-modal').classList.remove('show')" class="action-btn full-width" style="margin-top: 15px;">Awesome!</button>
+        </div>
+    </div>
+
+    <!-- GOOGLE LOGIN MODAL -->
     <div id="login-modal" class="modal-hidden">
         <div class="login-modal-content">
             <h2>Welcome!</h2>
@@ -160,7 +151,7 @@
         </div>
     </div>
 
-    <!-- 2. NEW PHONE NUMBER REQUEST MODAL -->
+    <!-- PHONE NUMBER REQUEST MODAL -->
     <div id="phone-request-modal" class="modal-hidden">
         <div class="modal-content" style="border-radius: 24px 24px 0 0; z-index: 2001;">
             <h2 style="color: var(--text-accent); text-align: center;">One Last Step!</h2>
@@ -173,45 +164,50 @@
         </div>
     </div>
 
-    <!-- FLOATING BUTTONS -->
     <button id="my-orders-btn" onclick="openOrderHistory()" style="display: none;">📜 My Orders</button>
     <button id="call-shop-btn" style="display: none;">📞 Call</button>
 
-    <!-- ACCOUNT / PROFILE MODAL -->
+    <!-- ACCOUNT PROFILE MODAL (Added Close X) -->
     <div id="account-modal" class="modal-hidden">
         <div class="account-modal-content">
-            <h2 style="position: relative; z-index: 2;">My Profile</h2>
-            <div id="account-details" class="details-text" style="position: relative; z-index: 2; margin-top: 20px;">
+            <div class="modal-header-flex" style="border-bottom:none; margin-bottom: 0;">
+                <h2 style="position: relative; z-index: 2;">My Profile</h2>
+                <span class="close-btn" onclick="document.getElementById('account-modal').classList.remove('show')">×</span>
+            </div>
+            <div id="account-details" class="details-text" style="position: relative; z-index: 2; margin-top: 10px;">
                 <p style="text-align: center; color: #888;">Loading your details...</p>
             </div>
             <button onclick="logoutUser()" class="logout-btn" style="position: relative; z-index: 2;">🚪 Logout</button>
-            <button onclick="document.getElementById('account-modal').classList.remove('show')" class="close-ready-btn" style="position: relative; z-index: 2;">Close</button>
         </div>
     </div>
     
-    <!-- HISTORY MODAL -->
+    <!-- HISTORY MODAL (Added Close X) -->
     <div id="history-modal" class="modal-hidden">
         <div class="history-modal-content">
-            <h2 style="position: relative; z-index: 2;">Order History</h2>
-            <div id="history-list" style="position: relative; z-index: 2;"><p style="color: #888;">Loading your history...</p></div>
+            <div class="modal-header-flex" style="border-bottom:none; margin-bottom: 0;">
+                <h2 style="position: relative; z-index: 2;">Order History</h2>
+                <span class="close-btn" onclick="document.getElementById('history-modal').classList.remove('show')">×</span>
+            </div>
+            <div id="history-list" style="position: relative; z-index: 2; margin-top: 10px;"><p style="color: #888;">Loading your history...</p></div>
             <button id="load-more-orders-btn" class="action-btn" style="display: none; background: var(--btn-secondary); margin-top: 15px; position: relative; z-index: 2;" onclick="loadMoreOrders()">Load More (5)</button>
-            <button onclick="document.getElementById('history-modal').classList.remove('show')" class="close-ready-btn" style="margin-top: 10px; position: relative; z-index: 2;">Close History</button>
         </div>
     </div>
 
+    <!-- ORDER DETAILS MODAL -->
     <div id="order-details-modal" class="modal-hidden">
         <div class="modal-content">
             <div class="modal-header-flex"><h2>Order Details</h2><span class="close-btn" onclick="document.getElementById('order-details-modal').classList.remove('show')">×</span></div>
             <div id="specific-order-content" class="details-text"></div>
-            <button onclick="document.getElementById('order-details-modal').classList.remove('show')" class="close-ready-btn" style="margin-top: 20px;">Close Details</button>
         </div>
     </div>
 
+    <!-- ORDER READY CELEBRATION MODAL -->
     <div id="ready-modal" class="ready-modal-hidden">
-        <div class="ready-modal-content">
-            <h2>🎉 Order Ready!</h2>
+        <div class="ready-modal-content" style="text-align: center;">
+            <div style="font-size: 4rem; margin-bottom: 10px; animation: bounceContinuous 2s infinite;">🎉</div>
+            <h2 style="color: #10B981;">Order Ready!</h2>
             <p class="modal-subtitle">Your food is ready for pickup at the counter!</p>
-            <button onclick="document.getElementById('ready-modal').classList.remove('show')" class="action-btn">Awesome, thanks!</button>
+            <button onclick="document.getElementById('ready-modal').classList.remove('show')" class="action-btn full-width" style="margin-top: 15px;">Awesome, thanks!</button>
         </div>
     </div>
 
@@ -263,18 +259,15 @@
         window.currentUser = null;
         window.activeOrderUnsubscribe = null; 
 
-        // 1. LISTEN FOR AUTHENTICATION
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const userRef = doc(db, "users", user.uid);
                 const userSnap = await getDoc(userRef);
-
                 if (userSnap.exists() && userSnap.data().phoneNumber) {
                     let data = userSnap.data();
                     finishLoginSetup(user, data.phoneNumber, data.photoURL || user.photoURL);
                 } else {
-                    window.tempUser = user; 
-                    document.getElementById('phone-request-modal').classList.add('show');
+                    window.tempUser = user; document.getElementById('phone-request-modal').classList.add('show');
                 }
             } else {
                 window.currentUser = null;
@@ -285,54 +278,27 @@
             }
         });
 
-        // 2. GOOGLE LOGIN TRIGGER
         window.googleLogin = async function() {
-            try {
-                await signInWithPopup(auth, googleProvider);
-                document.getElementById('login-modal').classList.remove('show');
-            } catch (error) { alert("Login failed. Please try again."); }
+            try { await signInWithPopup(auth, googleProvider); document.getElementById('login-modal').classList.remove('show'); } 
+            catch (error) { alert("Login failed. Please try again."); }
         };
 
-        // 3. SAVE THE PHONE NUMBER AND COMPLETE SETUP
         window.saveNewPhoneNumber = async function() {
             const phoneInput = document.getElementById("new-user-phone").value.trim();
             if (phoneInput.length !== 10 || isNaN(phoneInput)) return alert("Please enter a valid 10-digit phone number.");
-            
-            const formattedPhone = "+91" + phoneInput;
-            const user = window.tempUser;
-
-            await setDoc(doc(db, "users", user.uid), {
-                name: user.displayName,
-                email: user.email,
-                phoneNumber: formattedPhone,
-                photoURL: user.photoURL,
-                createdAt: serverTimestamp()
-            });
-
+            const formattedPhone = "+91" + phoneInput; const user = window.tempUser;
+            await setDoc(doc(db, "users", user.uid), { name: user.displayName, email: user.email, phoneNumber: formattedPhone, photoURL: user.photoURL, createdAt: serverTimestamp() });
             document.getElementById('phone-request-modal').classList.remove('show');
             finishLoginSetup(user, formattedPhone, user.photoURL);
         };
 
-        // 4. FINALIZE LOGIN UI
         function finishLoginSetup(user, phoneNumber, photoURL) {
-            window.currentUser = { 
-                email: user.email, 
-                name: user.displayName, 
-                uid: user.uid,
-                phoneNumber: phoneNumber,
-                photoURL: photoURL
-            };
-            
+            window.currentUser = { email: user.email, name: user.displayName, uid: user.uid, phoneNumber: phoneNumber, photoURL: photoURL };
             let savedName = localStorage.getItem('customerName');
             if (!savedName) localStorage.setItem('customerName', user.displayName || "Guest");
             document.getElementById('customer-name').value = localStorage.getItem('customerName');
-
-            document.getElementById('login-btn').style.display = 'none'; 
-            document.getElementById('my-account-btn').style.display = 'flex'; 
-            document.getElementById('my-orders-btn').style.display = 'block';
-            
-            trackActiveOrder(user.email);
-            updateCarouselAccount(); 
+            document.getElementById('login-btn').style.display = 'none'; document.getElementById('my-account-btn').style.display = 'flex'; document.getElementById('my-orders-btn').style.display = 'block';
+            trackActiveOrder(user.email); updateCarouselAccount(); 
             if (window.requestPushPermissions) window.requestPushPermissions();
         }
 
@@ -349,34 +315,23 @@
         function trackActiveOrder(email) {
             const q = query(collection(db, "orders"), where("customerEmail", "==", email));
             let previousStatus = null; 
-
             window.activeOrderUnsubscribe = onSnapshot(q, (snap) => {
                 let latestOrder = null; let latestTime = 0;
-                snap.forEach(doc => {
-                    let data = doc.data();
-                    let time = data.timestamp ? data.timestamp.toMillis() : Date.now();
-                    if (time > latestTime) { latestTime = time; latestOrder = data; }
-                });
-
+                snap.forEach(doc => { let data = doc.data(); let time = data.timestamp ? data.timestamp.toMillis() : Date.now(); if (time > latestTime) { latestTime = time; latestOrder = data; } });
                 const carouselOrderContent = document.getElementById('carousel-order-content');
                 const statusTracker = document.getElementById('active-order-status');
-                const statusText = document.getElementById('status-text');
-                const statusDot = document.querySelector('.status-dot');
+                const statusText = document.getElementById('status-text'); const statusDot = document.querySelector('.status-dot');
 
                 if (latestOrder && latestOrder.status !== "Picked up" && latestOrder.status !== "Completed") {
                     let status = latestOrder.status || "Pending";
                     if (status === "Ready" && previousStatus !== "Ready") readySound.play().catch(e => console.log("Blocked"));
                     previousStatus = status; 
-                    
                     statusTracker.style.display = 'flex';
                     if (status === "Pending") { statusText.innerText = "Order Placed"; statusDot.className = "status-dot"; } 
                     else if (status === "Ready") { statusText.innerText = "Ready for Pickup!"; statusDot.className = "status-dot ready"; } 
                     else { statusText.innerText = status; statusDot.className = "status-dot"; }
-
                     let d = new Date(latestOrder.timestamp ? latestOrder.timestamp.toMillis() : Date.now());
-                    let timeStr = d.toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
-                    let dateStr = d.toLocaleString('en-IN', { day: '2-digit', month: 'short' });
-                    let waText = encodeURIComponent(`Hi Devi Sri Delights, I want to check the status of my order for Rs. ${latestOrder.totalBill}. Ordered by: ${latestOrder.customerName}`);
+                    let timeStr = d.toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true }); let dateStr = d.toLocaleString('en-IN', { day: '2-digit', month: 'short' });
                     
                     carouselOrderContent.innerHTML = `
                         <div style="width: 100%; box-sizing: border-box; text-align: left; background: var(--inner-card-bg); padding: 12px; border-radius: var(--radius-md); border: 1px solid rgba(126, 34, 206, 0.1);">
@@ -387,80 +342,45 @@
                             <p style="margin: 0 0 5px 0; font-size: 0.85rem; color: #64748B;">📅 ${dateStr} at ${timeStr}</p>
                             <p style="margin: 0; font-size: 0.95rem; font-weight: 800; color: var(--text-accent);">Total: ₹${latestOrder.totalBill}</p>
                         </div>
-                        <a href="https://wa.me/916305469979?text=${waText}" target="_blank" class="history-wa-btn" style="justify-content: center; width: 100%; box-sizing: border-box;">
-                            Track on WhatsApp
-                        </a>
                     `;
                 } else {
-                    statusTracker.style.display = 'none';
-                    carouselOrderContent.innerHTML = `<p style="color: #64748B; text-align: center;">No active orders right now.</p>`;
+                    statusTracker.style.display = 'none'; carouselOrderContent.innerHTML = `<p style="color: #64748B; text-align: center;">No active orders right now.</p>`;
                 }
             });
         }
         
-        // --- UPDATED DEBUGGING ACCOUNT CAROUSEL ---
         window.updateCarouselAccount = async function() {
             const accContent = document.getElementById('carousel-account-content');
-            
             if (!window.currentUser) {
-                console.log("No user logged in. Showing login prompt.");
-                accContent.innerHTML = `<p style="color: #64748B; margin-bottom: 15px; text-align: center;">Login to view rewards & details</p><button class="action-btn" onclick="document.getElementById('login-modal').classList.add('show')" style="margin-top: 0; padding: 10px;">Login Now</button>`;
-                return;
+                accContent.innerHTML = `<p style="color: #64748B; margin-bottom: 15px; text-align: center;">Login to view rewards & details</p><button class="action-btn" onclick="document.getElementById('login-modal').classList.add('show')" style="margin-top: 0; padding: 10px;">Login Now</button>`; return;
             }
-
-            accContent.innerHTML = `<p style="color: #64748B; text-align: center;">Loading...</p>`;
-            console.log("User logged in. Attempting to fetch details for:", window.currentUser.email);
-
+            accContent.innerHTML = `<p style="color: #64748B; text-align: center;">Loading Profile...</p>`;
+            let customerName = localStorage.getItem('customerName') || window.currentUser.name || "Customer";
+            let fallbackPic = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; let photoUrl = window.currentUser.photoURL || fallbackPic; let points = 0;
             try {
-                let customerName = localStorage.getItem('customerName');
                 const q = query(collection(db, "orders"), where("customerEmail", "==", window.currentUser.email));
-                const snap = await getDocs(q);
-                
-                console.log("Orders found for user:", snap.size);
+                const snap = await getDocs(q); let totalSpent = 0; snap.forEach(doc => { totalSpent += doc.data().totalBill || 0; }); points = Math.floor(totalSpent / 100);
+            } catch (error) { console.warn("Could not fetch past orders. Defaulting points to 0.", error); }
 
-                let totalSpent = 0; 
-                snap.forEach(doc => { totalSpent += doc.data().totalBill || 0; });
-                let points = Math.floor(totalSpent / 100);
-                
-                let fallbackPic = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
-                let photoUrl = window.currentUser.photoURL || fallbackPic;
-
-                if (!customerName) {
-                     customerName = snap.size > 0 ? snap.docs[0].data().customerName : window.currentUser.name;
-                }
-
-                console.log("Updating UI with name:", customerName, "and points:", points);
-
-                accContent.innerHTML = `
-                    <div style="width: 100%; box-sizing: border-box; text-align: left; background: var(--inner-card-bg); padding: 15px; border-radius: var(--radius-md); border: 1px solid rgba(126, 34, 206, 0.1);">
-                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-                            <img src="${photoUrl}" class="small-profile-pic" onerror="this.src='${fallbackPic}'">
-                            <div style="overflow: hidden;">
-                                <p style="margin: 0; font-size: 0.95rem; color: var(--text-dark); font-weight: 700; white-space: nowrap; text-overflow: ellipsis;">${customerName}</p>
-                                <p style="margin: 0; font-size: 0.8rem; color: #64748B; white-space: nowrap; text-overflow: ellipsis;">${window.currentUser.email}</p>
-                            </div>
-                        </div>
-                        <div style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed rgba(126, 34, 206, 0.2); display: flex; justify-content: space-between; align-items: center;">
-                            <strong style="color: var(--text-dark); font-size: 0.9rem;">⭐ Points</strong>
-                            <span class="points-badge">${points} pts</span>
+            accContent.innerHTML = `
+                <div style="width: 100%; box-sizing: border-box; text-align: left; background: var(--inner-card-bg); padding: 15px; border-radius: var(--radius-md); border: 1px solid rgba(126, 34, 206, 0.1);">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                        <img src="${photoUrl}" class="small-profile-pic" onerror="this.src='${fallbackPic}'">
+                        <div style="overflow: hidden;">
+                            <p style="margin: 0; font-size: 0.95rem; color: var(--text-dark); font-weight: 700; white-space: nowrap; text-overflow: ellipsis;">${customerName}</p>
+                            <p style="margin: 0; font-size: 0.8rem; color: #64748B; white-space: nowrap; text-overflow: ellipsis;">${window.currentUser.email}</p>
                         </div>
                     </div>
-                `;
-            } catch (e) { 
-                console.error("Error fetching account details:", e);
-                accContent.innerHTML = `<p style="color: #E11D48; text-align: center;">Access Denied</p>`; 
-            }
+                    <div style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed rgba(126, 34, 206, 0.2); display: flex; justify-content: space-between; align-items: center;">
+                        <strong style="color: var(--text-dark); font-size: 0.9rem;">⭐ Points</strong><span class="points-badge">${points} pts</span>
+                    </div>
+                </div>`;
         }
 
         window.saveProfileName = function() {
-            const inputField = document.getElementById('profile-name-input');
-            if(!inputField) return;
-            const newName = inputField.value.trim();
-            if (newName.length < 2) return alert("Please enter a valid name.");
-            
-            localStorage.setItem('customerName', newName);
-            alert("✅ Profile name updated successfully!");
-            updateCarouselAccount(); openAccountModal(); 
+            const inputField = document.getElementById('profile-name-input'); if(!inputField) return;
+            const newName = inputField.value.trim(); if (newName.length < 2) return alert("Please enter a valid name.");
+            localStorage.setItem('customerName', newName); alert("✅ Profile name updated successfully!"); updateCarouselAccount(); openAccountModal(); 
         };
 
         window.openAccountModal = async function() {
@@ -468,55 +388,34 @@
             document.getElementById('account-modal').classList.add('show');
             const detailsDiv = document.getElementById('account-details');
             detailsDiv.innerHTML = "<p style='text-align:center; color: var(--text-dark); position: relative; z-index: 2;'>Gathering your details...</p>";
+            let customerName = localStorage.getItem('customerName') || window.currentUser.name || "Customer";
+            let fallbackPic = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; let photoUrl = window.currentUser.photoURL || fallbackPic;
+            let totalOrders = 0; let points = 0;
             try {
-                let customerName = localStorage.getItem('customerName');
                 const q = query(collection(db, "orders"), where("customerEmail", "==", window.currentUser.email));
-                const snap = await getDocs(q);
-                let totalOrders = snap.size; let totalSpent = 0;
-                snap.forEach(doc => { totalSpent += doc.data().totalBill || 0; });
-                
-                let points = Math.floor(totalSpent / 100);
-                let dessertsEarned = Math.floor(points / 10);
-                
-                let fallbackPic = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
-                let photoUrl = window.currentUser.photoURL || fallbackPic;
+                const snap = await getDocs(q); totalOrders = snap.size; let totalSpent = 0; snap.forEach(doc => { totalSpent += doc.data().totalBill || 0; }); points = Math.floor(totalSpent / 100);
+            } catch (error) { console.warn("Could not fetch orders for modal.", error); }
 
-                let rewardsHTML = `<div class="rewards-banner" style="margin-bottom: 15px;">
-                    <p style="margin: 0; font-size: 0.85rem;">Earn 1 point per ₹100 spent.<br><strong>10 Points = 1 Free Dessert!</strong></p>
-                    <h3 style="margin: 5px 0 0 0; color: #7E22CE;">Your Points: ${points}</h3>
-                </div>`;
-                
-                if (dessertsEarned > 0) {
-                    rewardsHTML += `<div style="background: #D1FAE5; color: #059669; padding: 12px; border-radius: 8px; text-align: center; font-weight: 800; border: 1px solid #10B981; margin-bottom: 15px; animation: heartbeatGlow 2s infinite;">🎉 You have earned ${dessertsEarned} Free Dessert(s)!<br><span style="font-size: 0.8rem; font-weight: 600;">Show this screen at the counter to claim.</span></div>`;
-                }
-
-                if (Notification.permission !== 'granted') {
-                    rewardsHTML += `<button onclick="requestPushPermissions()" class="action-btn" style="background: #10B981; margin-bottom: 15px; padding: 10px;">🔔 Turn On Order Alerts</button>`;
-                }
-                
-                detailsDiv.innerHTML = `
-                <div style="position: relative; z-index: 2;">
-                    
-                    <div style="text-align: center; margin-bottom: 25px;">
-                        <img src="${photoUrl}" class="profile-pic" onerror="this.src='${fallbackPic}'">
-                        <h3 style="margin: 10px 0 5px 0; color: var(--text-dark);">${customerName}</h3>
-                        <p style="margin: 0; color: #64748B; font-size: 0.9rem;">${window.currentUser.email}</p>
-                        <p style="margin: 5px 0 0 0; color: var(--text-accent); font-weight: 700; font-size: 0.9rem;">📞 ${window.currentUser.phoneNumber}</p>
-                    </div>
-
-                    ${rewardsHTML}
-
-                    <div style="background: var(--inner-card-bg); padding: 15px; border-radius: var(--radius-md); border: 1px solid rgba(126, 34, 206, 0.1); margin-bottom: 15px;">
-                        <label style="font-size: 0.85rem; font-weight: 700; color: #64748B;">Edit Display Name:</label>
-                        <div style="display: flex; gap: 10px; margin-top: 5px;">
-                            <input type="text" id="profile-name-input" class="styled-input" value="${customerName}" placeholder="Your Name" style="padding: 10px;">
-                            <button onclick="saveProfileName()" class="action-btn" style="margin-top: 0; width: auto; padding: 0 20px;">Save</button>
-                        </div>
-                    </div>
-                    
-                    <p style="margin-bottom: 10px; text-align: center;"><strong>🛍️ Total Orders Placed:</strong> <span style="color: var(--text-dark);">${totalOrders}</span></p>
-                </div>`;
-            } catch (error) { detailsDiv.innerHTML = `<p style='text-align:center; color:#E11D48; position: relative; z-index: 2;'><strong>Access Denied.</strong></p>`; }
+            let dessertsEarned = Math.floor(points / 10);
+            let rewardsHTML = `<div class="rewards-banner" style="margin-bottom: 15px;"><p style="margin: 0; font-size: 0.85rem;">Earn 1 point per ₹100 spent.<br><strong>10 Points = 1 Free Dessert!</strong></p><h3 style="margin: 5px 0 0 0; color: #7E22CE;">Your Points: ${points}</h3></div>`;
+            if (dessertsEarned > 0) rewardsHTML += `<div style="background: #D1FAE5; color: #059669; padding: 12px; border-radius: 8px; text-align: center; font-weight: 800; border: 1px solid #10B981; margin-bottom: 15px; animation: heartbeatGlow 2s infinite;">🎉 You have earned ${dessertsEarned} Free Dessert(s)!<br><span style="font-size: 0.8rem; font-weight: 600;">Show this screen at the counter to claim.</span></div>`;
+            if (Notification.permission !== 'granted') rewardsHTML += `<button onclick="requestPushPermissions()" class="action-btn" style="background: #10B981; margin-bottom: 15px; padding: 10px;">🔔 Turn On Order Alerts</button>`;
+            
+            detailsDiv.innerHTML = `
+            <div style="position: relative; z-index: 2;">
+                <div style="text-align: center; margin-bottom: 25px;">
+                    <img src="${photoUrl}" class="profile-pic" onerror="this.src='${fallbackPic}'">
+                    <h3 style="margin: 10px 0 5px 0; color: var(--text-dark);">${customerName}</h3>
+                    <p style="margin: 0; color: #64748B; font-size: 0.9rem;">${window.currentUser.email}</p>
+                    <p style="margin: 5px 0 0 0; color: var(--text-accent); font-weight: 700; font-size: 0.9rem;">📞 ${window.currentUser.phoneNumber || "No number saved"}</p>
+                </div>
+                ${rewardsHTML}
+                <div style="background: var(--inner-card-bg); padding: 15px; border-radius: var(--radius-md); border: 1px solid rgba(126, 34, 206, 0.1); margin-bottom: 15px;">
+                    <label style="font-size: 0.85rem; font-weight: 700; color: #64748B;">Edit Display Name:</label>
+                    <div style="display: flex; gap: 10px; margin-top: 5px;"><input type="text" id="profile-name-input" class="styled-input" value="${customerName}" placeholder="Your Name" style="padding: 10px;"><button onclick="saveProfileName()" class="action-btn" style="margin-top: 0; width: auto; padding: 0 20px;">Save</button></div>
+                </div>
+                <p style="margin-bottom: 10px; text-align: center;"><strong>🛍️ Total Orders Placed:</strong> <span style="color: var(--text-dark);">${totalOrders}</span></p>
+            </div>`;
         };
 
         window.allUserOrders = []; window.currentHistoryIndex = 0;
@@ -524,13 +423,10 @@
         window.openOrderHistory = async function() {
             if (!window.currentUser) return;
             document.getElementById('history-modal').classList.add('show');
-            const list = document.getElementById('history-list');
-            list.innerHTML = "<p style='color: var(--text-dark); text-align: center; position: relative; z-index: 2;'>Searching your orders...</p>";
+            const list = document.getElementById('history-list'); list.innerHTML = "<p style='color: var(--text-dark); text-align: center; position: relative; z-index: 2;'>Searching your orders...</p>";
             document.getElementById('load-more-orders-btn').style.display = 'none';
-            
             const q = query(collection(db, "orders"), where("customerEmail", "==", window.currentUser.email));
-            const snap = await getDocs(q);
-            window.allUserOrders = []; snap.forEach(d => { window.allUserOrders.push(d.data()); });
+            const snap = await getDocs(q); window.allUserOrders = []; snap.forEach(d => { window.allUserOrders.push(d.data()); });
             window.allUserOrders.sort((a, b) => { let timeA = a.timestamp ? a.timestamp.toMillis() : 0; let timeB = b.timestamp ? b.timestamp.toMillis() : 0; return timeB - timeA; });
             window.currentHistoryIndex = 4; window.renderHistoryChunks();
         };
@@ -539,59 +435,27 @@
             const list = document.getElementById('history-list'); const btn = document.getElementById('load-more-orders-btn');
             if (window.allUserOrders.length === 0) { list.innerHTML = "<p style='color: #64748B; text-align:center; position: relative; z-index: 2;'>No orders found.</p>"; return; }
             let html = ""; let ordersToShow = window.allUserOrders.slice(0, window.currentHistoryIndex);
-            
             ordersToShow.forEach((data, index) => {
-                let dateStr = "Recently";
-                if (data.timestamp) {
-                    let d = new Date(data.timestamp.toMillis());
-                    dateStr = d.toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
-                }
-                
-                let isPickedUp = data.status === "Picked up" || data.status === "Completed";
-                let waButtonHtml = "";
-                if (!isPickedUp) {
-                    let waText = encodeURIComponent(`Hi Devi Sri Delights, I want to check the status of my order for Rs. ${data.totalBill}. Ordered by: ${data.customerName}`);
-                    waButtonHtml = `<a href="https://wa.me/916305469979?text=${waText}" target="_blank" class="history-wa-btn" onclick="event.stopPropagation()">Track Order</a>`;
-                }
-
-                let badgeClass = isPickedUp ? "picked-up-bg" : "pending-bg";
-
+                let dateStr = "Recently"; if (data.timestamp) { let d = new Date(data.timestamp.toMillis()); dateStr = d.toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true }); }
+                let isPickedUp = data.status === "Picked up" || data.status === "Completed"; let badgeClass = isPickedUp ? "picked-up-bg" : "pending-bg";
                 html += `
                 <div class="history-card" onclick="viewSpecificOrder(${index})">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 2;">
-                        <div>
-                            <p class="order-date">📅 ${dateStr}</p>
-                            <strong style="font-size: 1.1rem; color: var(--text-dark);">Total: ₹${data.totalBill}</strong>
-                        </div>
+                        <div><p class="order-date">📅 ${dateStr}</p><strong style="font-size: 1.1rem; color: var(--text-dark);">Total: ₹${data.totalBill}</strong></div>
                         <span class="status-badge-inline ${badgeClass}">${data.status || "Pending"}</span>
                     </div>
-                    <div style="position: relative; z-index: 2;">${waButtonHtml}</div>
                 </div>`;
             });
-            list.innerHTML = html;
-            if (window.currentHistoryIndex < window.allUserOrders.length) btn.style.display = 'block'; else btn.style.display = 'none';
+            list.innerHTML = html; if (window.currentHistoryIndex < window.allUserOrders.length) btn.style.display = 'block'; else btn.style.display = 'none';
         };
 
         window.loadMoreOrders = function() { window.currentHistoryIndex += 5; window.renderHistoryChunks(); };
 
-window.viewSpecificOrder = function(index) {
-            let data = window.allUserOrders[index]; 
-            if(!data) return;
-            
-            let dateStr = "Recently";
-            if (data.timestamp) { 
-                let d = new Date(data.timestamp.toMillis()); 
-                dateStr = d.toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true }); 
-            }
-
+        window.viewSpecificOrder = function(index) {
+            let data = window.allUserOrders[index]; if(!data) return;
+            let dateStr = "Recently"; if (data.timestamp) { let d = new Date(data.timestamp.toMillis()); dateStr = d.toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true }); }
             let itemsHtml = "";
-            if (data.orderItems) {
-                for (let itemName in data.orderItems) {
-                    let item = data.orderItems[itemName];
-                    itemsHtml += `<div class="item-row-detail"><span style="font-weight: 600; color: var(--text-dark);">${item.quantity}x ${itemName}</span><span style="color: #64748B;">₹${item.price * item.quantity}</span></div>`;
-                }
-            }
-
+            if (data.orderItems) { for (let itemName in data.orderItems) { let item = data.orderItems[itemName]; itemsHtml += `<div class="item-row-detail"><span style="font-weight: 600; color: var(--text-dark);">${item.quantity}x ${itemName}</span><span style="color: #64748B;">₹${item.price * item.quantity}</span></div>`; } }
             document.getElementById('specific-order-content').innerHTML = `
                 <p style="color: #64748B; font-size: 0.85rem; margin-top: 0; margin-bottom: 20px; text-align: center;">📅 Ordered on ${dateStr}</p>
                 <div style="background: var(--inner-card-bg); padding: 15px; border-radius: var(--radius-md); margin-bottom: 20px; border: 1px solid rgba(126, 34, 206, 0.1);">
@@ -609,28 +473,37 @@ window.viewSpecificOrder = function(index) {
         };
 
         window.saveOrderToFirebase = async function(name, cart, total) {
-            // Grab the email and phone number from the currently logged-in user
             const email = window.currentUser ? window.currentUser.email : "guest@example.com";
             const phone = window.currentUser && window.currentUser.phoneNumber ? window.currentUser.phoneNumber : "No Number";
-            
             localStorage.setItem('customerName', name);
-
-            // Save everything to the "orders" collection
             const docRef = await addDoc(collection(db, "orders"), {
-                customerName: name, 
-                customerEmail: email, 
-                customerPhone: phone, // <-- Added Phone Number Here
-                orderItems: cart, 
-                totalBill: total, 
-                timestamp: serverTimestamp(), 
-                status: "Pending"
+                customerName: name, customerEmail: email, customerPhone: phone, orderItems: cart, totalBill: total, timestamp: serverTimestamp(), status: "Pending"
             });
-            
-            onSnapshot(doc(db, "orders", docRef.id), (s) => { 
-                if (s.exists() && s.data().status === "Ready") document.getElementById('ready-modal').classList.add('show'); 
-            });
+            onSnapshot(doc(db, "orders", docRef.id), (s) => { if (s.exists() && s.data().status === "Ready") document.getElementById('ready-modal').classList.add('show'); });
+        };
+        
+        // --- NEW: SCRIPT TO SEED FIREBASE WITH DIVIDED MAJOR/MINOR CARDS ---
+        window.setupNewMenu = async function() {
+            try {
+                // IMPORTANT: Delete your old menu items from Firebase Console before running this!
+                
+                // Major Cards (Span full row)
+                await addDoc(collection(db, "menu"), { 
+                    name: "Rotis", type: "major", image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=600&auto=format&fit=crop", order: 1, 
+                    items: [ 
+                        { name: "Jowan Roti", price: 15, image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=150" }, 
+                        { name: "Chapathi", price: 12, image: "https://images.unsplash.com/photo-1509722747041-616f39b57569?q=80&w=150" } 
+                    ] 
+                });
+                await addDoc(collection(db, "menu"), { name: "Today Available Curries", type: "major", image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?q=80&w=600&auto=format&fit=crop", order: 2, items: [] });
+                
+                // Minor Cards (Side-by-side)
+                await addDoc(collection(db, "menu"), { name: "Cool Drinks", type: "minor", image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?q=80&w=600&auto=format&fit=crop", order: 3, items: [] });
+                await addDoc(collection(db, "menu"), { name: "Shakes", type: "minor", image: "https://images.unsplash.com/photo-1572490122747-3968bce5ce6a?q=80&w=600&auto=format&fit=crop", order: 4, items: [] });
+                
+                alert("✅ New divided menu cards added! Please refresh the page.");
+            } catch (error) { alert("Failed to seed database."); }
         };
     </script>
-    <script src="script.js"></script>
 </body>
 </html>
