@@ -11,16 +11,10 @@
 </head>
 <body>
     
-    <button id="login-btn" onclick="document.getElementById('login-modal').classList.add('show')">
-        👤 Login
-    </button>
-    <button id="my-account-btn" onclick="openAccountModal()" style="display: none;">
-        <span></span><span></span><span></span>
-    </button>
+    <button id="login-btn" onclick="document.getElementById('login-modal').classList.add('show')">👤 Login</button>
+    <button id="my-account-btn" onclick="openAccountModal()" style="display: none;"><span></span><span></span><span></span></button>
 
-    <div id="active-order-status" style="display: none;">
-        <span class="status-dot"></span> <span id="status-text">Order Placed</span>
-    </div>
+    <div id="active-order-status" style="display: none;"><span class="status-dot"></span> <span id="status-text">Order Placed</span></div>
     
     <div class="shop-hero-section">
         <div class="hero-overlay"></div>
@@ -29,15 +23,12 @@
         </div>
     </div>
 
-    <!-- Animated Swipe Hint -->
     <div class="carousel-hint">Swipe to explore 👉</div>
-    
     <div class="carousel-wrapper">
         <div class="carousel-track">
             <!-- Order Card -->
             <div class="carousel-card" style="text-align: center;">
-                <div class="bg-shape shape-1"></div><div class="bg-shape shape-2"></div>
-                <div class="bg-shape shape-3"></div><div class="bg-shape shape-4"></div>
+                <div class="bg-shape shape-1"></div><div class="bg-shape shape-2"></div><div class="bg-shape shape-3"></div><div class="bg-shape shape-4"></div>
                 <div class="card-label-wrapper"><div class="card-label-line"></div><div class="card-label-text-wrapper"><span class="card-label-text">ORDER</span></div></div>
                 <h3 class="card-title">Order Online</h3>
                 <div class="card-badges-wrapper" style="margin-bottom: 12px; position: relative; z-index: 2;">
@@ -49,8 +40,7 @@
             </div>
             <!-- Track Card -->
             <div class="carousel-card">
-                <div class="bg-shape shape-5"></div><div class="bg-shape shape-6"></div>
-                <div class="bg-shape shape-7"></div><div class="bg-shape shape-8"></div>
+                <div class="bg-shape shape-5"></div><div class="bg-shape shape-6"></div><div class="bg-shape shape-7"></div><div class="bg-shape shape-8"></div>
                 <div class="card-label-wrapper"><div class="card-label-line"></div><div class="card-label-text-wrapper"><span class="card-label-text">TRACKING</span></div></div>
                 <h3 class="card-title">Track Order</h3>
                 <div id="carousel-order-content" style="width: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; flex-grow: 1; position: relative; z-index: 2;">
@@ -79,7 +69,7 @@
     </div>
 
     <!-- MAIN MENU CONTAINER -->
-    <div class="container" id="menu-container"></div>
+    <div class="container" id="menu-container"><p style='text-align:center; padding: 40px;'>Loading menu...</p></div>
 
     <!-- CONTACT INFO & GOOGLE MAP -->
     <div class="container">
@@ -90,7 +80,6 @@
                 <button id="install-app-btn" class="action-btn">📲 Download Our App</button>
                 <button id="share-app-btn" class="action-btn" style="background: var(--btn-secondary); margin-top: 10px;">📢 Share App</button>
             </div>
-            <!-- The Shop Map -->
             <div style="position: relative; z-index: 2; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-inner);">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3801.2800756662455!2d77.62558797429936!3d17.684224594187757!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bceb5036dd004cb%3A0x370dc5a8eac9f14e!2sDevi%20Sri%20Delights%20And%20Foods!5e0!3m2!1sen!2sin!4v1775061036146!5m2!1sen!2sin" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
@@ -105,11 +94,7 @@
     <!-- CART MODAL -->
     <div id="cart-modal" class="modal-overlay">
         <div class="modal-content">
-            <div class="modal-header-flex">
-                <h2>Your Order</h2>
-                <button class="clear-cart-btn" onclick="clearCart()">Clear All</button>
-                <span class="close-btn" onclick="toggleCartModal()">×</span>
-            </div>
+            <div class="modal-header-flex"><h2>Your Order</h2><button class="clear-cart-btn" onclick="clearCart()">Clear All</button><span class="close-btn" onclick="toggleCartModal()">×</span></div>
             <div id="cart-items-list" style="position: relative; z-index: 2;"></div>
             <h3 style="text-align: right; color: var(--text-accent); margin-top: 15px; position: relative; z-index: 2;">Total: ₹<span id="modal-total">0</span></h3>
             <div class="customer-info" style="position: relative; z-index: 2;">
@@ -120,18 +105,16 @@
         </div>
     </div>
 
-    <!-- NEW ORDER PLACED CELEBRATION MODAL -->
+    <!-- ORDER PLACED CELEBRATION MODAL -->
     <div id="placed-modal" class="ready-modal-hidden">
         <div class="ready-modal-content" style="text-align: center;">
             <div style="font-size: 4rem; margin-bottom: 10px; animation: bounceContinuous 2s infinite;">🎉</div>
             <h2 style="color: var(--text-accent);">Order Placed!</h2>
             <p class="modal-subtitle">Your delicious food is being prepared.</p>
-            
             <div id="install-suggestion-container" style="display: none; background: #F8FAFC; padding: 15px; border-radius: 12px; margin: 20px 0; border: 1px dashed var(--text-accent);">
                 <p style="margin:0 0 10px 0; font-size: 0.9rem; font-weight: 700; color: var(--text-dark);">📲 Get live tracking & free rewards!</p>
                 <button id="modal-install-btn" class="action-btn" style="width: 100%;">Install Our App</button>
             </div>
-
             <button onclick="document.getElementById('placed-modal').classList.remove('show')" class="action-btn full-width" style="margin-top: 15px;">Awesome!</button>
         </div>
     </div>
@@ -139,13 +122,9 @@
     <!-- GOOGLE LOGIN MODAL -->
     <div id="login-modal" class="modal-hidden">
         <div class="login-modal-content">
-            <h2>Welcome!</h2>
-            <p class="modal-subtitle">Sign in with Google to continue.</p>
+            <h2>Welcome!</h2><p class="modal-subtitle">Sign in with Google to continue.</p>
             <div id="auth-section" style="display: flex; justify-content: center; margin-top: 20px;">
-                <button id="google-login-btn" class="action-btn" onclick="googleLogin()" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; background: #FFFFFF; color: #475569; border: 1px solid #E2E8F0;">
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" style="width: 24px;">
-                    Sign in with Google
-                </button>
+                <button id="google-login-btn" class="action-btn" onclick="googleLogin()" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; background: #FFFFFF; color: #475569; border: 1px solid #E2E8F0;"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" style="width: 24px;">Sign in with Google</button>
             </div>
             <button onclick="document.getElementById('login-modal').classList.remove('show')" class="close-text-btn">Cancel</button>
         </div>
@@ -154,11 +133,9 @@
     <!-- PHONE NUMBER REQUEST MODAL -->
     <div id="phone-request-modal" class="modal-hidden">
         <div class="modal-content" style="border-radius: 24px 24px 0 0; z-index: 2001;">
-            <h2 style="color: var(--text-accent); text-align: center;">One Last Step!</h2>
-            <p class="modal-subtitle">We need your WhatsApp number to send order updates.</p>
+            <h2 style="color: var(--text-accent); text-align: center;">One Last Step!</h2><p class="modal-subtitle">We need your WhatsApp number to send order updates.</p>
             <div class="phone-input-wrapper" style="margin-top: 20px;">
-                <span class="country-code">+91</span>
-                <input type="tel" id="new-user-phone" class="styled-input-phone" placeholder="Enter 10-digit number" maxlength="10">
+                <span class="country-code">+91</span><input type="tel" id="new-user-phone" class="styled-input-phone" placeholder="Enter 10-digit number" maxlength="10">
             </div>
             <button class="action-btn full-width" onclick="saveNewPhoneNumber()">Save & Continue</button>
         </div>
@@ -167,26 +144,22 @@
     <button id="my-orders-btn" onclick="openOrderHistory()" style="display: none;">📜 My Orders</button>
     <button id="call-shop-btn" style="display: none;">📞 Call</button>
 
-    <!-- ACCOUNT PROFILE MODAL (Added Close X) -->
+    <!-- ACCOUNT PROFILE MODAL -->
     <div id="account-modal" class="modal-hidden">
         <div class="account-modal-content">
             <div class="modal-header-flex" style="border-bottom:none; margin-bottom: 0;">
-                <h2 style="position: relative; z-index: 2;">My Profile</h2>
-                <span class="close-btn" onclick="document.getElementById('account-modal').classList.remove('show')">×</span>
+                <h2 style="position: relative; z-index: 2;">My Profile</h2><span class="close-btn" onclick="document.getElementById('account-modal').classList.remove('show')">×</span>
             </div>
-            <div id="account-details" class="details-text" style="position: relative; z-index: 2; margin-top: 10px;">
-                <p style="text-align: center; color: #888;">Loading your details...</p>
-            </div>
+            <div id="account-details" class="details-text" style="position: relative; z-index: 2; margin-top: 10px;"><p style="text-align: center; color: #888;">Loading your details...</p></div>
             <button onclick="logoutUser()" class="logout-btn" style="position: relative; z-index: 2;">🚪 Logout</button>
         </div>
     </div>
     
-    <!-- HISTORY MODAL (Added Close X) -->
+    <!-- HISTORY MODAL -->
     <div id="history-modal" class="modal-hidden">
         <div class="history-modal-content">
             <div class="modal-header-flex" style="border-bottom:none; margin-bottom: 0;">
-                <h2 style="position: relative; z-index: 2;">Order History</h2>
-                <span class="close-btn" onclick="document.getElementById('history-modal').classList.remove('show')">×</span>
+                <h2 style="position: relative; z-index: 2;">Order History</h2><span class="close-btn" onclick="document.getElementById('history-modal').classList.remove('show')">×</span>
             </div>
             <div id="history-list" style="position: relative; z-index: 2; margin-top: 10px;"><p style="color: #888;">Loading your history...</p></div>
             <button id="load-more-orders-btn" class="action-btn" style="display: none; background: var(--btn-secondary); margin-top: 15px; position: relative; z-index: 2;" onclick="loadMoreOrders()">Load More (5)</button>
@@ -211,9 +184,12 @@
         </div>
     </div>
 
+    <!-- LOAD SCRIPT BEFORE MODULE TO PREVENT CRASH -->
+    <script src="script.js"></script>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, serverTimestamp, doc, onSnapshot, query, where, getDocs, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, doc, onSnapshot, query, where, getDocs, getDoc, setDoc, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
         import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-messaging.js"; 
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 
@@ -244,209 +220,150 @@
         
         onMessage(messaging, (payload) => { alert(`🛎️ ${payload.notification.title}\n${payload.notification.body}`); });
 
-        document.getElementById('menu-container').innerHTML = "<p style='text-align:center; padding: 40px;'>Loading menu...</p>";
-        
+        // --- SAFELY LOAD MENU WITH TRY/CATCH ---
         async function loadCustomerMenu() {
-            const snap = await getDocs(collection(db, "menu"));
-            let categories = [];
-            snap.forEach(doc => { let cat = doc.data(); if(typeof cat.order === 'undefined') cat.order = 999; categories.push(cat); });
-            categories.sort((a, b) => a.order - b.order);
-            if(categories.length > 0) window.renderMenu(categories);
-            else document.getElementById('menu-container').innerHTML = "<p style='text-align:center; color: #E11D48;'>Menu unavailable.</p>";
+            try {
+                const snap = await getDocs(collection(db, "menu"));
+                let categories = [];
+                snap.forEach(doc => { 
+                    let cat = doc.data(); 
+                    if(typeof cat.order === 'undefined') cat.order = 999; 
+                    if(!cat.items || !Array.isArray(cat.items)) cat.items = []; // Sanitize corrupt arrays
+                    categories.push(cat); 
+                });
+                categories.sort((a, b) => a.order - b.order);
+                
+                if(categories.length > 0) {
+                    if (window.renderMenu) window.renderMenu(categories);
+                    else setTimeout(() => window.renderMenu(categories), 500); 
+                } else {
+                    document.getElementById('menu-container').innerHTML = "<p style='text-align:center; padding: 20px; color: #64748B;'>Menu is currently empty.</p>";
+                }
+            } catch (error) {
+                console.error("Firebase Menu Load Error:", error);
+                document.getElementById('menu-container').innerHTML = "<p style='text-align:center; padding: 20px; color: #E11D48;'>⚠️ Cannot connect to database to load menu.</p>";
+            }
         }
         loadCustomerMenu();
+
+        // --- LISTENERS ---
+        onSnapshot(doc(db, "settings", "store"), (docSnap) => {
+            let storeStatusBanner = document.getElementById('store-closed-banner');
+            if (!storeStatusBanner) {
+                storeStatusBanner = document.createElement('div'); storeStatusBanner.id = 'store-closed-banner';
+                storeStatusBanner.style.cssText = "background: #EF4444; color: white; text-align: center; padding: 12px; font-weight: bold; position: fixed; top: 0; width: 100%; z-index: 9999; display: none; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);";
+                storeStatusBanner.innerHTML = "🚫 Store is currently closed. We are not accepting orders right now.";
+                document.body.prepend(storeStatusBanner);
+            }
+            if (docSnap.exists() && docSnap.data().isOpen === false) {
+                window.storeIsOpen = false; storeStatusBanner.style.display = "block";
+                document.querySelectorAll('.badge-status').forEach(b => { b.innerText = "Closed"; b.style.color = "#EF4444"; });
+                document.getElementById('floating-cart').style.display = "none";
+            } else {
+                window.storeIsOpen = true; storeStatusBanner.style.display = "none";
+                document.querySelectorAll('.badge-status').forEach(b => { b.innerText = "Open"; b.style.color = "#10B981"; });
+                if(Object.keys(cart).length > 0) window.updateCartUI();
+            }
+        });
+
+        const qBroadcast = query(collection(db, "broadcasts"), orderBy("timestamp", "desc"), limit(1));
+        let initialBroadcastLoad = true;
+        onSnapshot(qBroadcast, (snap) => {
+            if (initialBroadcastLoad) { initialBroadcastLoad = false; return; }
+            snap.docChanges().forEach(change => {
+                if (change.type === "added") {
+                    let msg = change.doc.data().message;
+                    let alertDiv = document.createElement('div');
+                    alertDiv.style.cssText = "position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #FFFFFF; border: 2px solid #7E22CE; padding: 20px; border-radius: 16px; box-shadow: 0 10px 40px rgba(126, 34, 206, 0.3); z-index: 10000; width: 90%; max-width: 400px; text-align: center; animation: slideDownFade 0.5s ease forwards;";
+                    alertDiv.innerHTML = `<span style="font-size: 2rem;">📢</span><h3 style="margin: 10px 0; color: #7E22CE;">New Announcement!</h3><p style="color: #1E293B; font-weight: 600; margin-bottom: 20px;">${msg}</p><button class="action-btn" onclick="this.parentElement.remove()" style="width: 100%;">Got it!</button>`;
+                    document.body.appendChild(alertDiv);
+                }
+            });
+        });
 
         window.currentUser = null;
         window.activeOrderUnsubscribe = null; 
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                const userRef = doc(db, "users", user.uid);
-                const userSnap = await getDoc(userRef);
-                if (userSnap.exists() && userSnap.data().phoneNumber) {
-                    let data = userSnap.data();
-                    finishLoginSetup(user, data.phoneNumber, data.photoURL || user.photoURL);
-                } else {
-                    window.tempUser = user; document.getElementById('phone-request-modal').classList.add('show');
-                }
+                const userRef = doc(db, "users", user.uid); const userSnap = await getDoc(userRef);
+                if (userSnap.exists() && userSnap.data().phoneNumber) { let data = userSnap.data(); finishLoginSetup(user, data.phoneNumber, data.photoURL || user.photoURL); } 
+                else { window.tempUser = user; document.getElementById('phone-request-modal').classList.add('show'); }
             } else {
-                window.currentUser = null;
-                document.getElementById('login-btn').style.display = 'block'; 
-                document.getElementById('my-account-btn').style.display = 'none'; 
-                document.getElementById('my-orders-btn').style.display = 'none';
-                updateCarouselAccount(); 
+                window.currentUser = null; document.getElementById('login-btn').style.display = 'block'; document.getElementById('my-account-btn').style.display = 'none'; document.getElementById('my-orders-btn').style.display = 'none'; updateCarouselAccount(); 
             }
         });
 
-        window.googleLogin = async function() {
-            try { await signInWithPopup(auth, googleProvider); document.getElementById('login-modal').classList.remove('show'); } 
-            catch (error) { alert("Login failed. Please try again."); }
-        };
-
+        window.googleLogin = async function() { try { await signInWithPopup(auth, googleProvider); document.getElementById('login-modal').classList.remove('show'); } catch (error) { alert("Login failed. Please try again."); } };
         window.saveNewPhoneNumber = async function() {
-            const phoneInput = document.getElementById("new-user-phone").value.trim();
-            if (phoneInput.length !== 10 || isNaN(phoneInput)) return alert("Please enter a valid 10-digit phone number.");
+            const phoneInput = document.getElementById("new-user-phone").value.trim(); if (phoneInput.length !== 10 || isNaN(phoneInput)) return alert("Please enter a valid 10-digit phone number.");
             const formattedPhone = "+91" + phoneInput; const user = window.tempUser;
             await setDoc(doc(db, "users", user.uid), { name: user.displayName, email: user.email, phoneNumber: formattedPhone, photoURL: user.photoURL, createdAt: serverTimestamp() });
-            document.getElementById('phone-request-modal').classList.remove('show');
-            finishLoginSetup(user, formattedPhone, user.photoURL);
+            document.getElementById('phone-request-modal').classList.remove('show'); finishLoginSetup(user, formattedPhone, user.photoURL);
         };
 
         function finishLoginSetup(user, phoneNumber, photoURL) {
             window.currentUser = { email: user.email, name: user.displayName, uid: user.uid, phoneNumber: phoneNumber, photoURL: photoURL };
-            let savedName = localStorage.getItem('customerName');
-            if (!savedName) localStorage.setItem('customerName', user.displayName || "Guest");
-            document.getElementById('customer-name').value = localStorage.getItem('customerName');
-            document.getElementById('login-btn').style.display = 'none'; document.getElementById('my-account-btn').style.display = 'flex'; document.getElementById('my-orders-btn').style.display = 'block';
-            trackActiveOrder(user.email); updateCarouselAccount(); 
-            if (window.requestPushPermissions) window.requestPushPermissions();
+            let savedName = localStorage.getItem('customerName'); if (!savedName) localStorage.setItem('customerName', user.displayName || "Guest");
+            document.getElementById('customer-name').value = localStorage.getItem('customerName'); document.getElementById('login-btn').style.display = 'none'; document.getElementById('my-account-btn').style.display = 'flex'; document.getElementById('my-orders-btn').style.display = 'block';
+            trackActiveOrder(user.email); updateCarouselAccount(); if (window.requestPushPermissions) window.requestPushPermissions();
         }
 
-        window.logoutUser = async function() {
-            await signOut(auth);
-            if (window.activeOrderUnsubscribe) window.activeOrderUnsubscribe();
-            document.getElementById('carousel-order-content').innerHTML = `<p style="color: #64748B; text-align: center;">No active orders right now.</p>`;
-            document.getElementById('account-modal').classList.remove('show');
-            document.getElementById('history-modal').classList.remove('show');
-        };
+        window.logoutUser = async function() { await signOut(auth); if (window.activeOrderUnsubscribe) window.activeOrderUnsubscribe(); document.getElementById('carousel-order-content').innerHTML = `<p style="color: #64748B; text-align: center;">No active orders right now.</p>`; document.getElementById('account-modal').classList.remove('show'); document.getElementById('history-modal').classList.remove('show'); };
 
         const readySound = new Audio("https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3");
-
         function trackActiveOrder(email) {
             const q = query(collection(db, "orders"), where("customerEmail", "==", email));
             let previousStatus = null; 
             window.activeOrderUnsubscribe = onSnapshot(q, (snap) => {
                 let latestOrder = null; let latestTime = 0;
                 snap.forEach(doc => { let data = doc.data(); let time = data.timestamp ? data.timestamp.toMillis() : Date.now(); if (time > latestTime) { latestTime = time; latestOrder = data; } });
-                const carouselOrderContent = document.getElementById('carousel-order-content');
-                const statusTracker = document.getElementById('active-order-status');
-                const statusText = document.getElementById('status-text'); const statusDot = document.querySelector('.status-dot');
-
+                const carouselOrderContent = document.getElementById('carousel-order-content'); const statusTracker = document.getElementById('active-order-status'); const statusText = document.getElementById('status-text'); const statusDot = document.querySelector('.status-dot');
                 if (latestOrder && latestOrder.status !== "Picked up" && latestOrder.status !== "Completed") {
-                    let status = latestOrder.status || "Pending";
-                    if (status === "Ready" && previousStatus !== "Ready") readySound.play().catch(e => console.log("Blocked"));
-                    previousStatus = status; 
+                    let status = latestOrder.status || "Pending"; if (status === "Ready" && previousStatus !== "Ready") readySound.play().catch(e => console.log("Blocked")); previousStatus = status; 
                     statusTracker.style.display = 'flex';
-                    if (status === "Pending") { statusText.innerText = "Order Placed"; statusDot.className = "status-dot"; } 
-                    else if (status === "Ready") { statusText.innerText = "Ready for Pickup!"; statusDot.className = "status-dot ready"; } 
-                    else { statusText.innerText = status; statusDot.className = "status-dot"; }
-                    let d = new Date(latestOrder.timestamp ? latestOrder.timestamp.toMillis() : Date.now());
-                    let timeStr = d.toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true }); let dateStr = d.toLocaleString('en-IN', { day: '2-digit', month: 'short' });
-                    
-                    carouselOrderContent.innerHTML = `
-                        <div style="width: 100%; box-sizing: border-box; text-align: left; background: var(--inner-card-bg); padding: 12px; border-radius: var(--radius-md); border: 1px solid rgba(126, 34, 206, 0.1);">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                <strong style="font-size: 1rem; color: var(--text-dark);">${latestOrder.customerName}</strong>
-                                <span class="status-badge-inline ${status === 'Ready' ? 'picked-up-bg' : 'pending-bg'}">${status}</span>
-                            </div>
-                            <p style="margin: 0 0 5px 0; font-size: 0.85rem; color: #64748B;">📅 ${dateStr} at ${timeStr}</p>
-                            <p style="margin: 0; font-size: 0.95rem; font-weight: 800; color: var(--text-accent);">Total: ₹${latestOrder.totalBill}</p>
-                        </div>
-                    `;
-                } else {
-                    statusTracker.style.display = 'none'; carouselOrderContent.innerHTML = `<p style="color: #64748B; text-align: center;">No active orders right now.</p>`;
-                }
+                    if (status === "Pending") { statusText.innerText = "Order Placed"; statusDot.className = "status-dot"; } else if (status === "Ready") { statusText.innerText = "Ready for Pickup!"; statusDot.className = "status-dot ready"; } else { statusText.innerText = status; statusDot.className = "status-dot"; }
+                    let d = new Date(latestOrder.timestamp ? latestOrder.timestamp.toMillis() : Date.now()); let timeStr = d.toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true }); let dateStr = d.toLocaleString('en-IN', { day: '2-digit', month: 'short' });
+                    carouselOrderContent.innerHTML = `<div style="width: 100%; box-sizing: border-box; text-align: left; background: var(--inner-card-bg); padding: 12px; border-radius: var(--radius-md); border: 1px solid rgba(126, 34, 206, 0.1);"><div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;"><strong style="font-size: 1rem; color: var(--text-dark);">${latestOrder.customerName}</strong><span class="status-badge-inline ${status === 'Ready' ? 'picked-up-bg' : 'pending-bg'}">${status}</span></div><p style="margin: 0 0 5px 0; font-size: 0.85rem; color: #64748B;">📅 ${dateStr} at ${timeStr}</p><p style="margin: 0; font-size: 0.95rem; font-weight: 800; color: var(--text-accent);">Total: ₹${latestOrder.totalBill}</p></div>`;
+                } else { statusTracker.style.display = 'none'; carouselOrderContent.innerHTML = `<p style="color: #64748B; text-align: center;">No active orders right now.</p>`; }
             });
         }
         
         window.updateCarouselAccount = async function() {
             const accContent = document.getElementById('carousel-account-content');
-            if (!window.currentUser) {
-                accContent.innerHTML = `<p style="color: #64748B; margin-bottom: 15px; text-align: center;">Login to view rewards & details</p><button class="action-btn" onclick="document.getElementById('login-modal').classList.add('show')" style="margin-top: 0; padding: 10px;">Login Now</button>`; return;
-            }
+            if (!window.currentUser) { accContent.innerHTML = `<p style="color: #64748B; margin-bottom: 15px; text-align: center;">Login to view rewards & details</p><button class="action-btn" onclick="document.getElementById('login-modal').classList.add('show')" style="margin-top: 0; padding: 10px;">Login Now</button>`; return; }
             accContent.innerHTML = `<p style="color: #64748B; text-align: center;">Loading Profile...</p>`;
-            let customerName = localStorage.getItem('customerName') || window.currentUser.name || "Customer";
-            let fallbackPic = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; let photoUrl = window.currentUser.photoURL || fallbackPic; let points = 0;
-            try {
-                const q = query(collection(db, "orders"), where("customerEmail", "==", window.currentUser.email));
-                const snap = await getDocs(q); let totalSpent = 0; snap.forEach(doc => { totalSpent += doc.data().totalBill || 0; }); points = Math.floor(totalSpent / 100);
-            } catch (error) { console.warn("Could not fetch past orders. Defaulting points to 0.", error); }
-
-            accContent.innerHTML = `
-                <div style="width: 100%; box-sizing: border-box; text-align: left; background: var(--inner-card-bg); padding: 15px; border-radius: var(--radius-md); border: 1px solid rgba(126, 34, 206, 0.1);">
-                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-                        <img src="${photoUrl}" class="small-profile-pic" onerror="this.src='${fallbackPic}'">
-                        <div style="overflow: hidden;">
-                            <p style="margin: 0; font-size: 0.95rem; color: var(--text-dark); font-weight: 700; white-space: nowrap; text-overflow: ellipsis;">${customerName}</p>
-                            <p style="margin: 0; font-size: 0.8rem; color: #64748B; white-space: nowrap; text-overflow: ellipsis;">${window.currentUser.email}</p>
-                        </div>
-                    </div>
-                    <div style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed rgba(126, 34, 206, 0.2); display: flex; justify-content: space-between; align-items: center;">
-                        <strong style="color: var(--text-dark); font-size: 0.9rem;">⭐ Points</strong><span class="points-badge">${points} pts</span>
-                    </div>
-                </div>`;
+            let customerName = localStorage.getItem('customerName') || window.currentUser.name || "Customer"; let fallbackPic = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; let photoUrl = window.currentUser.photoURL || fallbackPic; let points = 0;
+            try { const q = query(collection(db, "orders"), where("customerEmail", "==", window.currentUser.email)); const snap = await getDocs(q); let totalSpent = 0; snap.forEach(doc => { totalSpent += doc.data().totalBill || 0; }); points = Math.floor(totalSpent / 100); } catch (error) { console.warn("Could not fetch past orders."); }
+            accContent.innerHTML = `<div style="width: 100%; box-sizing: border-box; text-align: left; background: var(--inner-card-bg); padding: 15px; border-radius: var(--radius-md); border: 1px solid rgba(126, 34, 206, 0.1);"><div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;"><img src="${photoUrl}" class="small-profile-pic" onerror="this.src='${fallbackPic}'"><div style="overflow: hidden;"><p style="margin: 0; font-size: 0.95rem; color: var(--text-dark); font-weight: 700; white-space: nowrap; text-overflow: ellipsis;">${customerName}</p><p style="margin: 0; font-size: 0.8rem; color: #64748B; white-space: nowrap; text-overflow: ellipsis;">${window.currentUser.email}</p></div></div><div style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed rgba(126, 34, 206, 0.2); display: flex; justify-content: space-between; align-items: center;"><strong style="color: var(--text-dark); font-size: 0.9rem;">⭐ Points</strong><span class="points-badge">${points} pts</span></div></div>`;
         }
 
-        window.saveProfileName = function() {
-            const inputField = document.getElementById('profile-name-input'); if(!inputField) return;
-            const newName = inputField.value.trim(); if (newName.length < 2) return alert("Please enter a valid name.");
-            localStorage.setItem('customerName', newName); alert("✅ Profile name updated successfully!"); updateCarouselAccount(); openAccountModal(); 
-        };
+        window.saveProfileName = function() { const inputField = document.getElementById('profile-name-input'); if(!inputField) return; const newName = inputField.value.trim(); if (newName.length < 2) return alert("Please enter a valid name."); localStorage.setItem('customerName', newName); alert("✅ Profile name updated successfully!"); updateCarouselAccount(); openAccountModal(); };
 
         window.openAccountModal = async function() {
-            if (!window.currentUser) return;
-            document.getElementById('account-modal').classList.add('show');
-            const detailsDiv = document.getElementById('account-details');
-            detailsDiv.innerHTML = "<p style='text-align:center; color: var(--text-dark); position: relative; z-index: 2;'>Gathering your details...</p>";
-            let customerName = localStorage.getItem('customerName') || window.currentUser.name || "Customer";
-            let fallbackPic = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; let photoUrl = window.currentUser.photoURL || fallbackPic;
-            let totalOrders = 0; let points = 0;
-            try {
-                const q = query(collection(db, "orders"), where("customerEmail", "==", window.currentUser.email));
-                const snap = await getDocs(q); totalOrders = snap.size; let totalSpent = 0; snap.forEach(doc => { totalSpent += doc.data().totalBill || 0; }); points = Math.floor(totalSpent / 100);
-            } catch (error) { console.warn("Could not fetch orders for modal.", error); }
-
-            let dessertsEarned = Math.floor(points / 10);
-            let rewardsHTML = `<div class="rewards-banner" style="margin-bottom: 15px;"><p style="margin: 0; font-size: 0.85rem;">Earn 1 point per ₹100 spent.<br><strong>10 Points = 1 Free Dessert!</strong></p><h3 style="margin: 5px 0 0 0; color: #7E22CE;">Your Points: ${points}</h3></div>`;
+            if (!window.currentUser) return; document.getElementById('account-modal').classList.add('show'); const detailsDiv = document.getElementById('account-details'); detailsDiv.innerHTML = "<p style='text-align:center; color: var(--text-dark); position: relative; z-index: 2;'>Gathering your details...</p>";
+            let customerName = localStorage.getItem('customerName') || window.currentUser.name || "Customer"; let fallbackPic = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; let photoUrl = window.currentUser.photoURL || fallbackPic; let totalOrders = 0; let points = 0;
+            try { const q = query(collection(db, "orders"), where("customerEmail", "==", window.currentUser.email)); const snap = await getDocs(q); totalOrders = snap.size; let totalSpent = 0; snap.forEach(doc => { totalSpent += doc.data().totalBill || 0; }); points = Math.floor(totalSpent / 100); } catch (error) { console.warn("Could not fetch orders for modal."); }
+            let dessertsEarned = Math.floor(points / 10); let rewardsHTML = `<div class="rewards-banner" style="margin-bottom: 15px;"><p style="margin: 0; font-size: 0.85rem;">Earn 1 point per ₹100 spent.<br><strong>10 Points = 1 Free Dessert!</strong></p><h3 style="margin: 5px 0 0 0; color: #7E22CE;">Your Points: ${points}</h3></div>`;
             if (dessertsEarned > 0) rewardsHTML += `<div style="background: #D1FAE5; color: #059669; padding: 12px; border-radius: 8px; text-align: center; font-weight: 800; border: 1px solid #10B981; margin-bottom: 15px; animation: heartbeatGlow 2s infinite;">🎉 You have earned ${dessertsEarned} Free Dessert(s)!<br><span style="font-size: 0.8rem; font-weight: 600;">Show this screen at the counter to claim.</span></div>`;
             if (Notification.permission !== 'granted') rewardsHTML += `<button onclick="requestPushPermissions()" class="action-btn" style="background: #10B981; margin-bottom: 15px; padding: 10px;">🔔 Turn On Order Alerts</button>`;
-            
-            detailsDiv.innerHTML = `
-            <div style="position: relative; z-index: 2;">
-                <div style="text-align: center; margin-bottom: 25px;">
-                    <img src="${photoUrl}" class="profile-pic" onerror="this.src='${fallbackPic}'">
-                    <h3 style="margin: 10px 0 5px 0; color: var(--text-dark);">${customerName}</h3>
-                    <p style="margin: 0; color: #64748B; font-size: 0.9rem;">${window.currentUser.email}</p>
-                    <p style="margin: 5px 0 0 0; color: var(--text-accent); font-weight: 700; font-size: 0.9rem;">📞 ${window.currentUser.phoneNumber || "No number saved"}</p>
-                </div>
-                ${rewardsHTML}
-                <div style="background: var(--inner-card-bg); padding: 15px; border-radius: var(--radius-md); border: 1px solid rgba(126, 34, 206, 0.1); margin-bottom: 15px;">
-                    <label style="font-size: 0.85rem; font-weight: 700; color: #64748B;">Edit Display Name:</label>
-                    <div style="display: flex; gap: 10px; margin-top: 5px;"><input type="text" id="profile-name-input" class="styled-input" value="${customerName}" placeholder="Your Name" style="padding: 10px;"><button onclick="saveProfileName()" class="action-btn" style="margin-top: 0; width: auto; padding: 0 20px;">Save</button></div>
-                </div>
-                <p style="margin-bottom: 10px; text-align: center;"><strong>🛍️ Total Orders Placed:</strong> <span style="color: var(--text-dark);">${totalOrders}</span></p>
-            </div>`;
+            detailsDiv.innerHTML = `<div style="position: relative; z-index: 2;"><div style="text-align: center; margin-bottom: 25px;"><img src="${photoUrl}" class="profile-pic" onerror="this.src='${fallbackPic}'"><h3 style="margin: 10px 0 5px 0; color: var(--text-dark);">${customerName}</h3><p style="margin: 0; color: #64748B; font-size: 0.9rem;">${window.currentUser.email}</p><p style="margin: 5px 0 0 0; color: var(--text-accent); font-weight: 700; font-size: 0.9rem;">📞 ${window.currentUser.phoneNumber || "No number saved"}</p></div>${rewardsHTML}<div style="background: var(--inner-card-bg); padding: 15px; border-radius: var(--radius-md); border: 1px solid rgba(126, 34, 206, 0.1); margin-bottom: 15px;"><label style="font-size: 0.85rem; font-weight: 700; color: #64748B;">Edit Display Name:</label><div style="display: flex; gap: 10px; margin-top: 5px;"><input type="text" id="profile-name-input" class="styled-input" value="${customerName}" placeholder="Your Name" style="padding: 10px;"><button onclick="saveProfileName()" class="action-btn" style="margin-top: 0; width: auto; padding: 0 20px;">Save</button></div></div><p style="margin-bottom: 10px; text-align: center;"><strong>🛍️ Total Orders Placed:</strong> <span style="color: var(--text-dark);">${totalOrders}</span></p></div>`;
         };
 
         window.allUserOrders = []; window.currentHistoryIndex = 0;
-
         window.openOrderHistory = async function() {
-            if (!window.currentUser) return;
-            document.getElementById('history-modal').classList.add('show');
-            const list = document.getElementById('history-list'); list.innerHTML = "<p style='color: var(--text-dark); text-align: center; position: relative; z-index: 2;'>Searching your orders...</p>";
-            document.getElementById('load-more-orders-btn').style.display = 'none';
-            const q = query(collection(db, "orders"), where("customerEmail", "==", window.currentUser.email));
-            const snap = await getDocs(q); window.allUserOrders = []; snap.forEach(d => { window.allUserOrders.push(d.data()); });
-            window.allUserOrders.sort((a, b) => { let timeA = a.timestamp ? a.timestamp.toMillis() : 0; let timeB = b.timestamp ? b.timestamp.toMillis() : 0; return timeB - timeA; });
-            window.currentHistoryIndex = 4; window.renderHistoryChunks();
+            if (!window.currentUser) return; document.getElementById('history-modal').classList.add('show'); const list = document.getElementById('history-list'); list.innerHTML = "<p style='color: var(--text-dark); text-align: center; position: relative; z-index: 2;'>Searching your orders...</p>"; document.getElementById('load-more-orders-btn').style.display = 'none';
+            const q = query(collection(db, "orders"), where("customerEmail", "==", window.currentUser.email)); const snap = await getDocs(q); window.allUserOrders = []; snap.forEach(d => { window.allUserOrders.push(d.data()); }); window.allUserOrders.sort((a, b) => { let timeA = a.timestamp ? a.timestamp.toMillis() : 0; let timeB = b.timestamp ? b.timestamp.toMillis() : 0; return timeB - timeA; }); window.currentHistoryIndex = 4; window.renderHistoryChunks();
         };
 
         window.renderHistoryChunks = function() {
-            const list = document.getElementById('history-list'); const btn = document.getElementById('load-more-orders-btn');
-            if (window.allUserOrders.length === 0) { list.innerHTML = "<p style='color: #64748B; text-align:center; position: relative; z-index: 2;'>No orders found.</p>"; return; }
+            const list = document.getElementById('history-list'); const btn = document.getElementById('load-more-orders-btn'); if (window.allUserOrders.length === 0) { list.innerHTML = "<p style='color: #64748B; text-align:center; position: relative; z-index: 2;'>No orders found.</p>"; return; }
             let html = ""; let ordersToShow = window.allUserOrders.slice(0, window.currentHistoryIndex);
             ordersToShow.forEach((data, index) => {
                 let dateStr = "Recently"; if (data.timestamp) { let d = new Date(data.timestamp.toMillis()); dateStr = d.toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true }); }
                 let isPickedUp = data.status === "Picked up" || data.status === "Completed"; let badgeClass = isPickedUp ? "picked-up-bg" : "pending-bg";
-                html += `
-                <div class="history-card" onclick="viewSpecificOrder(${index})">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 2;">
-                        <div><p class="order-date">📅 ${dateStr}</p><strong style="font-size: 1.1rem; color: var(--text-dark);">Total: ₹${data.totalBill}</strong></div>
-                        <span class="status-badge-inline ${badgeClass}">${data.status || "Pending"}</span>
-                    </div>
-                </div>`;
-            });
-            list.innerHTML = html; if (window.currentHistoryIndex < window.allUserOrders.length) btn.style.display = 'block'; else btn.style.display = 'none';
+                html += `<div class="history-card" onclick="viewSpecificOrder(${index})"><div style="display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 2;"><div><p class="order-date">📅 ${dateStr}</p><strong style="font-size: 1.1rem; color: var(--text-dark);">Total: ₹${data.totalBill}</strong></div><span class="status-badge-inline ${badgeClass}">${data.status || "Pending"}</span></div></div>`;
+            }); list.innerHTML = html; if (window.currentHistoryIndex < window.allUserOrders.length) btn.style.display = 'block'; else btn.style.display = 'none';
         };
 
         window.loadMoreOrders = function() { window.currentHistoryIndex += 5; window.renderHistoryChunks(); };
@@ -454,55 +371,16 @@
         window.viewSpecificOrder = function(index) {
             let data = window.allUserOrders[index]; if(!data) return;
             let dateStr = "Recently"; if (data.timestamp) { let d = new Date(data.timestamp.toMillis()); dateStr = d.toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true }); }
-            let itemsHtml = "";
-            if (data.orderItems) { for (let itemName in data.orderItems) { let item = data.orderItems[itemName]; itemsHtml += `<div class="item-row-detail"><span style="font-weight: 600; color: var(--text-dark);">${item.quantity}x ${itemName}</span><span style="color: #64748B;">₹${item.price * item.quantity}</span></div>`; } }
-            document.getElementById('specific-order-content').innerHTML = `
-                <p style="color: #64748B; font-size: 0.85rem; margin-top: 0; margin-bottom: 20px; text-align: center;">📅 Ordered on ${dateStr}</p>
-                <div style="background: var(--inner-card-bg); padding: 15px; border-radius: var(--radius-md); margin-bottom: 20px; border: 1px solid rgba(126, 34, 206, 0.1);">
-                    ${itemsHtml}
-                    <div style="display: flex; justify-content: space-between; margin-top: 15px; padding-top: 15px; border-top: 2px dashed rgba(126, 34, 206, 0.2); font-weight: 800; font-size: 1.1rem; color: var(--text-dark);"><span>Total Paid</span><span style="color: var(--text-accent);">₹${data.totalBill}</span></div>
-                </div>
-                <div style="font-size: 0.95rem; line-height: 1.6; color: #475569;">
-                    <p style="margin: 5px 0;"><strong>Customer Name:</strong> <span style="color: var(--text-dark);">${data.customerName || "N/A"}</span></p>
-                    <p style="margin: 5px 0;"><strong>User Email:</strong> <span style="color: var(--text-dark); font-size: 0.85rem;">${data.customerEmail || "N/A"}</span></p>
-                    <p style="margin: 5px 0;"><strong>Phone Number:</strong> <span style="color: var(--text-dark);">${data.customerPhone || "Not Provided"}</span></p>
-                    <p style="margin: 5px 0;"><strong>Order Status:</strong> <span style="color: var(--text-accent); font-weight: 800;">${data.status || "Pending"}</span></p>
-                </div>
-            `;
+            let itemsHtml = ""; if (data.orderItems) { for (let itemName in data.orderItems) { let item = data.orderItems[itemName]; itemsHtml += `<div class="item-row-detail"><span style="font-weight: 600; color: var(--text-dark);">${item.quantity}x ${itemName}</span><span style="color: #64748B;">₹${item.price * item.quantity}</span></div>`; } }
+            document.getElementById('specific-order-content').innerHTML = `<p style="color: #64748B; font-size: 0.85rem; margin-top: 0; margin-bottom: 20px; text-align: center;">📅 Ordered on ${dateStr}</p><div style="background: var(--inner-card-bg); padding: 15px; border-radius: var(--radius-md); margin-bottom: 20px; border: 1px solid rgba(126, 34, 206, 0.1);">${itemsHtml}<div style="display: flex; justify-content: space-between; margin-top: 15px; padding-top: 15px; border-top: 2px dashed rgba(126, 34, 206, 0.2); font-weight: 800; font-size: 1.1rem; color: var(--text-dark);"><span>Total Paid</span><span style="color: var(--text-accent);">₹${data.totalBill}</span></div></div><div style="font-size: 0.95rem; line-height: 1.6; color: #475569;"><p style="margin: 5px 0;"><strong>Customer Name:</strong> <span style="color: var(--text-dark);">${data.customerName || "N/A"}</span></p><p style="margin: 5px 0;"><strong>User Email:</strong> <span style="color: var(--text-dark); font-size: 0.85rem;">${data.customerEmail || "N/A"}</span></p><p style="margin: 5px 0;"><strong>Phone Number:</strong> <span style="color: var(--text-dark);">${data.customerPhone || "Not Provided"}</span></p><p style="margin: 5px 0;"><strong>Order Status:</strong> <span style="color: var(--text-accent); font-weight: 800;">${data.status || "Pending"}</span></p></div>`;
             document.getElementById('order-details-modal').classList.add('show');
         };
 
         window.saveOrderToFirebase = async function(name, cart, total) {
-            const email = window.currentUser ? window.currentUser.email : "guest@example.com";
-            const phone = window.currentUser && window.currentUser.phoneNumber ? window.currentUser.phoneNumber : "No Number";
+            const email = window.currentUser ? window.currentUser.email : "guest@example.com"; const phone = window.currentUser && window.currentUser.phoneNumber ? window.currentUser.phoneNumber : "No Number";
             localStorage.setItem('customerName', name);
-            const docRef = await addDoc(collection(db, "orders"), {
-                customerName: name, customerEmail: email, customerPhone: phone, orderItems: cart, totalBill: total, timestamp: serverTimestamp(), status: "Pending"
-            });
+            const docRef = await addDoc(collection(db, "orders"), { customerName: name, customerEmail: email, customerPhone: phone, orderItems: cart, totalBill: total, timestamp: serverTimestamp(), status: "Pending" });
             onSnapshot(doc(db, "orders", docRef.id), (s) => { if (s.exists() && s.data().status === "Ready") document.getElementById('ready-modal').classList.add('show'); });
-        };
-        
-        // --- NEW: SCRIPT TO SEED FIREBASE WITH DIVIDED MAJOR/MINOR CARDS ---
-        window.setupNewMenu = async function() {
-            try {
-                // IMPORTANT: Delete your old menu items from Firebase Console before running this!
-                
-                // Major Cards (Span full row)
-                await addDoc(collection(db, "menu"), { 
-                    name: "Rotis", type: "major", image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=600&auto=format&fit=crop", order: 1, 
-                    items: [ 
-                        { name: "Jowan Roti", price: 15, image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=150" }, 
-                        { name: "Chapathi", price: 12, image: "https://images.unsplash.com/photo-1509722747041-616f39b57569?q=80&w=150" } 
-                    ] 
-                });
-                await addDoc(collection(db, "menu"), { name: "Today Available Curries", type: "major", image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?q=80&w=600&auto=format&fit=crop", order: 2, items: [] });
-                
-                // Minor Cards (Side-by-side)
-                await addDoc(collection(db, "menu"), { name: "Cool Drinks", type: "minor", image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?q=80&w=600&auto=format&fit=crop", order: 3, items: [] });
-                await addDoc(collection(db, "menu"), { name: "Shakes", type: "minor", image: "https://images.unsplash.com/photo-1572490122747-3968bce5ce6a?q=80&w=600&auto=format&fit=crop", order: 4, items: [] });
-                
-                alert("✅ New divided menu cards added! Please refresh the page.");
-            } catch (error) { alert("Failed to seed database."); }
         };
     </script>
 </body>
