@@ -57,7 +57,7 @@ window.renderMenu = function(menuCategories) {
         `;
         itemList.appendChild(shapeContainer);
 
-        if(category.items) {
+        if(category.items && category.items.length > 0) {
             category.items.forEach(item => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'menu-item';
@@ -70,6 +70,13 @@ window.renderMenu = function(menuCategories) {
                 itemDiv.innerHTML = `<div class="item-info"><h4 style="color: var(--text-dark); margin-bottom: 4px;">${item.name}</h4>${priceDisplay}</div>${buttonHTML}`;
                 itemList.appendChild(itemDiv);
             });
+        } else {
+             const emptyDiv = document.createElement('div');
+             emptyDiv.style.padding = "15px";
+             emptyDiv.style.textAlign = "center";
+             emptyDiv.style.color = "#64748B";
+             emptyDiv.innerHTML = "Items will be updated soon.";
+             itemList.appendChild(emptyDiv);
         }
         card.appendChild(itemList);
         container.appendChild(card);
@@ -82,9 +89,8 @@ popSound.volume = 0.5;
 window.addToCart = function(itemName, price) {
     cart[itemName] = cart[itemName] ? { ...cart[itemName], quantity: cart[itemName].quantity + 1 } : { price, quantity: 1 };
     updateCartUI();
-    
     popSound.currentTime = 0; 
-    popSound.play().catch(err => console.log("Audio blocked by browser until user taps"));
+    popSound.play().catch(err => console.log("Audio blocked"));
 };
 
 window.removeFromCart = function(itemName) {
@@ -93,10 +99,7 @@ window.removeFromCart = function(itemName) {
         if (cart[itemName].quantity <= 0) delete cart[itemName];
         updateCartUI();
         renderCartModalItems();
-        
-        if (Object.keys(cart).length === 0) {
-            document.getElementById('cart-modal').classList.remove('show');
-        }
+        if (Object.keys(cart).length === 0) document.getElementById('cart-modal').classList.remove('show');
     }
 };
 
@@ -127,12 +130,8 @@ window.updateCartUI = function() {
 
 window.toggleCartModal = function() {
     const modal = document.getElementById('cart-modal');
-    if (modal.classList.contains('show')) {
-        modal.classList.remove('show');
-    } else {
-        renderCartModalItems();
-        modal.classList.add('show');
-    }
+    if (modal.classList.contains('show')) modal.classList.remove('show');
+    else { renderCartModalItems(); modal.classList.add('show'); }
 };
 
 window.renderCartModalItems = function() {
@@ -159,10 +158,7 @@ window.renderCartModalItems = function() {
 
 window.sendWhatsAppOrder = function() {
     const customerName = document.getElementById('customer-name').value.trim();
-    if (customerName.length < 2) { 
-        alert("Please enter a valid name!"); 
-        return; 
-    }
+    if (customerName.length < 2) return alert("Please enter a valid name!"); 
 
     if (!window.currentUser) {
         document.getElementById('login-modal').classList.add('show');
@@ -170,27 +166,16 @@ window.sendWhatsAppOrder = function() {
     }
 
     let total = 0;
-    for (let item in cart) {
-        total += cart[item].price * cart[item].quantity;
-    }
+    for (let item in cart) total += cart[item].price * cart[item].quantity;
 
     document.getElementById('cart-modal').classList.remove('show');
-
-    if (window.saveOrderToFirebase) {
-        window.saveOrderToFirebase(customerName, cart, total);
-    }
+    if (window.saveOrderToFirebase) window.saveOrderToFirebase(customerName, cart, total);
 
     alert("✅ Order successfully sent to the kitchen!\n\nPlease wait, your phone will notify you the exact moment it is ready for pickup.");
-
-    cart = {};
-    updateCartUI();
+    cart = {}; updateCartUI();
 };
 
-// Register the new combined file
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('firebase-messaging-sw.js').catch(err => console.log("SW failed:", err));
-}
-
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('firebase-messaging-sw.js').catch(err => console.log("SW failed:", err));
 
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt', (e) => {
@@ -200,22 +185,11 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 
 document.getElementById('install-app-btn').addEventListener('click', () => {
-    if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt = null;
-    }
+    if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; }
 });
 
 document.getElementById('share-app-btn').addEventListener('click', () => {
-    const shareData = {
-        title: 'Devi Sri Delights',
-        text: 'Check out the menu and order online from Devi Sri Delights!',
-        url: window.location.href
-    };
-    if (navigator.share) {
-        navigator.share(shareData);
-    } else {
-        window.open(`https://wa.me/?text=${encodeURIComponent(shareData.text + " " + shareData.url)}`);
-    }
+    const shareData = { title: 'Devi Sri Delights', text: 'Check out the menu and order online from Devi Sri Delights!', url: window.location.href };
+    if (navigator.share) navigator.share(shareData);
+    else window.open(`https://wa.me/?text=${encodeURIComponent(shareData.text + " " + shareData.url)}`);
 });
-        
