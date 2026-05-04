@@ -1,8 +1,6 @@
-// firebase-messaging-sw.js
 importScripts('https://www.gstatic.com/firebasejs/12.10.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/12.10.0/firebase-messaging-compat.js');
 
-// 1. Initialize Firebase in the background
 const firebaseConfig = {
     apiKey: "AIzaSyC7uuy0yYV3L17RJ0RvbN-mrfqrT4PquMo",
     authDomain: "devi-sri-delights.firebaseapp.com",
@@ -14,10 +12,8 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
-// 2. Set up the background messenger
 const messaging = firebase.messaging();
 
-// 3. Catch the push notification when the app is minimized/sleeping
 messaging.onBackgroundMessage(function(payload) {
     console.log('Received background push: ', payload);
     const notificationTitle = payload?.notification?.title || "🎉 Order Ready!";
@@ -31,7 +27,6 @@ messaging.onBackgroundMessage(function(payload) {
     self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
-// 4. If they tap the notification banner, open the app
 self.addEventListener('notificationclick', function(event) {
     event.notification.close();
     event.waitUntil(clients.openWindow('/'));
