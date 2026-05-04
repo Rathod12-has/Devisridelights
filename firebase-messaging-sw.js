@@ -11,11 +11,9 @@ const firebaseConfig = {
     measurementId: "G-FSKW9M3WL1"
 };
 firebase.initializeApp(firebaseConfig);
-
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage(function(payload) {
-    console.log('Received background push: ', payload);
     const notificationTitle = payload?.notification?.title || "🎉 Order Ready!";
     const notificationOptions = {
         body: payload?.notification?.body || "Your food is ready for pickup!",
@@ -23,7 +21,6 @@ messaging.onBackgroundMessage(function(payload) {
         vibrate: [200, 100, 200, 100, 200],
         requireInteraction: true
     };
-
     self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
