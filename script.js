@@ -1,12 +1,25 @@
 let cart = {};
 const container = document.getElementById('menu-container');
 
+// Auto-peek scroll for Carousel
+document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+        const track = document.querySelector('.carousel-track');
+        if (track) {
+            track.scrollBy({ left: 120, behavior: 'smooth' });
+            setTimeout(() => track.scrollBy({ left: -120, behavior: 'smooth' }), 600);
+        }
+    }, 1500);
+});
+
 window.renderMenu = function(menuCategories) {
     container.innerHTML = ''; 
     
     menuCategories.forEach(category => {
         const card = document.createElement('div');
-        card.className = 'category-card';
+        // If type is missing, default to major
+        let cardTypeClass = category.type === 'minor' ? 'minor' : 'major';
+        card.className = `category-card ${cardTypeClass}`;
         
         const img = document.createElement('img');
         img.className = 'category-image';
@@ -26,16 +39,11 @@ window.renderMenu = function(menuCategories) {
         
         header.onclick = () => {
             const isCurrentlyActive = card.classList.contains('active');
-            
-            document.querySelectorAll('.category-card.active').forEach(c => {
-                c.classList.remove('active');
-            });
+            document.querySelectorAll('.category-card.active').forEach(c => c.classList.remove('active'));
 
             if (!isCurrentlyActive) {
                 card.classList.add('active');
-                setTimeout(() => {
-                    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 450); 
+                setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 450); 
             }
         };
         
@@ -66,15 +74,25 @@ window.renderMenu = function(menuCategories) {
 
                 let priceDisplay = (item.price === "Shop Visit") ? `<span class="shop-visit-tag">Price at Shop</span>` : `<span class="item-price">₹${item.price}</span>`;
                 let buttonHTML = (item.price === "Shop Visit") ? '' : `<button class="add-btn" onclick="addToCart('${item.name}', ${item.price})">Add</button>`;
+                
+                // Show Thumbnail Image if available
+                let itemImg = item.image ? `<img src="${item.image}" alt="${item.name}" style="width: 55px; height: 55px; border-radius: 8px; object-fit: cover; margin-right: 15px; box-shadow: var(--shadow-inner);">` : '';
 
-                itemDiv.innerHTML = `<div class="item-info"><h4 style="color: var(--text-dark); margin-bottom: 4px;">${item.name}</h4>${priceDisplay}</div>${buttonHTML}`;
+                itemDiv.innerHTML = `
+                    <div style="display: flex; align-items: center;">
+                        ${itemImg}
+                        <div class="item-info">
+                            <h4 style="color: var(--text-dark); margin-bottom: 4px; font-size: 0.95rem;">${item.name}</h4>
+                            ${priceDisplay}
+                        </div>
+                    </div>
+                    ${buttonHTML}
+                `;
                 itemList.appendChild(itemDiv);
             });
         } else {
              const emptyDiv = document.createElement('div');
-             emptyDiv.style.padding = "15px";
-             emptyDiv.style.textAlign = "center";
-             emptyDiv.style.color = "#64748B";
+             emptyDiv.style.padding = "15px"; emptyDiv.style.textAlign = "center"; emptyDiv.style.color = "#64748B";
              emptyDiv.innerHTML = "Items will be updated soon.";
              itemList.appendChild(emptyDiv);
         }
@@ -97,16 +115,14 @@ window.removeFromCart = function(itemName) {
     if (cart[itemName]) {
         cart[itemName].quantity -= 1;
         if (cart[itemName].quantity <= 0) delete cart[itemName];
-        updateCartUI();
-        renderCartModalItems();
+        updateCartUI(); renderCartModalItems();
         if (Object.keys(cart).length === 0) document.getElementById('cart-modal').classList.remove('show');
     }
 };
 
 window.clearCart = function() {
     if (confirm("Are you sure you want to clear your entire order?")) {
-        cart = {};
-        updateCartUI();
+        cart = {}; updateCartUI();
         document.getElementById('cart-modal').classList.remove('show');
     }
 };
@@ -123,9 +139,7 @@ window.updateCartUI = function() {
         cartBar.classList.remove('animate-pop'); 
         void cartBar.offsetWidth; 
         cartBar.classList.add('animate-pop');
-    } else { 
-        cartBar.style.display = 'none'; 
-    }
+    } else { cartBar.style.display = 'none'; }
 };
 
 window.toggleCartModal = function() {
@@ -136,21 +150,13 @@ window.toggleCartModal = function() {
 
 window.renderCartModalItems = function() {
     const list = document.getElementById('cart-items-list');
-    list.innerHTML = '';
-    let total = 0;
+    list.innerHTML = ''; let total = 0;
     for (let item in cart) {
-        let itemTotal = cart[item].price * cart[item].quantity;
-        total += itemTotal;
+        let itemTotal = cart[item].price * cart[item].quantity; total += itemTotal;
         list.innerHTML += `
             <div class="cart-item-row" style="position: relative; z-index: 2;">
-                <div>
-                    <strong style="color: var(--text-dark);">${item}</strong><br>
-                    <small style="color: #64748B;">₹${cart[item].price} x ${cart[item].quantity}</small>
-                </div>
-                <div style="text-align: right;">
-                    <strong style="display:block; margin-bottom: 5px; color: var(--text-accent);">₹${itemTotal}</strong>
-                    <button class="remove-btn" onclick="removeFromCart('${item}')">Remove</button>
-                </div>
+                <div><strong style="color: var(--text-dark);">${item}</strong><br><small style="color: #64748B;">₹${cart[item].price} x ${cart[item].quantity}</small></div>
+                <div style="text-align: right;"><strong style="display:block; margin-bottom: 5px; color: var(--text-accent);">₹${itemTotal}</strong><button class="remove-btn" onclick="removeFromCart('${item}')">Remove</button></div>
             </div>`;
     }
     document.getElementById('modal-total').innerText = total;
@@ -159,11 +165,7 @@ window.renderCartModalItems = function() {
 window.sendWhatsAppOrder = function() {
     const customerName = document.getElementById('customer-name').value.trim();
     if (customerName.length < 2) return alert("Please enter a valid name!"); 
-
-    if (!window.currentUser) {
-        document.getElementById('login-modal').classList.add('show');
-        return;
-    }
+    if (!window.currentUser) return document.getElementById('login-modal').classList.add('show');
 
     let total = 0;
     for (let item in cart) total += cart[item].price * cart[item].quantity;
@@ -171,21 +173,35 @@ window.sendWhatsAppOrder = function() {
     document.getElementById('cart-modal').classList.remove('show');
     if (window.saveOrderToFirebase) window.saveOrderToFirebase(customerName, cart, total);
 
-    alert("✅ Order successfully sent to the kitchen!\n\nPlease wait, your phone will notify you the exact moment it is ready for pickup.");
+    // Show the Celebration Placed Modal instead of Alert
+    document.getElementById('placed-modal').classList.add('show');
+
+    // Handle App Install Prompt if it's their first order
+    let ordersCount = parseInt(localStorage.getItem('orderCount') || '0');
+    if (ordersCount === 0 && window.deferredPrompt) {
+        document.getElementById('install-suggestion-container').style.display = 'block';
+        document.getElementById('modal-install-btn').onclick = () => {
+            window.deferredPrompt.prompt();
+            window.deferredPrompt = null;
+            document.getElementById('install-suggestion-container').style.display = 'none';
+        };
+    } else {
+        document.getElementById('install-suggestion-container').style.display = 'none';
+    }
+    
+    localStorage.setItem('orderCount', ordersCount + 1);
     cart = {}; updateCartUI();
 };
 
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('firebase-messaging-sw.js').catch(err => console.log("SW failed:", err));
-
-let deferredPrompt;
+window.deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
-    deferredPrompt = e;
+    window.deferredPrompt = e;
     document.getElementById('install-app-btn').style.display = 'inline-flex';
 });
 
 document.getElementById('install-app-btn').addEventListener('click', () => {
-    if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; }
+    if (window.deferredPrompt) { window.deferredPrompt.prompt(); window.deferredPrompt = null; }
 });
 
 document.getElementById('share-app-btn').addEventListener('click', () => {
@@ -193,3 +209,5 @@ document.getElementById('share-app-btn').addEventListener('click', () => {
     if (navigator.share) navigator.share(shareData);
     else window.open(`https://wa.me/?text=${encodeURIComponent(shareData.text + " " + shareData.url)}`);
 });
+
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('firebase-messaging-sw.js').catch(err => console.log("SW failed:", err));
