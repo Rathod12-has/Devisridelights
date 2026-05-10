@@ -26,7 +26,6 @@
     <div class="carousel-hint">Swipe to explore 👉</div>
     <div class="carousel-wrapper">
         <div class="carousel-track">
-            <!-- Order Card -->
             <div class="carousel-card" style="text-align: center;">
                 <div class="bg-shape shape-1"></div><div class="bg-shape shape-2"></div><div class="bg-shape shape-3"></div><div class="bg-shape shape-4"></div>
                 <div class="card-label-wrapper"><div class="card-label-line"></div><div class="card-label-text-wrapper"><span class="card-label-text">ORDER</span></div></div>
@@ -38,7 +37,6 @@
                 <p style="color: #475569; font-weight: 600; line-height: 1.4; font-size: 0.85rem; margin-bottom: 15px; position: relative; z-index: 2;">🌟 Skip the wait! Order ahead online and we'll have your hot food ready.</p>
                 <a href="#menu-container" class="scroll-down-arrow" style="position: relative; z-index: 2; margin-top: auto;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></a>
             </div>
-            <!-- Track Card -->
             <div class="carousel-card">
                 <div class="bg-shape shape-5"></div><div class="bg-shape shape-6"></div><div class="bg-shape shape-7"></div><div class="bg-shape shape-8"></div>
                 <div class="card-label-wrapper"><div class="card-label-line"></div><div class="card-label-text-wrapper"><span class="card-label-text">TRACKING</span></div></div>
@@ -47,7 +45,6 @@
                     <p style="color: #64748B; text-align: center;">No active orders right now.</p>
                 </div>
             </div>
-            <!-- NEW: Announcement Card -->
             <div class="carousel-card" style="background: linear-gradient(135deg, #FFFBEB, #FFFFFF);">
                 <div class="bg-shape shape-2"></div><div class="bg-shape shape-3"></div>
                 <div class="card-label-wrapper"><div class="card-label-line" style="background-color:#F59E0B;"></div><div class="card-label-text-wrapper"><span class="card-label-text">LATEST</span></div></div>
@@ -57,7 +54,6 @@
                     <p style="color: #64748B; font-weight: 600; line-height: 1.4; font-size: 0.9rem;">No new announcements right now.</p>
                 </div>
             </div>
-            <!-- Special Card -->
             <div class="carousel-card" style="background: linear-gradient(135deg, var(--inner-card-bg), #FFFFFF);">
                 <div class="bg-shape shape-1"></div><div class="bg-shape shape-2"></div>
                 <div class="card-label-wrapper"><div class="card-label-line"></div><div class="card-label-text-wrapper"><span class="card-label-text">SPECIAL</span></div></div>
@@ -65,7 +61,6 @@
                 <h3 class="card-title" style="color: var(--text-accent); margin-top: 5px !important;">Today's Special</h3>
                 <p style="text-align: center; color: #475569; font-weight: 600; line-height: 1.4; margin: 0; font-size: 0.95rem; position: relative; z-index: 2;">Special items will be available soon.!</p>
             </div>
-            <!-- Rewards Card -->
             <div class="carousel-card">
                 <div class="bg-shape shape-3"></div><div class="bg-shape shape-4"></div>
                 <div class="card-label-wrapper"><div class="card-label-line"></div><div class="card-label-text-wrapper"><span class="card-label-text">REWARDS</span></div></div>
@@ -78,10 +73,8 @@
         </div>
     </div>
 
-    <!-- MAIN MENU CONTAINER -->
     <div class="container" id="menu-container"><p style='text-align:center; padding: 40px;'>Loading menu...</p></div>
 
-    <!-- CONTACT INFO & GOOGLE MAP -->
     <div class="container">
         <div class="shop-info inner-card" style="position: relative; overflow: hidden; margin-bottom: 30px;">
             <h3 style="color: var(--text-accent); margin-top: 0; position: relative; z-index: 2;">Contact Us</h3>
@@ -101,7 +94,6 @@
         <button class="checkout-btn" onclick="toggleCartModal()">View Order & Checkout</button>
     </div>
 
-    <!-- CART MODAL -->
     <div id="cart-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header-flex"><h2>Your Order</h2><button class="clear-cart-btn" onclick="clearCart()">Clear All</button><span class="close-btn" onclick="toggleCartModal()">×</span></div>
@@ -115,7 +107,6 @@
         </div>
     </div>
 
-    <!-- ORDER PLACED CELEBRATION MODAL -->
     <div id="placed-modal" class="ready-modal-hidden">
         <div class="ready-modal-content" style="text-align: center;">
             <div style="font-size: 4rem; margin-bottom: 10px; animation: bounceContinuous 2s infinite;">🎉</div>
@@ -129,7 +120,6 @@
         </div>
     </div>
 
-    <!-- GOOGLE LOGIN MODAL -->
     <div id="login-modal" class="modal-hidden">
         <div class="login-modal-content">
             <h2>Welcome!</h2><p class="modal-subtitle">Sign in with Google to continue.</p>
@@ -140,7 +130,6 @@
         </div>
     </div>
 
-    <!-- PHONE NUMBER REQUEST MODAL -->
     <div id="phone-request-modal" class="modal-hidden">
         <div class="modal-content" style="border-radius: 24px 24px 0 0; z-index: 2001;">
             <h2 style="color: var(--text-accent); text-align: center;">One Last Step!</h2><p class="modal-subtitle">We need your WhatsApp number to send order updates.</p>
@@ -154,7 +143,6 @@
     <button id="my-orders-btn" onclick="openOrderHistory()" style="display: none;">📜 My Orders</button>
     <button id="call-shop-btn" style="display: none;">📞 Call</button>
 
-    <!-- ACCOUNT PROFILE MODAL -->
     <div id="account-modal" class="modal-hidden">
         <div class="account-modal-content">
             <div class="modal-header-flex" style="border-bottom:none; margin-bottom: 0;">
@@ -165,7 +153,6 @@
         </div>
     </div>
     
-    <!-- HISTORY MODAL -->
     <div id="history-modal" class="modal-hidden">
         <div class="history-modal-content">
             <div class="modal-header-flex" style="border-bottom:none; margin-bottom: 0;">
@@ -176,7 +163,6 @@
         </div>
     </div>
 
-    <!-- ORDER DETAILS MODAL -->
     <div id="order-details-modal" class="modal-hidden">
         <div class="modal-content">
             <div class="modal-header-flex"><h2>Order Details</h2><span class="close-btn" onclick="document.getElementById('order-details-modal').classList.remove('show')">×</span></div>
@@ -184,7 +170,6 @@
         </div>
     </div>
 
-    <!-- ORDER READY CELEBRATION MODAL -->
     <div id="ready-modal" class="ready-modal-hidden">
         <div class="ready-modal-content" style="text-align: center;">
             <div style="font-size: 4rem; margin-bottom: 10px; animation: bounceContinuous 2s infinite;">🎉</div>
@@ -194,7 +179,39 @@
         </div>
     </div>
 
-    <!-- LOAD SCRIPT BEFORE MODULE -->
+    <div id="gallery-modal" class="modal-hidden">
+        <div class="modal-content" style="padding: 20px;">
+            <div class="modal-header-flex">
+                <h2>Menu Images</h2>
+                <span class="close-btn" onclick="document.getElementById('gallery-modal').classList.remove('show')">×</span>
+            </div>
+            <div id="gallery-container" style="display: flex; overflow-x: auto; gap: 15px; padding-bottom: 10px; scroll-snap-type: x mandatory;">
+                </div>
+            <p style="text-align: center; font-size: 0.8rem; color: #64748B; margin-top: 10px;">Swipe to view more 👉</p>
+        </div>
+    </div>
+
+    <div id="custom-alert-modal" class="modal-overlay" style="z-index: 10000;">
+        <div style="background: var(--main-card-bg); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; max-width: 350px; padding: 25px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); text-align: center; animation: alertPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
+            <div id="custom-alert-icon" style="font-size: 3.5rem; margin-bottom: 10px; animation: bounceContinuous 2s infinite;">🔔</div>
+            <h3 id="custom-alert-title" style="color: var(--text-accent); margin-top: 0; font-size: 1.4rem;">Alert</h3>
+            <p id="custom-alert-message" style="color: #475569; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px; font-weight: 600;"></p>
+            <button onclick="document.getElementById('custom-alert-modal').classList.remove('show')" class="action-btn" style="width: 100%; margin-top: 0;">Okay</button>
+        </div>
+    </div>
+
+    <div id="custom-confirm-modal" class="modal-overlay" style="z-index: 10000;">
+        <div style="background: var(--main-card-bg); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; max-width: 350px; padding: 25px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); text-align: center; animation: alertPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
+            <div style="font-size: 3.5rem; margin-bottom: 10px;">🗑️</div>
+            <h3 style="color: #E11D48; margin-top: 0; font-size: 1.4rem;">Are you sure?</h3>
+            <p id="custom-confirm-message" style="color: #475569; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px; font-weight: 600;"></p>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="closeConfirmModal()" class="action-btn" style="background: #F1F5F9; color: var(--text-dark); margin-top: 0; box-shadow: none;">Cancel</button>
+                <button onclick="executeConfirm()" class="action-btn" style="background: #E11D48; margin-top: 0;">Yes, Clear</button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 
     <script type="module">
@@ -228,7 +245,9 @@
             } catch (error) { console.error("Error getting notification token:", error); }
         };
         
-        onMessage(messaging, (payload) => { alert(`🛎️ ${payload.notification.title}\n${payload.notification.body}`); });
+        onMessage(messaging, (payload) => { 
+            showCustomAlert(`<strong>${payload.notification.title}</strong><br>${payload.notification.body}`, 'info'); 
+        });
 
         async function loadCustomerMenu() {
             try {
@@ -255,7 +274,7 @@
         }
         loadCustomerMenu();
 
-        // --- 1. PREVENT BANNER OVERLAPPING BUTTONS ---
+        // --- PREVENT BANNER OVERLAPPING BUTTONS ---
         onSnapshot(doc(db, "settings", "store"), (docSnap) => {
             let storeStatusBanner = document.getElementById('store-closed-banner');
             if (!storeStatusBanner) {
@@ -269,7 +288,6 @@
                 document.querySelectorAll('.badge-status').forEach(b => { b.innerText = "Closed"; b.style.color = "#EF4444"; });
                 document.getElementById('floating-cart').style.display = "none";
                 
-                // Shift floating buttons down so they don't overlap the banner
                 document.getElementById('login-btn').style.top = '60px';
                 document.getElementById('my-account-btn').style.top = '60px';
                 document.getElementById('active-order-status').style.top = '60px';
@@ -278,33 +296,67 @@
                 document.querySelectorAll('.badge-status').forEach(b => { b.innerText = "Open"; b.style.color = "#10B981"; });
                 if(Object.keys(cart).length > 0) window.updateCartUI();
                 
-                // Shift buttons back up
                 document.getElementById('login-btn').style.top = '15px';
                 document.getElementById('my-account-btn').style.top = '15px';
                 document.getElementById('active-order-status').style.top = '15px';
             }
         });
 
-        // --- 2. UPDATE ANNOUNCEMENT CAROUSEL CARD ---
+        // --- UPDATE 1: DRAGGABLE BROADCAST ANNOUNCEMENT ---
         const qBroadcast = query(collection(db, "broadcasts"), orderBy("timestamp", "desc"), limit(1));
         let initialBroadcastLoad = true;
         onSnapshot(qBroadcast, (snap) => {
             snap.forEach(doc => {
                 let msg = doc.data().message;
-                let time = doc.data().timestamp ? new Date(doc.data().timestamp.toMillis()).toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true, day: 'numeric', month: 'short' }) : "Just now";
+                let timeMillis = doc.data().timestamp ? doc.data().timestamp.toMillis() : Date.now();
+                let time = new Date(timeMillis).toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true, day: 'numeric', month: 'short' });
                 
-                // Update the static carousel card
                 document.getElementById('carousel-announcement-content').innerHTML = `
                     <p style="color: var(--text-dark); font-weight: 800; line-height: 1.4; font-size: 0.95rem; margin: 0 0 5px 0;">${msg}</p>
                     <span style="font-size: 0.75rem; color: #64748B;">${time}</span>
                 `;
 
-                // Only throw the visual popup if it's a NEW message coming in live
-                if (!initialBroadcastLoad) {
+                let timeDiffMins = (Date.now() - timeMillis) / 60000;
+
+                // Only show floating modal if it's new AND less than 30 mins old
+                if (!initialBroadcastLoad && timeDiffMins <= 30) {
                     let alertDiv = document.createElement('div');
-                    alertDiv.style.cssText = "position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #FFFFFF; border: 2px solid #7E22CE; padding: 20px; border-radius: 16px; box-shadow: 0 10px 40px rgba(126, 34, 206, 0.3); z-index: 10000; width: 90%; max-width: 400px; text-align: center; animation: slideDownFade 0.5s ease forwards;";
-                    alertDiv.innerHTML = `<span style="font-size: 2rem;">📢</span><h3 style="margin: 10px 0; color: #7E22CE;">New Announcement!</h3><p style="color: #1E293B; font-weight: 600; margin-bottom: 20px;">${msg}</p><button class="action-btn" onclick="this.parentElement.remove()" style="width: 100%;">Got it!</button>`;
+                    alertDiv.style.cssText = "position: fixed; top: 15%; left: 50%; transform: translateX(-50%); background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(126, 34, 206, 0.3); padding: 20px; border-radius: 16px; box-shadow: 0 10px 40px rgba(126, 34, 206, 0.3); z-index: 10000; width: 90%; max-width: 350px; text-align: center; touch-action: none;";
+                    alertDiv.innerHTML = `
+                        <div id="drag-handle" style="width: 40px; height: 5px; background: #CBD5E1; border-radius: 10px; margin: 0 auto 15px auto; cursor: grab;"></div>
+                        <span style="font-size: 2rem;">📢</span>
+                        <h3 style="margin: 10px 0; color: #7E22CE;">New Announcement!</h3>
+                        <p style="color: #1E293B; font-weight: 600; margin-bottom: 20px;">${msg}</p>
+                        <button class="action-btn" onclick="this.parentElement.remove()" style="width: 100%;">Got it!</button>
+                    `;
                     document.body.appendChild(alertDiv);
+
+                    // Make it draggable for mobile
+                    let isDragging = false, startX, startY, initialX, initialY;
+                    const dragHandle = alertDiv.querySelector('#drag-handle');
+                    
+                    const dragStart = (e) => {
+                        isDragging = true; dragHandle.style.cursor = 'grabbing';
+                        startX = e.touches ? e.touches[0].clientX : e.clientX;
+                        startY = e.touches ? e.touches[0].clientY : e.clientY;
+                        initialX = alertDiv.offsetLeft; initialY = alertDiv.offsetTop;
+                    };
+                    const dragging = (e) => {
+                        if (!isDragging) return; e.preventDefault();
+                        let currentX = e.touches ? e.touches[0].clientX : e.clientX;
+                        let currentY = e.touches ? e.touches[0].clientY : e.clientY;
+                        alertDiv.style.left = initialX + (currentX - startX) + 'px';
+                        alertDiv.style.top = initialY + (currentY - startY) + 'px';
+                        alertDiv.style.transform = 'none'; 
+                    };
+                    const dragEnd = () => { isDragging = false; dragHandle.style.cursor = 'grab'; };
+
+                    dragHandle.addEventListener('mousedown', dragStart); document.addEventListener('mousemove', dragging); document.addEventListener('mouseup', dragEnd);
+                    dragHandle.addEventListener('touchstart', dragStart, {passive: false}); document.addEventListener('touchmove', dragging, {passive: false}); document.addEventListener('touchend', dragEnd);
+
+                    // Auto-remove modal after 30 mins from broadcast creation
+                    let remainingMs = (30 * 60000) - (Date.now() - timeMillis);
+                    if(remainingMs > 0) setTimeout(() => { if(document.body.contains(alertDiv)) alertDiv.remove(); }, remainingMs);
                 }
             });
             initialBroadcastLoad = false;
@@ -323,9 +375,9 @@
             }
         });
 
-        window.googleLogin = async function() { try { await signInWithPopup(auth, googleProvider); document.getElementById('login-modal').classList.remove('show'); } catch (error) { alert("Login failed. Please try again."); } };
+        window.googleLogin = async function() { try { await signInWithPopup(auth, googleProvider); document.getElementById('login-modal').classList.remove('show'); } catch (error) { showCustomAlert("Login failed. Please try again.", "error"); } };
         window.saveNewPhoneNumber = async function() {
-            const phoneInput = document.getElementById("new-user-phone").value.trim(); if (phoneInput.length !== 10 || isNaN(phoneInput)) return alert("Please enter a valid 10-digit phone number.");
+            const phoneInput = document.getElementById("new-user-phone").value.trim(); if (phoneInput.length !== 10 || isNaN(phoneInput)) return showCustomAlert("Please enter a valid 10-digit phone number.", "error");
             const formattedPhone = "+91" + phoneInput; const user = window.tempUser;
             await setDoc(doc(db, "users", user.uid), { name: user.displayName, email: user.email, phoneNumber: formattedPhone, photoURL: user.photoURL, createdAt: serverTimestamp() });
             document.getElementById('phone-request-modal').classList.remove('show'); finishLoginSetup(user, formattedPhone, user.photoURL);
@@ -354,7 +406,6 @@
                     if (status === "Pending") { statusText.innerText = "Order Placed"; statusDot.className = "status-dot"; } else if (status === "Ready") { statusText.innerText = "Ready for Pickup!"; statusDot.className = "status-dot ready"; } else { statusText.innerText = status; statusDot.className = "status-dot"; }
                     let d = new Date(latestOrder.timestamp ? latestOrder.timestamp.toMillis() : Date.now()); let timeStr = d.toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true }); let dateStr = d.toLocaleString('en-IN', { day: '2-digit', month: 'short' });
                     
-                    // --- 3. EXPLICIT WHATSAPP TRACKING BUTTON ---
                     let waText = encodeURIComponent(`Hi Devi Sri Delights, I want to check the status of my order for Rs. ${latestOrder.totalBill}. Ordered by: ${latestOrder.customerName}`);
                     
                     carouselOrderContent.innerHTML = `
@@ -363,8 +414,8 @@
                             <p style="margin: 0 0 5px 0; font-size: 0.85rem; color: #64748B;">📅 ${dateStr} at ${timeStr}</p>
                             <p style="margin: 0; font-size: 0.95rem; font-weight: 800; color: var(--text-accent);">Total: ₹${latestOrder.totalBill}</p>
                         </div>
-                        <a href="https://wa.me/916305469979?text=${waText}" target="_blank" class="action-btn" style="display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; width: 100%; box-sizing: border-box; background: #10B981;">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="width: 16px; fill: white;"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg> 
+                        <a href="https://wa.me/916305469979?text=${waText}" target="_blank" class="glass-wa-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="width: 18px; fill: #059669;"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg> 
                             Track on WhatsApp
                         </a>`;
                 } else { statusTracker.style.display = 'none'; carouselOrderContent.innerHTML = `<p style="color: #64748B; text-align: center;">No active orders right now.</p>`; }
@@ -380,14 +431,48 @@
             accContent.innerHTML = `<div style="width: 100%; box-sizing: border-box; text-align: left; background: var(--inner-card-bg); padding: 15px; border-radius: var(--radius-md); border: 1px solid rgba(126, 34, 206, 0.1);"><div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;"><img src="${photoUrl}" class="small-profile-pic" onerror="this.src='${fallbackPic}'"><div style="overflow: hidden;"><p style="margin: 0; font-size: 0.95rem; color: var(--text-dark); font-weight: 700; white-space: nowrap; text-overflow: ellipsis;">${customerName}</p><p style="margin: 0; font-size: 0.8rem; color: #64748B; white-space: nowrap; text-overflow: ellipsis;">${window.currentUser.email}</p></div></div><div style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed rgba(126, 34, 206, 0.2); display: flex; justify-content: space-between; align-items: center;"><strong style="color: var(--text-dark); font-size: 0.9rem;">⭐ Points</strong><span class="points-badge">${points} pts</span></div></div>`;
         }
 
-        window.saveProfileName = function() { const inputField = document.getElementById('profile-name-input'); if(!inputField) return; const newName = inputField.value.trim(); if (newName.length < 2) return alert("Please enter a valid name."); localStorage.setItem('customerName', newName); alert("✅ Profile name updated successfully!"); updateCarouselAccount(); openAccountModal(); };
+        window.saveProfileName = function() { const inputField = document.getElementById('profile-name-input'); if(!inputField) return; const newName = inputField.value.trim(); if (newName.length < 2) return showCustomAlert("Please enter a valid name.", "error"); localStorage.setItem('customerName', newName); showCustomAlert("✅ Profile name updated successfully!", "success"); updateCarouselAccount(); openAccountModal(); };
 
+        // --- UPDATE 2: REWARDS QR CODE GENERATOR ---
         window.openAccountModal = async function() {
-            if (!window.currentUser) return; document.getElementById('account-modal').classList.add('show'); const detailsDiv = document.getElementById('account-details'); detailsDiv.innerHTML = "<p style='text-align:center; color: var(--text-dark); position: relative; z-index: 2;'>Gathering your details...</p>";
-            let customerName = localStorage.getItem('customerName') || window.currentUser.name || "Customer"; let fallbackPic = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; let photoUrl = window.currentUser.photoURL || fallbackPic; let totalOrders = 0; let points = 0;
-            try { const q = query(collection(db, "orders"), where("customerEmail", "==", window.currentUser.email)); const snap = await getDocs(q); totalOrders = snap.size; let totalSpent = 0; snap.forEach(doc => { totalSpent += doc.data().totalBill || 0; }); points = Math.floor(totalSpent / 100); } catch (error) { console.warn("Could not fetch orders for modal."); }
-            let dessertsEarned = Math.floor(points / 10); let rewardsHTML = `<div class="rewards-banner" style="margin-bottom: 15px;"><p style="margin: 0; font-size: 0.85rem;">Earn 1 point per ₹100 spent.<br><strong>10 Points = 1 Free Dessert!</strong></p><h3 style="margin: 5px 0 0 0; color: #7E22CE;">Your Points: ${points}</h3></div>`;
-            if (dessertsEarned > 0) rewardsHTML += `<div style="background: #D1FAE5; color: #059669; padding: 12px; border-radius: 8px; text-align: center; font-weight: 800; border: 1px solid #10B981; margin-bottom: 15px; animation: heartbeatGlow 2s infinite;">🎉 You have earned ${dessertsEarned} Free Dessert(s)!<br><span style="font-size: 0.8rem; font-weight: 600;">Show this screen at the counter to claim.</span></div>`;
+            if (!window.currentUser) return; 
+            document.getElementById('account-modal').classList.add('show'); 
+            const detailsDiv = document.getElementById('account-details'); 
+            detailsDiv.innerHTML = "<p style='text-align:center; color: var(--text-dark); position: relative; z-index: 2;'>Gathering your details...</p>";
+            
+            let customerName = localStorage.getItem('customerName') || window.currentUser.name || "Customer"; 
+            let fallbackPic = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; 
+            let photoUrl = window.currentUser.photoURL || fallbackPic; 
+            let totalOrders = 0; let points = 0;
+            
+            try { 
+                const q = query(collection(db, "orders"), where("customerEmail", "==", window.currentUser.email)); 
+                const snap = await getDocs(q); totalOrders = snap.size; let totalSpent = 0; 
+                snap.forEach(doc => { totalSpent += doc.data().totalBill || 0; }); 
+                points = Math.floor(totalSpent / 100); 
+            } catch (error) { console.warn("Could not fetch orders for modal."); }
+            
+            let dessertsEarned = Math.floor(points / 10); 
+            let rewardsHTML = `<div class="rewards-banner" style="margin-bottom: 15px;"><p style="margin: 0; font-size: 0.85rem;">Earn 1 point per ₹100 spent.<br><strong>10 Points = 1 Free Dessert!</strong></p><h3 style="margin: 5px 0 0 0; color: #7E22CE;">Your Points: ${points}</h3></div>`;
+            
+            if (dessertsEarned > 0) {
+                // Generate QR Code payload and URL
+                let qrData = encodeURIComponent(JSON.stringify({
+                    uid: window.currentUser.uid,
+                    email: window.currentUser.email,
+                    name: customerName,
+                    rewardsToClaim: dessertsEarned
+                }));
+                let qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${qrData}&color=1E293B`;
+
+                rewardsHTML += `
+                <div style="background: #D1FAE5; color: #059669; padding: 20px 15px; border-radius: 12px; text-align: center; border: 1px solid #10B981; margin-bottom: 15px; display: flex; flex-direction: column; align-items: center;">
+                    <span style="font-size: 1.1rem; font-weight: 800; margin-bottom: 15px;">🎉 You earned ${dessertsEarned} Free Dessert(s)!</span>
+                    <img src="${qrUrl}" alt="Reward QR" style="width: 140px; height: 140px; border-radius: 8px; border: 4px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 10px;">
+                    <span style="font-size: 0.8rem; font-weight: 600;">Show this QR code at the counter for scanning to claim your reward.</span>
+                </div>`;
+            }
+            
             if (Notification.permission !== 'granted') rewardsHTML += `<button onclick="requestPushPermissions()" class="action-btn" style="background: #10B981; margin-bottom: 15px; padding: 10px;">🔔 Turn On Order Alerts</button>`;
             detailsDiv.innerHTML = `<div style="position: relative; z-index: 2;"><div style="text-align: center; margin-bottom: 25px;"><img src="${photoUrl}" class="profile-pic" onerror="this.src='${fallbackPic}'"><h3 style="margin: 10px 0 5px 0; color: var(--text-dark);">${customerName}</h3><p style="margin: 0; color: #64748B; font-size: 0.9rem;">${window.currentUser.email}</p><p style="margin: 5px 0 0 0; color: var(--text-accent); font-weight: 700; font-size: 0.9rem;">📞 ${window.currentUser.phoneNumber || "No number saved"}</p></div>${rewardsHTML}<div style="background: var(--inner-card-bg); padding: 15px; border-radius: var(--radius-md); border: 1px solid rgba(126, 34, 206, 0.1); margin-bottom: 15px;"><label style="font-size: 0.85rem; font-weight: 700; color: #64748B;">Edit Display Name:</label><div style="display: flex; gap: 10px; margin-top: 5px;"><input type="text" id="profile-name-input" class="styled-input" value="${customerName}" placeholder="Your Name" style="padding: 10px;"><button onclick="saveProfileName()" class="action-btn" style="margin-top: 0; width: auto; padding: 0 20px;">Save</button></div></div><p style="margin-bottom: 10px; text-align: center;"><strong>🛍️ Total Orders Placed:</strong> <span style="color: var(--text-dark);">${totalOrders}</span></p></div>`;
         };
