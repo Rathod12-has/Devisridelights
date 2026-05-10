@@ -2,6 +2,76 @@ let cart = {};
 const container = document.getElementById('menu-container');
 window.storeIsOpen = true;
 
+// --- CUSTOM ALERT NOTIFICATION SYSTEM ---
+const alertSoundInfo = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3");
+const alertSoundError = new Audio("https://assets.mixkit.co/active_storage/sfx/2997/2997-preview.mp3");
+
+window.showCustomAlert = function(message, type = 'info') {
+    const modal = document.getElementById('custom-alert-modal');
+    const iconElement = document.getElementById('custom-alert-icon');
+    const titleElement = document.getElementById('custom-alert-title');
+    const messageElement = document.getElementById('custom-alert-message');
+
+    messageElement.innerHTML = message;
+
+    if (type === 'error') {
+        iconElement.innerHTML = "⚠️";
+        titleElement.innerHTML = "Oops!";
+        titleElement.style.color = "#E11D48"; 
+        alertSoundError.currentTime = 0;
+        alertSoundError.play().catch(e => console.log("Audio blocked"));
+    } else if (type === 'success') {
+        iconElement.innerHTML = "✅";
+        titleElement.innerHTML = "Success!";
+        titleElement.style.color = "#10B981"; 
+        alertSoundInfo.currentTime = 0;
+        alertSoundInfo.play().catch(e => console.log("Audio blocked"));
+    } else {
+        iconElement.innerHTML = "🔔";
+        titleElement.innerHTML = "Notice";
+        titleElement.style.color = "var(--text-accent)"; 
+        alertSoundInfo.currentTime = 0;
+        alertSoundInfo.play().catch(e => console.log("Audio blocked"));
+    }
+
+    modal.classList.add('show');
+};
+
+// --- CUSTOM CONFIRM DIALOG SYSTEM ---
+window.confirmCallback = null;
+
+window.showCustomConfirm = function(message, callback) {
+    document.getElementById('custom-confirm-message').innerHTML = message;
+    window.confirmCallback = callback;
+    document.getElementById('custom-confirm-modal').classList.add('show');
+    alertSoundError.currentTime = 0;
+    alertSoundError.play().catch(e => console.log("Audio blocked"));
+};
+
+window.closeConfirmModal = function() {
+    document.getElementById('custom-confirm-modal').classList.remove('show');
+    window.confirmCallback = null;
+};
+
+window.executeConfirm = function() {
+    if(window.confirmCallback) window.confirmCallback();
+    closeConfirmModal();
+};
+
+window.openImageGallery = function(imagesStr) {
+    let images = JSON.parse(imagesStr);
+    if (!images || images.length === 0) return;
+    
+    const container = document.getElementById('gallery-container');
+    container.innerHTML = '';
+    
+    images.forEach(imgUrl => {
+        container.innerHTML += `<img src="${imgUrl}" style="width: 75vw; max-width: 280px; height: 220px; object-fit: cover; border-radius: 12px; scroll-snap-align: center; flex-shrink: 0; box-shadow: var(--shadow-inner);">`;
+    });
+    
+    document.getElementById('gallery-modal').classList.add('show');
+};
+
 document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
         const track = document.querySelector('.carousel-track');
@@ -43,7 +113,6 @@ window.renderMenu = function(menuCategories) {
         
         const itemList = card.querySelector('.item-list');
         
-        // Safely check if items exist and is an array
         if(category.items && Array.isArray(category.items) && category.items.length > 0) {
             category.items.forEach(item => {
                 const itemDiv = document.createElement('div');
@@ -62,7 +131,12 @@ window.renderMenu = function(menuCategories) {
                     }
                 }
 
-                let itemImg = item.image ? `<img src="${item.image}" style="width: 50px; height: 50px; border-radius: 8px; object-fit: cover; margin-right: 12px; flex-shrink: 0; box-shadow: var(--shadow-inner);">` : '';
+                // Safely convert images array or single image to string for passing into the function
+                let imagesArray = item.images ? item.images : (item.image ? [item.image] : []);
+                let imagesStr = JSON.stringify(imagesArray).replace(/"/g, '&quot;');
+                
+                let displayImg = imagesArray.length > 0 ? imagesArray[0] : null;
+                let itemImg = displayImg ? `<img src="${displayImg}" onclick="openImageGallery('${imagesStr}')" style="width: 50px; height: 50px; border-radius: 8px; object-fit: cover; margin-right: 12px; flex-shrink: 0; box-shadow: var(--shadow-inner); cursor: pointer;">` : '';
 
                 itemDiv.innerHTML = `
                     <div style="display: flex; align-items: center;">${itemImg}<div class="item-info"><h4 style="color: var(--text-dark); margin-bottom: 4px; font-size: 0.95rem;">${item.name}</h4>${priceDisplay}</div></div>
@@ -80,7 +154,7 @@ window.renderMenu = function(menuCategories) {
 const popSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3");
 
 window.addToCart = function(itemName, price) {
-    if (!window.storeIsOpen) return alert("Sorry, the store is currently closed! We aren't accepting new orders right now.");
+    if (!window.storeIsOpen) return showCustomAlert("Sorry, the store is currently closed! We aren't accepting new orders right now.", "error");
     cart[itemName] = cart[itemName] ? { ...cart[itemName], quantity: cart[itemName].quantity + 1 } : { price, quantity: 1 };
     updateCartUI(); popSound.currentTime = 0; popSound.play().catch(e=>console.log("Audio blocked"));
 };
@@ -94,7 +168,9 @@ window.removeFromCart = function(itemName) {
 };
 
 window.clearCart = function() {
-    if (confirm("Are you sure you want to clear your entire order?")) { cart = {}; updateCartUI(); document.getElementById('cart-modal').classList.remove('show'); }
+    showCustomConfirm("Are you sure you want to clear your entire order?", function() {
+        cart = {}; updateCartUI(); document.getElementById('cart-modal').classList.remove('show');
+    });
 };
 
 window.updateCartUI = function() {
@@ -122,9 +198,9 @@ window.renderCartModalItems = function() {
 };
 
 window.sendWhatsAppOrder = function() {
-    if (!window.storeIsOpen) return alert("Sorry, the store is currently closed! We aren't accepting new orders right now.");
+    if (!window.storeIsOpen) return showCustomAlert("Sorry, the store is currently closed! We aren't accepting new orders right now.", "error");
     const customerName = document.getElementById('customer-name').value.trim();
-    if (customerName.length < 2) return alert("Please enter a valid name!"); 
+    if (customerName.length < 2) return showCustomAlert("Please enter a valid name!", "error"); 
     if (!window.currentUser) return document.getElementById('login-modal').classList.add('show');
 
     let total = 0; for (let item in cart) total += cart[item].price * cart[item].quantity;
