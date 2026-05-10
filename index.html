@@ -478,7 +478,7 @@
             let availableDesserts = Math.floor(availablePoints / 10);
             
             let rewardsHTML = `<div class="rewards-banner" style="margin-bottom: 15px;">
-                <p style="margin: 0; font-size: 0.85rem;">Earn 1 point per ₹100 spent.<br><strong>10 Points = 1 Free Dessert!</strong></p>
+                <p style="margin: 0; font-size: 0.85rem;">Earn 1 point per ₹100 spent.<br><strong>10 Points = 1 Free Ice Cream!</strong></p>
                 <div style="display: flex; justify-content: space-around; background: #FFFFFF; padding: 10px; border-radius: 8px; margin-top: 10px; border: 1px solid rgba(126, 34, 206, 0.1);">
                     <div style="text-align: center;">
                         <span style="display: block; font-size: 0.75rem; color: #64748B;">Total</span>
@@ -508,7 +508,7 @@
 
                 rewardsHTML += `
                 <div style="background: #D1FAE5; color: #059669; padding: 20px 15px; border-radius: 12px; text-align: center; border: 1px solid #10B981; margin-bottom: 15px; display: flex; flex-direction: column; align-items: center;">
-                    <span style="font-size: 1.1rem; font-weight: 800; margin-bottom: 15px;">🎉 You have ${availableDesserts} Free Dessert(s)!</span>
+                    <span style="font-size: 1.1rem; font-weight: 800; margin-bottom: 15px;">🎉 You have ${availableDesserts} Free Ice Cream(s)!</span>
                     <img src="${qrUrl}" alt="Reward QR" style="width: 140px; height: 140px; border-radius: 8px; border: 4px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 10px;">
                     <span style="font-size: 0.8rem; font-weight: 600;">Show this QR code at the counter to claim your reward.</span>
                 </div>`;
@@ -516,7 +516,7 @@
                  let pointsNeeded = 10 - (availablePoints % 10);
                  if (availablePoints < 10) pointsNeeded = 10 - availablePoints;
                  rewardsHTML += `<div style="text-align: center; padding: 15px; background: #F8FAFC; border-radius: 12px; border: 1px dashed #CBD5E1; margin-bottom: 15px; color: #475569; font-size: 0.85rem;">
-                    You need <strong>${pointsNeeded} more points</strong> to unlock your next free dessert! Keep ordering! 🍔
+                    You need <strong>${pointsNeeded} more points</strong> to unlock your next free ice cream! Keep ordering! 🍦
                  </div>`;
             }
             
