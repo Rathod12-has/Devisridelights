@@ -302,7 +302,7 @@
             }
         });
 
-        // --- UPDATE 1: DRAGGABLE BROADCAST ANNOUNCEMENT ---
+        // --- DRAGGABLE BROADCAST ANNOUNCEMENT ---
         const qBroadcast = query(collection(db, "broadcasts"), orderBy("timestamp", "desc"), limit(1));
         let initialBroadcastLoad = true;
         onSnapshot(qBroadcast, (snap) => {
@@ -318,7 +318,6 @@
 
                 let timeDiffMins = (Date.now() - timeMillis) / 60000;
 
-                // Only show floating modal if it's new AND less than 30 mins old
                 if (!initialBroadcastLoad && timeDiffMins <= 30) {
                     let alertDiv = document.createElement('div');
                     alertDiv.style.cssText = "position: fixed; top: 15%; left: 50%; transform: translateX(-50%); background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(126, 34, 206, 0.3); padding: 20px; border-radius: 16px; box-shadow: 0 10px 40px rgba(126, 34, 206, 0.3); z-index: 10000; width: 90%; max-width: 350px; text-align: center; touch-action: none;";
@@ -331,7 +330,6 @@
                     `;
                     document.body.appendChild(alertDiv);
 
-                    // Make it draggable for mobile
                     let isDragging = false, startX, startY, initialX, initialY;
                     const dragHandle = alertDiv.querySelector('#drag-handle');
                     
@@ -354,7 +352,6 @@
                     dragHandle.addEventListener('mousedown', dragStart); document.addEventListener('mousemove', dragging); document.addEventListener('mouseup', dragEnd);
                     dragHandle.addEventListener('touchstart', dragStart, {passive: false}); document.addEventListener('touchmove', dragging, {passive: false}); document.addEventListener('touchend', dragEnd);
 
-                    // Auto-remove modal after 30 mins from broadcast creation
                     let remainingMs = (30 * 60000) - (Date.now() - timeMillis);
                     if(remainingMs > 0) setTimeout(() => { if(document.body.contains(alertDiv)) alertDiv.remove(); }, remainingMs);
                 }
@@ -426,14 +423,33 @@
             const accContent = document.getElementById('carousel-account-content');
             if (!window.currentUser) { accContent.innerHTML = `<p style="color: #64748B; margin-bottom: 15px; text-align: center;">Login to view rewards & details</p><button class="action-btn" onclick="document.getElementById('login-modal').classList.add('show')" style="margin-top: 0; padding: 10px;">Login Now</button>`; return; }
             accContent.innerHTML = `<p style="color: #64748B; text-align: center;">Loading Profile...</p>`;
-            let customerName = localStorage.getItem('customerName') || window.currentUser.name || "Customer"; let fallbackPic = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; let photoUrl = window.currentUser.photoURL || fallbackPic; let points = 0;
-            try { const q = query(collection(db, "orders"), where("customerEmail", "==", window.currentUser.email)); const snap = await getDocs(q); let totalSpent = 0; snap.forEach(doc => { totalSpent += doc.data().totalBill || 0; }); points = Math.floor(totalSpent / 100); } catch (error) { console.warn("Could not fetch past orders."); }
-            accContent.innerHTML = `<div style="width: 100%; box-sizing: border-box; text-align: left; background: var(--inner-card-bg); padding: 15px; border-radius: var(--radius-md); border: 1px solid rgba(126, 34, 206, 0.1);"><div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;"><img src="${photoUrl}" class="small-profile-pic" onerror="this.src='${fallbackPic}'"><div style="overflow: hidden;"><p style="margin: 0; font-size: 0.95rem; color: var(--text-dark); font-weight: 700; white-space: nowrap; text-overflow: ellipsis;">${customerName}</p><p style="margin: 0; font-size: 0.8rem; color: #64748B; white-space: nowrap; text-overflow: ellipsis;">${window.currentUser.email}</p></div></div><div style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed rgba(126, 34, 206, 0.2); display: flex; justify-content: space-between; align-items: center;"><strong style="color: var(--text-dark); font-size: 0.9rem;">⭐ Points</strong><span class="points-badge">${points} pts</span></div></div>`;
+            
+            let customerName = localStorage.getItem('customerName') || window.currentUser.name || "Customer"; 
+            let fallbackPic = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; 
+            let photoUrl = window.currentUser.photoURL || fallbackPic; 
+            let totalPoints = 0; let claimedPoints = 0; let availablePoints = 0;
+            
+            try { 
+                const q = query(collection(db, "orders"), where("customerEmail", "==", window.currentUser.email)); 
+                const snap = await getDocs(q); let totalSpent = 0; 
+                snap.forEach(doc => { totalSpent += doc.data().totalBill || 0; }); 
+                totalPoints = Math.floor(totalSpent / 100); 
+
+                const userDocRef = doc(db, "users", window.currentUser.uid);
+                const userSnap = await getDoc(userDocRef);
+                let claimedDesserts = 0;
+                if(userSnap.exists()) claimedDesserts = userSnap.data().claimedDesserts || 0;
+                
+                claimedPoints = claimedDesserts * 10;
+                availablePoints = totalPoints - claimedPoints;
+            } catch (error) { console.warn("Could not fetch past orders."); }
+            
+            accContent.innerHTML = `<div style="width: 100%; box-sizing: border-box; text-align: left; background: var(--inner-card-bg); padding: 15px; border-radius: var(--radius-md); border: 1px solid rgba(126, 34, 206, 0.1);"><div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;"><img src="${photoUrl}" class="small-profile-pic" onerror="this.src='${fallbackPic}'"><div style="overflow: hidden;"><p style="margin: 0; font-size: 0.95rem; color: var(--text-dark); font-weight: 700; white-space: nowrap; text-overflow: ellipsis;">${customerName}</p><p style="margin: 0; font-size: 0.8rem; color: #64748B; white-space: nowrap; text-overflow: ellipsis;">${window.currentUser.email}</p></div></div><div style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed rgba(126, 34, 206, 0.2); display: flex; justify-content: space-between; align-items: center;"><strong style="color: var(--text-dark); font-size: 0.9rem;">⭐ Avail. Points</strong><span class="points-badge">${availablePoints} pts</span></div></div>`;
         }
 
         window.saveProfileName = function() { const inputField = document.getElementById('profile-name-input'); if(!inputField) return; const newName = inputField.value.trim(); if (newName.length < 2) return showCustomAlert("Please enter a valid name.", "error"); localStorage.setItem('customerName', newName); showCustomAlert("✅ Profile name updated successfully!", "success"); updateCarouselAccount(); openAccountModal(); };
 
-        // --- UPDATE 2: REWARDS QR CODE GENERATOR ---
+        // --- REWARDS POINTS SYSTEM & QR CODE GENERATOR ---
         window.openAccountModal = async function() {
             if (!window.currentUser) return; 
             document.getElementById('account-modal').classList.add('show'); 
@@ -443,37 +459,69 @@
             let customerName = localStorage.getItem('customerName') || window.currentUser.name || "Customer"; 
             let fallbackPic = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; 
             let photoUrl = window.currentUser.photoURL || fallbackPic; 
-            let totalOrders = 0; let points = 0;
+            let totalOrders = 0; let totalPoints = 0; let claimedDesserts = 0;
             
             try { 
                 const q = query(collection(db, "orders"), where("customerEmail", "==", window.currentUser.email)); 
                 const snap = await getDocs(q); totalOrders = snap.size; let totalSpent = 0; 
                 snap.forEach(doc => { totalSpent += doc.data().totalBill || 0; }); 
-                points = Math.floor(totalSpent / 100); 
+                totalPoints = Math.floor(totalSpent / 100); 
+
+                const userDocRef = doc(db, "users", window.currentUser.uid);
+                const userSnap = await getDoc(userDocRef);
+                if(userSnap.exists()) claimedDesserts = userSnap.data().claimedDesserts || 0;
             } catch (error) { console.warn("Could not fetch orders for modal."); }
             
-            let dessertsEarned = Math.floor(points / 10); 
-            let rewardsHTML = `<div class="rewards-banner" style="margin-bottom: 15px;"><p style="margin: 0; font-size: 0.85rem;">Earn 1 point per ₹100 spent.<br><strong>10 Points = 1 Free Dessert!</strong></p><h3 style="margin: 5px 0 0 0; color: #7E22CE;">Your Points: ${points}</h3></div>`;
+            let claimedPoints = claimedDesserts * 10;
+            let availablePoints = totalPoints - claimedPoints;
+            let totalDessertsEarnedEver = Math.floor(totalPoints / 10);
+            let availableDesserts = Math.floor(availablePoints / 10);
             
-            if (dessertsEarned > 0) {
+            let rewardsHTML = `<div class="rewards-banner" style="margin-bottom: 15px;">
+                <p style="margin: 0; font-size: 0.85rem;">Earn 1 point per ₹100 spent.<br><strong>10 Points = 1 Free Dessert!</strong></p>
+                <div style="display: flex; justify-content: space-around; background: #FFFFFF; padding: 10px; border-radius: 8px; margin-top: 10px; border: 1px solid rgba(126, 34, 206, 0.1);">
+                    <div style="text-align: center;">
+                        <span style="display: block; font-size: 0.75rem; color: #64748B;">Total</span>
+                        <strong style="color: var(--text-dark);">${totalPoints}</strong>
+                    </div>
+                    <div style="text-align: center;">
+                        <span style="display: block; font-size: 0.75rem; color: #64748B;">Claimed</span>
+                        <strong style="color: #E11D48;">${claimedPoints}</strong>
+                    </div>
+                    <div style="text-align: center;">
+                        <span style="display: block; font-size: 0.75rem; color: #64748B;">Available</span>
+                        <strong style="color: #10B981; font-size: 1.1rem;">${availablePoints}</strong>
+                    </div>
+                </div>
+            </div>`;
+            
+            // Only show QR code if there are enough available points
+            if (availablePoints >= 10 && availableDesserts > 0) {
                 // Generate QR Code payload and URL
                 let qrData = encodeURIComponent(JSON.stringify({
                     uid: window.currentUser.uid,
                     email: window.currentUser.email,
                     name: customerName,
-                    rewardsToClaim: dessertsEarned
+                    rewardsToClaim: totalDessertsEarnedEver
                 }));
                 let qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${qrData}&color=1E293B`;
 
                 rewardsHTML += `
                 <div style="background: #D1FAE5; color: #059669; padding: 20px 15px; border-radius: 12px; text-align: center; border: 1px solid #10B981; margin-bottom: 15px; display: flex; flex-direction: column; align-items: center;">
-                    <span style="font-size: 1.1rem; font-weight: 800; margin-bottom: 15px;">🎉 You earned ${dessertsEarned} Free Dessert(s)!</span>
+                    <span style="font-size: 1.1rem; font-weight: 800; margin-bottom: 15px;">🎉 You have ${availableDesserts} Free Dessert(s)!</span>
                     <img src="${qrUrl}" alt="Reward QR" style="width: 140px; height: 140px; border-radius: 8px; border: 4px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 10px;">
-                    <span style="font-size: 0.8rem; font-weight: 600;">Show this QR code at the counter for scanning to claim your reward.</span>
+                    <span style="font-size: 0.8rem; font-weight: 600;">Show this QR code at the counter to claim your reward.</span>
                 </div>`;
+            } else {
+                 let pointsNeeded = 10 - (availablePoints % 10);
+                 if (availablePoints < 10) pointsNeeded = 10 - availablePoints;
+                 rewardsHTML += `<div style="text-align: center; padding: 15px; background: #F8FAFC; border-radius: 12px; border: 1px dashed #CBD5E1; margin-bottom: 15px; color: #475569; font-size: 0.85rem;">
+                    You need <strong>${pointsNeeded} more points</strong> to unlock your next free dessert! Keep ordering! 🍔
+                 </div>`;
             }
             
             if (Notification.permission !== 'granted') rewardsHTML += `<button onclick="requestPushPermissions()" class="action-btn" style="background: #10B981; margin-bottom: 15px; padding: 10px;">🔔 Turn On Order Alerts</button>`;
+            
             detailsDiv.innerHTML = `<div style="position: relative; z-index: 2;"><div style="text-align: center; margin-bottom: 25px;"><img src="${photoUrl}" class="profile-pic" onerror="this.src='${fallbackPic}'"><h3 style="margin: 10px 0 5px 0; color: var(--text-dark);">${customerName}</h3><p style="margin: 0; color: #64748B; font-size: 0.9rem;">${window.currentUser.email}</p><p style="margin: 5px 0 0 0; color: var(--text-accent); font-weight: 700; font-size: 0.9rem;">📞 ${window.currentUser.phoneNumber || "No number saved"}</p></div>${rewardsHTML}<div style="background: var(--inner-card-bg); padding: 15px; border-radius: var(--radius-md); border: 1px solid rgba(126, 34, 206, 0.1); margin-bottom: 15px;"><label style="font-size: 0.85rem; font-weight: 700; color: #64748B;">Edit Display Name:</label><div style="display: flex; gap: 10px; margin-top: 5px;"><input type="text" id="profile-name-input" class="styled-input" value="${customerName}" placeholder="Your Name" style="padding: 10px;"><button onclick="saveProfileName()" class="action-btn" style="margin-top: 0; width: auto; padding: 0 20px;">Save</button></div></div><p style="margin-bottom: 10px; text-align: center;"><strong>🛍️ Total Orders Placed:</strong> <span style="color: var(--text-dark);">${totalOrders}</span></p></div>`;
         };
 
