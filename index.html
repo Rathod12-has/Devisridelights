@@ -32,7 +32,7 @@
                 <h3 class="card-title">Order Online</h3>
                 <div class="card-badges-wrapper" style="margin-bottom: 12px; position: relative; z-index: 2;">
                     <div class="hero-badge"><span class="badge-icon">📍</span><span class="badge-text" style="font-size: 0.7rem;">Shivani Nagar, Zaheerabad</span></div>
-                    <div class="hero-badge" style="margin-top: 6px;"><span class="badge-icon">🕒</span><span class="badge-text" style="font-size: 0.7rem;"><span class="badge-status">Open</span> • 7AM - 10PM</span></div>
+                    <div class="hero-badge" style="margin-top: 6px;"><span class="badge-icon">🕒</span><span class="badge-text" style="font-size: 0.7rem;"><span class="badge-status">Open</span> • <span id="display-store-timing">7AM - 10PM</span></span></div>
                 </div>
                 <p style="color: #475569; font-weight: 600; line-height: 1.4; font-size: 0.85rem; margin-bottom: 15px; position: relative; z-index: 2;">🌟 Skip the wait! Order ahead online and we'll have your hot food ready.</p>
                 <a href="#menu-container" class="scroll-down-arrow" style="position: relative; z-index: 2; margin-top: auto;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></a>
@@ -59,7 +59,7 @@
                 <div class="card-label-wrapper"><div class="card-label-line"></div><div class="card-label-text-wrapper"><span class="card-label-text">SPECIAL</span></div></div>
                 <span style="font-size: 2.5rem; margin-bottom: 5px; position: relative; z-index: 2; margin-top: 25px;">🌟</span>
                 <h3 class="card-title" style="color: var(--text-accent); margin-top: 5px !important;">Today's Special</h3>
-                <p style="text-align: center; color: #475569; font-weight: 600; line-height: 1.4; margin: 0; font-size: 0.95rem; position: relative; z-index: 2;">Special items will be available soon.!</p>
+                <p id="display-special-text" style="text-align: center; color: #475569; font-weight: 600; line-height: 1.4; margin: 0; font-size: 0.95rem; position: relative; z-index: 2;">Special items will be available soon.!</p>
             </div>
             <div class="carousel-card">
                 <div class="bg-shape shape-3"></div><div class="bg-shape shape-4"></div>
@@ -274,7 +274,7 @@
         }
         loadCustomerMenu();
 
-        // --- PREVENT BANNER OVERLAPPING BUTTONS ---
+        // --- PREVENT BANNER OVERLAPPING BUTTONS AND UPDATE DYNAMIC CAROUSEL INFO ---
         onSnapshot(doc(db, "settings", "store"), (docSnap) => {
             let storeStatusBanner = document.getElementById('store-closed-banner');
             if (!storeStatusBanner) {
@@ -283,22 +283,34 @@
                 storeStatusBanner.innerHTML = "🚫 Store is currently closed. We are not accepting orders right now.";
                 document.body.prepend(storeStatusBanner);
             }
-            if (docSnap.exists() && docSnap.data().isOpen === false) {
-                window.storeIsOpen = false; storeStatusBanner.style.display = "block";
-                document.querySelectorAll('.badge-status').forEach(b => { b.innerText = "Closed"; b.style.color = "#EF4444"; });
-                document.getElementById('floating-cart').style.display = "none";
+            
+            if (docSnap.exists()) {
+                let data = docSnap.data();
                 
-                document.getElementById('login-btn').style.top = '60px';
-                document.getElementById('my-account-btn').style.top = '60px';
-                document.getElementById('active-order-status').style.top = '60px';
-            } else {
-                window.storeIsOpen = true; storeStatusBanner.style.display = "none";
-                document.querySelectorAll('.badge-status').forEach(b => { b.innerText = "Open"; b.style.color = "#10B981"; });
-                if(Object.keys(cart).length > 0) window.updateCartUI();
+                // Update Order Card Timings and Special Text Dynamically
+                let timingEl = document.getElementById('display-store-timing');
+                if(timingEl) timingEl.innerText = data.timing || "7AM - 10PM";
                 
-                document.getElementById('login-btn').style.top = '15px';
-                document.getElementById('my-account-btn').style.top = '15px';
-                document.getElementById('active-order-status').style.top = '15px';
+                let specialEl = document.getElementById('display-special-text');
+                if(specialEl) specialEl.innerText = data.specialText || "Special items will be available soon.!";
+
+                if (data.isOpen === false) {
+                    window.storeIsOpen = false; storeStatusBanner.style.display = "block";
+                    document.querySelectorAll('.badge-status').forEach(b => { b.innerText = "Closed"; b.style.color = "#EF4444"; });
+                    document.getElementById('floating-cart').style.display = "none";
+                    
+                    document.getElementById('login-btn').style.top = '60px';
+                    document.getElementById('my-account-btn').style.top = '60px';
+                    document.getElementById('active-order-status').style.top = '60px';
+                } else {
+                    window.storeIsOpen = true; storeStatusBanner.style.display = "none";
+                    document.querySelectorAll('.badge-status').forEach(b => { b.innerText = "Open"; b.style.color = "#10B981"; });
+                    if(Object.keys(cart).length > 0) window.updateCartUI();
+                    
+                    document.getElementById('login-btn').style.top = '15px';
+                    document.getElementById('my-account-btn').style.top = '15px';
+                    document.getElementById('active-order-status').style.top = '15px';
+                }
             }
         });
 
@@ -397,7 +409,7 @@
                 let latestOrder = null; let latestTime = 0;
                 snap.forEach(doc => { let data = doc.data(); let time = data.timestamp ? data.timestamp.toMillis() : Date.now(); if (time > latestTime) { latestTime = time; latestOrder = data; } });
                 const carouselOrderContent = document.getElementById('carousel-order-content'); const statusTracker = document.getElementById('active-order-status'); const statusText = document.getElementById('status-text'); const statusDot = document.querySelector('.status-dot');
-                if (latestOrder && latestOrder.status !== "Picked up" && latestOrder.status !== "Completed") {
+                if (latestOrder && latestOrder.status !== "Picked up" && latestOrder.status !== "Completed" && latestOrder.status !== "Cancelled") {
                     let status = latestOrder.status || "Pending"; if (status === "Ready" && previousStatus !== "Ready") readySound.play().catch(e => console.log("Blocked")); previousStatus = status; 
                     statusTracker.style.display = 'flex';
                     if (status === "Pending") { statusText.innerText = "Order Placed"; statusDot.className = "status-dot"; } else if (status === "Ready") { statusText.innerText = "Ready for Pickup!"; statusDot.className = "status-dot ready"; } else { statusText.innerText = status; statusDot.className = "status-dot"; }
@@ -495,9 +507,7 @@
                 </div>
             </div>`;
             
-            // Only show QR code if there are enough available points
             if (availablePoints >= 10 && availableDesserts > 0) {
-                // Generate QR Code payload and URL
                 let qrData = encodeURIComponent(JSON.stringify({
                     uid: window.currentUser.uid,
                     email: window.currentUser.email,
