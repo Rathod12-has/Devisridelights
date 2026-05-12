@@ -99,11 +99,17 @@
             <div class="modal-header-flex"><h2>Your Order</h2><button class="clear-cart-btn" onclick="clearCart()">Clear All</button><span class="close-btn" onclick="toggleCartModal()">×</span></div>
             <div id="cart-items-list" style="position: relative; z-index: 2;"></div>
             <h3 style="text-align: right; color: var(--text-accent); margin-top: 15px; position: relative; z-index: 2;">Total: ₹<span id="modal-total">0</span></h3>
-            <div class="customer-info" style="position: relative; z-index: 2;">
+            
+            <div id="upsell-container" style="display: none; position: relative; z-index: 2; margin-top: 20px; border-top: 2px dashed #E2E8F0; padding-top: 15px;">
+                <p style="font-size: 0.85rem; font-weight: 800; color: #64748B; margin: 0 0 10px 0;">Frequently Bought Together 👇</p>
+                <div id="upsell-items" style="display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; scroll-snap-type: x mandatory;"></div>
+            </div>
+
+            <div class="customer-info" style="position: relative; z-index: 2; margin-top: 10px;">
                 <label for="customer-name">Confirm your name:</label>
                 <input type="text" id="customer-name" class="styled-input" placeholder="E.g., Arjun Sharma" required>
             </div>
-            <button class="action-btn full-width" onclick="sendWhatsAppOrder()" style="position: relative; z-index: 2;">Place Order</button>
+            <button class="action-btn full-width" onclick="sendWhatsAppOrder()" style="position: relative; z-index: 2; margin-top: 10px;">Place Order</button>
         </div>
     </div>
 
@@ -234,6 +240,8 @@
         const messaging = getMessaging(app);
         const auth = getAuth(app);
         const googleProvider = new GoogleAuthProvider();
+        
+        window.lastLoadedCategories = []; // Used for smart upsells
 
         window.requestPushPermissions = async function() {
             try {
@@ -260,6 +268,7 @@
                     categories.push(cat); 
                 });
                 categories.sort((a, b) => a.order - b.order);
+                window.lastLoadedCategories = categories; // Save for frequently bought together logic
                 
                 if(categories.length > 0) {
                     if (window.renderMenu) window.renderMenu(categories);
@@ -286,30 +295,19 @@
             
             if (docSnap.exists()) {
                 let data = docSnap.data();
-                
-                // Update Order Card Timings and Special Text Dynamically
-                let timingEl = document.getElementById('display-store-timing');
-                if(timingEl) timingEl.innerText = data.timing || "7AM - 10PM";
-                
-                let specialEl = document.getElementById('display-special-text');
-                if(specialEl) specialEl.innerText = data.specialText || "Special items will be available soon.!";
+                let timingEl = document.getElementById('display-store-timing'); if(timingEl) timingEl.innerText = data.timing || "7AM - 10PM";
+                let specialEl = document.getElementById('display-special-text'); if(specialEl) specialEl.innerText = data.specialText || "Special items will be available soon.!";
 
                 if (data.isOpen === false) {
                     window.storeIsOpen = false; storeStatusBanner.style.display = "block";
                     document.querySelectorAll('.badge-status').forEach(b => { b.innerText = "Closed"; b.style.color = "#EF4444"; });
                     document.getElementById('floating-cart').style.display = "none";
-                    
-                    document.getElementById('login-btn').style.top = '60px';
-                    document.getElementById('my-account-btn').style.top = '60px';
-                    document.getElementById('active-order-status').style.top = '60px';
+                    document.getElementById('login-btn').style.top = '60px'; document.getElementById('my-account-btn').style.top = '60px'; document.getElementById('active-order-status').style.top = '60px';
                 } else {
                     window.storeIsOpen = true; storeStatusBanner.style.display = "none";
                     document.querySelectorAll('.badge-status').forEach(b => { b.innerText = "Open"; b.style.color = "#10B981"; });
                     if(Object.keys(cart).length > 0) window.updateCartUI();
-                    
-                    document.getElementById('login-btn').style.top = '15px';
-                    document.getElementById('my-account-btn').style.top = '15px';
-                    document.getElementById('active-order-status').style.top = '15px';
+                    document.getElementById('login-btn').style.top = '15px'; document.getElementById('my-account-btn').style.top = '15px'; document.getElementById('active-order-status').style.top = '15px';
                 }
             }
         });
@@ -323,44 +321,20 @@
                 let timeMillis = doc.data().timestamp ? doc.data().timestamp.toMillis() : Date.now();
                 let time = new Date(timeMillis).toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true, day: 'numeric', month: 'short' });
                 
-                document.getElementById('carousel-announcement-content').innerHTML = `
-                    <p style="color: var(--text-dark); font-weight: 800; line-height: 1.4; font-size: 0.95rem; margin: 0 0 5px 0;">${msg}</p>
-                    <span style="font-size: 0.75rem; color: #64748B;">${time}</span>
-                `;
-
+                document.getElementById('carousel-announcement-content').innerHTML = `<p style="color: var(--text-dark); font-weight: 800; line-height: 1.4; font-size: 0.95rem; margin: 0 0 5px 0;">${msg}</p><span style="font-size: 0.75rem; color: #64748B;">${time}</span>`;
                 let timeDiffMins = (Date.now() - timeMillis) / 60000;
 
                 if (!initialBroadcastLoad && timeDiffMins <= 30) {
                     let alertDiv = document.createElement('div');
                     alertDiv.style.cssText = "position: fixed; top: 15%; left: 50%; transform: translateX(-50%); background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(126, 34, 206, 0.3); padding: 20px; border-radius: 16px; box-shadow: 0 10px 40px rgba(126, 34, 206, 0.3); z-index: 10000; width: 90%; max-width: 350px; text-align: center; touch-action: none;";
-                    alertDiv.innerHTML = `
-                        <div id="drag-handle" style="width: 40px; height: 5px; background: #CBD5E1; border-radius: 10px; margin: 0 auto 15px auto; cursor: grab;"></div>
-                        <span style="font-size: 2rem;">📢</span>
-                        <h3 style="margin: 10px 0; color: #7E22CE;">New Announcement!</h3>
-                        <p style="color: #1E293B; font-weight: 600; margin-bottom: 20px;">${msg}</p>
-                        <button class="action-btn" onclick="this.parentElement.remove()" style="width: 100%;">Got it!</button>
-                    `;
+                    alertDiv.innerHTML = `<div id="drag-handle" style="width: 40px; height: 5px; background: #CBD5E1; border-radius: 10px; margin: 0 auto 15px auto; cursor: grab;"></div><span style="font-size: 2rem;">📢</span><h3 style="margin: 10px 0; color: #7E22CE;">New Announcement!</h3><p style="color: #1E293B; font-weight: 600; margin-bottom: 20px;">${msg}</p><button class="action-btn" onclick="this.parentElement.remove()" style="width: 100%;">Got it!</button>`;
                     document.body.appendChild(alertDiv);
 
                     let isDragging = false, startX, startY, initialX, initialY;
                     const dragHandle = alertDiv.querySelector('#drag-handle');
-                    
-                    const dragStart = (e) => {
-                        isDragging = true; dragHandle.style.cursor = 'grabbing';
-                        startX = e.touches ? e.touches[0].clientX : e.clientX;
-                        startY = e.touches ? e.touches[0].clientY : e.clientY;
-                        initialX = alertDiv.offsetLeft; initialY = alertDiv.offsetTop;
-                    };
-                    const dragging = (e) => {
-                        if (!isDragging) return; e.preventDefault();
-                        let currentX = e.touches ? e.touches[0].clientX : e.clientX;
-                        let currentY = e.touches ? e.touches[0].clientY : e.clientY;
-                        alertDiv.style.left = initialX + (currentX - startX) + 'px';
-                        alertDiv.style.top = initialY + (currentY - startY) + 'px';
-                        alertDiv.style.transform = 'none'; 
-                    };
+                    const dragStart = (e) => { isDragging = true; dragHandle.style.cursor = 'grabbing'; startX = e.touches ? e.touches[0].clientX : e.clientX; startY = e.touches ? e.touches[0].clientY : e.clientY; initialX = alertDiv.offsetLeft; initialY = alertDiv.offsetTop; };
+                    const dragging = (e) => { if (!isDragging) return; e.preventDefault(); let currentX = e.touches ? e.touches[0].clientX : e.clientX; let currentY = e.touches ? e.touches[0].clientY : e.clientY; alertDiv.style.left = initialX + (currentX - startX) + 'px'; alertDiv.style.top = initialY + (currentY - startY) + 'px'; alertDiv.style.transform = 'none'; };
                     const dragEnd = () => { isDragging = false; dragHandle.style.cursor = 'grab'; };
-
                     dragHandle.addEventListener('mousedown', dragStart); document.addEventListener('mousemove', dragging); document.addEventListener('mouseup', dragEnd);
                     dragHandle.addEventListener('touchstart', dragStart, {passive: false}); document.addEventListener('touchmove', dragging, {passive: false}); document.addEventListener('touchend', dragEnd);
 
@@ -371,9 +345,7 @@
             initialBroadcastLoad = false;
         });
 
-        window.currentUser = null;
-        window.activeOrderUnsubscribe = null; 
-
+        window.currentUser = null; window.activeOrderUnsubscribe = null; 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const userRef = doc(db, "users", user.uid); const userSnap = await getDoc(userRef);
@@ -414,7 +386,6 @@
                     statusTracker.style.display = 'flex';
                     if (status === "Pending") { statusText.innerText = "Order Placed"; statusDot.className = "status-dot"; } else if (status === "Ready") { statusText.innerText = "Ready for Pickup!"; statusDot.className = "status-dot ready"; } else { statusText.innerText = status; statusDot.className = "status-dot"; }
                     let d = new Date(latestOrder.timestamp ? latestOrder.timestamp.toMillis() : Date.now()); let timeStr = d.toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true }); let dateStr = d.toLocaleString('en-IN', { day: '2-digit', month: 'short' });
-                    
                     let waText = encodeURIComponent(`Hi Devi Sri Delights, I want to check the status of my order for Rs. ${latestOrder.totalBill}. Ordered by: ${latestOrder.customerName}`);
                     
                     carouselOrderContent.innerHTML = `
@@ -423,10 +394,7 @@
                             <p style="margin: 0 0 5px 0; font-size: 0.85rem; color: #64748B;">📅 ${dateStr} at ${timeStr}</p>
                             <p style="margin: 0; font-size: 0.95rem; font-weight: 800; color: var(--text-accent);">Total: ₹${latestOrder.totalBill}</p>
                         </div>
-                        <a href="https://wa.me/916305469979?text=${waText}" target="_blank" class="glass-wa-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="width: 18px; fill: #059669;"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg> 
-                            Track on WhatsApp
-                        </a>`;
+                        <a href="https://wa.me/916305469979?text=${waText}" target="_blank" class="glass-wa-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="width: 18px; fill: #059669;"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>Track on WhatsApp</a>`;
                 } else { statusTracker.style.display = 'none'; carouselOrderContent.innerHTML = `<p style="color: #64748B; text-align: center;">No active orders right now.</p>`; }
             });
         }
@@ -435,31 +403,43 @@
             const accContent = document.getElementById('carousel-account-content');
             if (!window.currentUser) { accContent.innerHTML = `<p style="color: #64748B; margin-bottom: 15px; text-align: center;">Login to view rewards & details</p><button class="action-btn" onclick="document.getElementById('login-modal').classList.add('show')" style="margin-top: 0; padding: 10px;">Login Now</button>`; return; }
             accContent.innerHTML = `<p style="color: #64748B; text-align: center;">Loading Profile...</p>`;
-            
-            let customerName = localStorage.getItem('customerName') || window.currentUser.name || "Customer"; 
-            let fallbackPic = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; 
-            let photoUrl = window.currentUser.photoURL || fallbackPic; 
-            let totalPoints = 0; let claimedPoints = 0; let availablePoints = 0;
-            
+            let customerName = localStorage.getItem('customerName') || window.currentUser.name || "Customer"; let fallbackPic = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; let photoUrl = window.currentUser.photoURL || fallbackPic; let totalPoints = 0; let claimedPoints = 0; let availablePoints = 0;
             try { 
-                const q = query(collection(db, "orders"), where("customerEmail", "==", window.currentUser.email)); 
-                const snap = await getDocs(q); let totalSpent = 0; 
-                snap.forEach(doc => { totalSpent += doc.data().totalBill || 0; }); 
+                const q = query(collection(db, "orders"), where("customerEmail", "==", window.currentUser.email)); const snap = await getDocs(q); let totalSpent = 0; snap.forEach(doc => { totalSpent += doc.data().totalBill || 0; }); 
                 totalPoints = Math.floor(totalSpent / 100); 
-
-                const userDocRef = doc(db, "users", window.currentUser.uid);
-                const userSnap = await getDoc(userDocRef);
-                let claimedDesserts = 0;
-                if(userSnap.exists()) claimedDesserts = userSnap.data().claimedDesserts || 0;
-                
-                claimedPoints = claimedDesserts * 10;
-                availablePoints = totalPoints - claimedPoints;
+                const userDocRef = doc(db, "users", window.currentUser.uid); const userSnap = await getDoc(userDocRef); let claimedDesserts = 0; if(userSnap.exists()) claimedDesserts = userSnap.data().claimedDesserts || 0;
+                claimedPoints = claimedDesserts * 10; availablePoints = totalPoints - claimedPoints;
             } catch (error) { console.warn("Could not fetch past orders."); }
-            
             accContent.innerHTML = `<div style="width: 100%; box-sizing: border-box; text-align: left; background: var(--inner-card-bg); padding: 15px; border-radius: var(--radius-md); border: 1px solid rgba(126, 34, 206, 0.1);"><div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;"><img src="${photoUrl}" class="small-profile-pic" onerror="this.src='${fallbackPic}'"><div style="overflow: hidden;"><p style="margin: 0; font-size: 0.95rem; color: var(--text-dark); font-weight: 700; white-space: nowrap; text-overflow: ellipsis;">${customerName}</p><p style="margin: 0; font-size: 0.8rem; color: #64748B; white-space: nowrap; text-overflow: ellipsis;">${window.currentUser.email}</p></div></div><div style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed rgba(126, 34, 206, 0.2); display: flex; justify-content: space-between; align-items: center;"><strong style="color: var(--text-dark); font-size: 0.9rem;">⭐ Avail. Points</strong><span class="points-badge">${availablePoints} pts</span></div></div>`;
         }
 
         window.saveProfileName = function() { const inputField = document.getElementById('profile-name-input'); if(!inputField) return; const newName = inputField.value.trim(); if (newName.length < 2) return showCustomAlert("Please enter a valid name.", "error"); localStorage.setItem('customerName', newName); showCustomAlert("✅ Profile name updated successfully!", "success"); updateCarouselAccount(); openAccountModal(); };
+
+        // --- SCRATCH CARD LOGIC ---
+        window.initScratchCard = function() {
+            const canvas = document.getElementById('scratch-pad');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            ctx.fillStyle = '#CBD5E1'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#64748B'; ctx.font = '800 16px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText('SCRATCH ME!', canvas.width/2, canvas.height/2);
+
+            let isDrawing = false;
+            function getMousePos(e) {
+                let rect = canvas.getBoundingClientRect();
+                let clientX = e.clientX || (e.touches && e.touches[0].clientX);
+                let clientY = e.clientY || (e.touches && e.touches[0].clientY);
+                return { x: clientX - rect.left, y: clientY - rect.top };
+            }
+            function scratch(e) {
+                if (!isDrawing) return; e.preventDefault();
+                let pos = getMousePos(e); ctx.globalCompositeOperation = 'destination-out'; ctx.beginPath(); ctx.arc(pos.x, pos.y, 20, 0, Math.PI * 2, false); ctx.fill();
+            }
+            canvas.addEventListener('mousedown', () => isDrawing = true); canvas.addEventListener('mousemove', scratch);
+            canvas.addEventListener('mouseup', () => isDrawing = false); canvas.addEventListener('mouseleave', () => isDrawing = false);
+            canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); }, {passive:false}); canvas.addEventListener('touchmove', scratch, {passive:false}); canvas.addEventListener('touchend', () => isDrawing = false);
+        };
 
         // --- REWARDS POINTS SYSTEM & QR CODE GENERATOR ---
         window.openAccountModal = async function() {
@@ -469,69 +449,38 @@
             detailsDiv.innerHTML = "<p style='text-align:center; color: var(--text-dark); position: relative; z-index: 2;'>Gathering your details...</p>";
             
             let customerName = localStorage.getItem('customerName') || window.currentUser.name || "Customer"; 
-            let fallbackPic = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; 
-            let photoUrl = window.currentUser.photoURL || fallbackPic; 
+            let fallbackPic = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; let photoUrl = window.currentUser.photoURL || fallbackPic; 
             let totalOrders = 0; let totalPoints = 0; let claimedDesserts = 0;
             
             try { 
-                const q = query(collection(db, "orders"), where("customerEmail", "==", window.currentUser.email)); 
-                const snap = await getDocs(q); totalOrders = snap.size; let totalSpent = 0; 
-                snap.forEach(doc => { totalSpent += doc.data().totalBill || 0; }); 
-                totalPoints = Math.floor(totalSpent / 100); 
-
-                const userDocRef = doc(db, "users", window.currentUser.uid);
-                const userSnap = await getDoc(userDocRef);
-                if(userSnap.exists()) claimedDesserts = userSnap.data().claimedDesserts || 0;
+                const q = query(collection(db, "orders"), where("customerEmail", "==", window.currentUser.email)); const snap = await getDocs(q); totalOrders = snap.size; let totalSpent = 0; snap.forEach(doc => { totalSpent += doc.data().totalBill || 0; }); totalPoints = Math.floor(totalSpent / 100); 
+                const userDocRef = doc(db, "users", window.currentUser.uid); const userSnap = await getDoc(userDocRef); if(userSnap.exists()) claimedDesserts = userSnap.data().claimedDesserts || 0;
             } catch (error) { console.warn("Could not fetch orders for modal."); }
             
-            let claimedPoints = claimedDesserts * 10;
-            let availablePoints = totalPoints - claimedPoints;
-            let totalDessertsEarnedEver = Math.floor(totalPoints / 10);
-            let availableDesserts = Math.floor(availablePoints / 10);
+            let claimedPoints = claimedDesserts * 10; let availablePoints = totalPoints - claimedPoints;
+            let totalDessertsEarnedEver = Math.floor(totalPoints / 10); let availableDesserts = Math.floor(availablePoints / 10);
             
-            let rewardsHTML = `<div class="rewards-banner" style="margin-bottom: 15px;">
-                <p style="margin: 0; font-size: 0.85rem;">Earn 1 point per ₹100 spent.<br><strong>10 Points = 1 Free Ice Cream!</strong></p>
-                <div style="display: flex; justify-content: space-around; background: #FFFFFF; padding: 10px; border-radius: 8px; margin-top: 10px; border: 1px solid rgba(126, 34, 206, 0.1);">
-                    <div style="text-align: center;">
-                        <span style="display: block; font-size: 0.75rem; color: #64748B;">Total</span>
-                        <strong style="color: var(--text-dark);">${totalPoints}</strong>
-                    </div>
-                    <div style="text-align: center;">
-                        <span style="display: block; font-size: 0.75rem; color: #64748B;">Claimed</span>
-                        <strong style="color: #E11D48;">${claimedPoints}</strong>
-                    </div>
-                    <div style="text-align: center;">
-                        <span style="display: block; font-size: 0.75rem; color: #64748B;">Available</span>
-                        <strong style="color: #10B981; font-size: 1.1rem;">${availablePoints}</strong>
-                    </div>
-                </div>
-            </div>`;
+            let rewardsHTML = `<div class="rewards-banner" style="margin-bottom: 15px;"><p style="margin: 0; font-size: 0.85rem;">Earn 1 point per ₹100 spent.<br><strong>10 Points = 1 Free Ice Cream!</strong></p><div style="display: flex; justify-content: space-around; background: #FFFFFF; padding: 10px; border-radius: 8px; margin-top: 10px; border: 1px solid rgba(126, 34, 206, 0.1);"><div style="text-align: center;"><span style="display: block; font-size: 0.75rem; color: #64748B;">Total</span><strong style="color: var(--text-dark);">${totalPoints}</strong></div><div style="text-align: center;"><span style="display: block; font-size: 0.75rem; color: #64748B;">Claimed</span><strong style="color: #E11D48;">${claimedPoints}</strong></div><div style="text-align: center;"><span style="display: block; font-size: 0.75rem; color: #64748B;">Available</span><strong style="color: #10B981; font-size: 1.1rem;">${availablePoints}</strong></div></div></div>`;
             
             if (availablePoints >= 10 && availableDesserts > 0) {
-                let qrData = encodeURIComponent(JSON.stringify({
-                    uid: window.currentUser.uid,
-                    email: window.currentUser.email,
-                    name: customerName,
-                    rewardsToClaim: totalDessertsEarnedEver
-                }));
+                let qrData = encodeURIComponent(JSON.stringify({ uid: window.currentUser.uid, email: window.currentUser.email, name: customerName, rewardsToClaim: totalDessertsEarnedEver }));
                 let qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${qrData}&color=1E293B`;
-
                 rewardsHTML += `
                 <div style="background: #D1FAE5; color: #059669; padding: 20px 15px; border-radius: 12px; text-align: center; border: 1px solid #10B981; margin-bottom: 15px; display: flex; flex-direction: column; align-items: center;">
                     <span style="font-size: 1.1rem; font-weight: 800; margin-bottom: 15px;">🎉 You have ${availableDesserts} Free Ice Cream(s)!</span>
-                    <img src="${qrUrl}" alt="Reward QR" style="width: 140px; height: 140px; border-radius: 8px; border: 4px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 10px;">
-                    <span style="font-size: 0.8rem; font-weight: 600;">Show this QR code at the counter to claim your reward.</span>
+                    <div style="position: relative; width: 160px; height: 160px; margin-bottom: 10px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 4px solid white;">
+                        <img src="${qrUrl}" alt="Reward QR" style="width: 100%; height: 100%; pointer-events: none;">
+                        <canvas id="scratch-pad" width="160" height="160" style="position: absolute; top: 0; left: 0; z-index: 10; cursor: crosshair; touch-action: none;"></canvas>
+                    </div>
+                    <span style="font-size: 0.8rem; font-weight: 600;">Scratch off to reveal your QR code! Show at counter.</span>
                 </div>`;
+                setTimeout(() => window.initScratchCard(), 200); // Initialize scratch layer once DOM updates
             } else {
-                 let pointsNeeded = 10 - (availablePoints % 10);
-                 if (availablePoints < 10) pointsNeeded = 10 - availablePoints;
-                 rewardsHTML += `<div style="text-align: center; padding: 15px; background: #F8FAFC; border-radius: 12px; border: 1px dashed #CBD5E1; margin-bottom: 15px; color: #475569; font-size: 0.85rem;">
-                    You need <strong>${pointsNeeded} more points</strong> to unlock your next free ice cream! Keep ordering! 🍦
-                 </div>`;
+                 let pointsNeeded = 10 - (availablePoints % 10); if (availablePoints < 10) pointsNeeded = 10 - availablePoints;
+                 rewardsHTML += `<div style="text-align: center; padding: 15px; background: #F8FAFC; border-radius: 12px; border: 1px dashed #CBD5E1; margin-bottom: 15px; color: #475569; font-size: 0.85rem;">You need <strong>${pointsNeeded} more points</strong> to unlock your next free ice cream! Keep ordering! 🍦</div>`;
             }
             
             if (Notification.permission !== 'granted') rewardsHTML += `<button onclick="requestPushPermissions()" class="action-btn" style="background: #10B981; margin-bottom: 15px; padding: 10px;">🔔 Turn On Order Alerts</button>`;
-            
             detailsDiv.innerHTML = `<div style="position: relative; z-index: 2;"><div style="text-align: center; margin-bottom: 25px;"><img src="${photoUrl}" class="profile-pic" onerror="this.src='${fallbackPic}'"><h3 style="margin: 10px 0 5px 0; color: var(--text-dark);">${customerName}</h3><p style="margin: 0; color: #64748B; font-size: 0.9rem;">${window.currentUser.email}</p><p style="margin: 5px 0 0 0; color: var(--text-accent); font-weight: 700; font-size: 0.9rem;">📞 ${window.currentUser.phoneNumber || "No number saved"}</p></div>${rewardsHTML}<div style="background: var(--inner-card-bg); padding: 15px; border-radius: var(--radius-md); border: 1px solid rgba(126, 34, 206, 0.1); margin-bottom: 15px;"><label style="font-size: 0.85rem; font-weight: 700; color: #64748B;">Edit Display Name:</label><div style="display: flex; gap: 10px; margin-top: 5px;"><input type="text" id="profile-name-input" class="styled-input" value="${customerName}" placeholder="Your Name" style="padding: 10px;"><button onclick="saveProfileName()" class="action-btn" style="margin-top: 0; width: auto; padding: 0 20px;">Save</button></div></div><p style="margin-bottom: 10px; text-align: center;"><strong>🛍️ Total Orders Placed:</strong> <span style="color: var(--text-dark);">${totalOrders}</span></p></div>`;
         };
 
@@ -567,6 +516,59 @@
             const docRef = await addDoc(collection(db, "orders"), { customerName: name, customerEmail: email, customerPhone: phone, orderItems: cart, totalBill: total, timestamp: serverTimestamp(), status: "Pending" });
             onSnapshot(doc(db, "orders", docRef.id), (s) => { if (s.exists() && s.data().status === "Ready") document.getElementById('ready-modal').classList.add('show'); });
         };
+
+        // --- SMART FREQUENTLY BOUGHT TOGETHER UPSELL LOGIC ---
+        window.renderUpsells = function() {
+            const upsellContainer = document.getElementById('upsell-container');
+            const upsellItemsList = document.getElementById('upsell-items');
+            upsellItemsList.innerHTML = '';
+
+            let suggestedItems = [];
+            // Find items from 'minor' categories (like drinks, extras) that aren't already in the cart
+            window.lastLoadedCategories.forEach(cat => {
+                if (cat.type === 'minor' && cat.items) {
+                    cat.items.forEach(item => {
+                        if (!cart[item.name] && item.inStock !== false && item.price !== "Shop Visit") {
+                            suggestedItems.push(item);
+                        }
+                    });
+                }
+            });
+
+            if (suggestedItems.length === 0 || Object.keys(cart).length === 0) {
+                upsellContainer.style.display = 'none'; return;
+            }
+
+            // Shuffle and pick up to 3 random minor items
+            suggestedItems = suggestedItems.sort(() => 0.5 - Math.random()).slice(0, 3);
+            
+            suggestedItems.forEach(item => {
+                let imgArr = item.images ? item.images : (item.image ? [item.image] : []);
+                let imgHtml = imgArr.length > 0 ? `<img src="${imgArr[0]}" style="width: 50px; height: 50px; border-radius: 8px; object-fit: cover; margin-bottom: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">` : '<div style="font-size: 2rem; margin-bottom: 5px;">😋</div>';
+                
+                upsellItemsList.innerHTML += `
+                <div style="min-width: 120px; background: #FFFFFF; border: 1px solid rgba(126, 34, 206, 0.1); border-radius: 12px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); scroll-snap-align: start;">
+                    ${imgHtml}
+                    <strong style="font-size: 0.8rem; margin: 0 0 5px 0; color: var(--text-dark); line-height: 1.1;">${item.name}</strong>
+                    <span style="font-size: 0.85rem; color: var(--text-accent); font-weight: 800; margin-bottom: 10px;">₹${item.price}</span>
+                    <button class="action-btn" style="padding: 6px 15px; font-size: 0.75rem; margin-top: auto; width: auto;" onclick="addToCart('${item.name}', ${item.price}); toggleCartModal(); toggleCartModal();">Add</button>
+                </div>`;
+            });
+            upsellContainer.style.display = 'block';
+        };
+
+        // Ensure toggleCartModal triggers the new upsell logic
+        window.toggleCartModal = function() {
+            const modal = document.getElementById('cart-modal');
+            if (modal.classList.contains('show')) {
+                modal.classList.remove('show');
+            } else { 
+                renderCartModalItems(); 
+                if(window.renderUpsells) window.renderUpsells();
+                modal.classList.add('show'); 
+            }
+        };
+
     </script>
 </body>
 </html>
