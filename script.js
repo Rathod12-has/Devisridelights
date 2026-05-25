@@ -79,6 +79,77 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 1500);
 });
 
+// --- NEW SEARCH MODAL LOGIC ---
+window.openSearchModal = function() {
+    document.getElementById('search-modal').classList.add('show');
+    document.getElementById('global-search-input').value = '';
+    window.performSearch('');
+    setTimeout(() => document.getElementById('global-search-input').focus(), 300);
+};
+
+window.performSearch = function(query) {
+    query = query.toLowerCase().trim();
+    const resultsContainer = document.getElementById('search-results');
+    let html = '';
+
+    // Quick Links (Show on empty query, or keyword matches)
+    if (query === '' || ['account', 'profile', 'rewards', 'points', 'free', 'ice cream'].some(k => k.includes(query))) {
+         html += `<div class="search-section-title">Quick Links</div>`;
+         html += `<div class="history-card" onclick="document.getElementById('search-modal').classList.remove('show'); openAccountModal();"><strong style="color:var(--text-accent); font-size:1rem;">👤 My Account & Rewards</strong><p style="margin: 5px 0 0 0; font-size: 0.85rem; color: #64748B;">View your profile, available points, and claim free items.</p></div>`;
+    }
+    if (query === '' || ['orders', 'history', 'track', 'past'].some(k => k.includes(query))) {
+         html += `<div class="history-card" onclick="document.getElementById('search-modal').classList.remove('show'); openOrderHistory();"><strong style="color:var(--text-accent); font-size:1rem;">📜 My Order History</strong><p style="margin: 5px 0 0 0; font-size: 0.85rem; color: #64748B;">View past orders and tracking details.</p></div>`;
+    }
+    if (query === '' || ['contact', 'store', 'location', 'phone', 'call', 'map'].some(k => k.includes(query))) {
+         html += `<div class="history-card" onclick="document.getElementById('search-modal').classList.remove('show'); window.scrollTo(0, document.body.scrollHeight);"><strong style="color:var(--text-accent); font-size:1rem;">📍 Contact Store</strong><p style="margin: 5px 0 0 0; font-size: 0.85rem; color: #64748B;">Find map locations and WhatsApp contact number.</p></div>`;
+    }
+
+    // Menu Items Search
+    if (query !== '') {
+        let foundItems = [];
+        window.lastLoadedCategories.forEach(cat => {
+            if (cat.items) {
+                cat.items.forEach(item => {
+                    if (item.name.toLowerCase().includes(query)) {
+                        foundItems.push({...item, categoryName: cat.name});
+                    }
+                });
+            }
+        });
+        
+
+        if (foundItems.length > 0) {
+            html += `<div class="search-section-title" style="margin-top: 20px;">Menu Items</div>`;
+            foundItems.forEach(item => {
+                let isOut = item.inStock === false;
+                let btnHtml = isOut ? `<span style="font-size:0.8rem; color:#EF4444; font-weight:700;">Sold Out</span>` : `<button class="action-btn" style="padding: 8px 14px; margin: 0; width: auto; font-size: 0.8rem;" onclick="addToCart('${item.name}', ${item.price})">Add - ₹${item.price}</button>`;
+                if (item.price === "Shop Visit") btnHtml = `<span style="font-size:0.8rem; color:#64748B; font-weight:700;">Price at Shop</span>`;
+                
+                let imgHtml = item.image || (item.images && item.images.length > 0 ? item.images[0] : null);
+                let imgTag = imgHtml ? `<img src="${imgHtml}" style="width: 45px; height: 45px; border-radius: 8px; object-fit: cover; margin-right: 15px; box-shadow: var(--shadow-inner);">` : `<div style="width: 45px; height: 45px; border-radius: 8px; background: #F1F5F9; margin-right: 15px; display: flex; align-items:center; justify-content:center; font-size:1.2rem;">🍽️</div>`;
+
+                html += `
+                <div class="menu-item" style="padding: 12px; background: var(--inner-card-bg); border-radius: 12px; margin-bottom: 12px; border: 1px solid rgba(126,34,206,0.05);">
+                    <div style="display: flex; align-items: center; width: 100%;">
+                        ${imgTag}
+                        <div style="flex-grow: 1;">
+                            <strong style="color: var(--text-dark); display:block; font-size:0.95rem;">${item.name}</strong>
+                            <small style="color: #64748B;">${item.categoryName}</small>
+                        </div>
+                        ${btnHtml}
+                    </div>
+                </div>`;
+            });
+        } else if (!['account', 'profile', 'rewards', 'points', 'free', 'ice cream', 'orders', 'history', 'track', 'past', 'contact', 'store', 'location', 'phone', 'call', 'map'].some(k => k.includes(query))) {
+             html += `<p style="text-align: center; color: #64748B; margin-top: 30px; font-weight:600;">No results found for "${query}"</p>`;
+        }
+    }
+    
+    resultsContainer.innerHTML = html;
+};
+// --- END SEARCH MODAL LOGIC ---
+
+
 window.renderMenu = function(menuCategories) {
     if (!container) return;
     container.innerHTML = ''; 
@@ -131,7 +202,6 @@ window.renderMenu = function(menuCategories) {
                     }
                 }
 
-                // Safely convert images array or single image to string for passing into the function
                 let imagesArray = item.images ? item.images : (item.image ? [item.image] : []);
                 let imagesStr = JSON.stringify(imagesArray).replace(/"/g, '&quot;');
                 
@@ -185,7 +255,13 @@ window.updateCartUI = function() {
 
 window.toggleCartModal = function() {
     const modal = document.getElementById('cart-modal');
-    if (modal.classList.contains('show')) modal.classList.remove('show'); else { renderCartModalItems(); modal.classList.add('show'); }
+    if (modal.classList.contains('show')) {
+        modal.classList.remove('show'); 
+    } else { 
+        renderCartModalItems(); 
+        if(window.renderUpsells) window.renderUpsells();
+        modal.classList.add('show'); 
+    }
 };
 
 window.renderCartModalItems = function() {
@@ -224,3 +300,4 @@ document.getElementById('share-app-btn').addEventListener('click', () => {
     const shareData = { title: 'Devi Sri Delights', text: 'Check out the menu and order online from Devi Sri Delights!', url: window.location.href };
     if (navigator.share) navigator.share(shareData); else window.open(`https://wa.me/?text=${encodeURIComponent(shareData.text + " " + shareData.url)}`);
 });
+                    
