@@ -12,7 +12,14 @@
 <body>
     
     <button id="login-btn" onclick="document.getElementById('login-modal').classList.add('show')" style="transition: top 0.3s;">👤 Login</button>
-    <button id="my-account-btn" onclick="openAccountModal()" style="display: none; transition: top 0.3s;"><span></span><span></span><span></span></button>
+    
+    <div id="top-right-controls" style="display: none; transition: top 0.3s;">
+        <button id="search-btn" class="glass-pill-btn" onclick="openSearchModal()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            Search
+        </button>
+        <img id="nav-profile-pic" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" onclick="openAccountModal()" alt="Profile">
+    </div>
 
     <div id="active-order-status" style="display: none; transition: top 0.3s;"><span class="status-dot"></span> <span id="status-text">Order Placed</span></div>
     
@@ -95,21 +102,41 @@
     </div>
 
     <div id="cart-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header-flex"><h2>Your Order</h2><button class="clear-cart-btn" onclick="clearCart()">Clear All</button><span class="close-btn" onclick="toggleCartModal()">×</span></div>
-            <div id="cart-items-list" style="position: relative; z-index: 2;"></div>
-            <h3 style="text-align: right; color: var(--text-accent); margin-top: 15px; position: relative; z-index: 2;">Total: ₹<span id="modal-total">0</span></h3>
-            
-            <div id="upsell-container" style="display: none; position: relative; z-index: 2; margin-top: 20px; border-top: 2px dashed #E2E8F0; padding-top: 15px;">
-                <p style="font-size: 0.85rem; font-weight: 800; color: #64748B; margin: 0 0 10px 0;">Frequently Bought Together 👇</p>
-                <div id="upsell-items" style="display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; scroll-snap-type: x mandatory;"></div>
+        <div class="modal-content" style="display: flex; flex-direction: column; max-height: 85vh; padding: 0;">
+            <div class="modal-header-flex" style="padding: 25px 25px 15px 25px; border-bottom: 1px solid #F1F5F9; margin-bottom: 0; align-items: center;">
+                <h2 style="margin: 0; text-align: left; flex-grow: 1;">Your Order</h2>
+                <button class="clear-cart-btn" style="position: relative; left: auto; top: auto; margin-right: 15px;" onclick="clearCart()">Clear All</button>
+                <span class="close-btn" style="position: relative; right: auto; top: auto;" onclick="toggleCartModal()">×</span>
             </div>
+            <div style="overflow-y: auto; padding: 15px 25px 20px 25px; flex-grow: 1;">
+                <div id="cart-items-list" style="position: relative; z-index: 2;"></div>
+                <h3 style="text-align: right; color: var(--text-accent); margin-top: 15px; font-size: 1.2rem;">Total: ₹<span id="modal-total">0</span></h3>
+                
+                <div id="upsell-container" style="display: none; position: relative; z-index: 2; margin-top: 20px; border-top: 2px dashed #E2E8F0; padding-top: 15px;">
+                    <p style="font-size: 0.85rem; font-weight: 800; color: #64748B; margin: 0 0 10px 0;">Frequently Bought Together 👇</p>
+                    <div id="upsell-items" style="display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; scroll-snap-type: x mandatory;"></div>
+                </div>
 
-            <div class="customer-info" style="position: relative; z-index: 2; margin-top: 10px;">
-                <label for="customer-name">Confirm your name:</label>
-                <input type="text" id="customer-name" class="styled-input" placeholder="E.g., Arjun Sharma" required>
+                <div class="customer-info" style="position: relative; z-index: 2; margin-top: 15px;">
+                    <label for="customer-name">Confirm your name:</label>
+                    <input type="text" id="customer-name" class="styled-input" placeholder="E.g., Arjun Sharma" required>
+                </div>
             </div>
-            <button class="action-btn full-width" onclick="sendWhatsAppOrder()" style="position: relative; z-index: 2; margin-top: 10px;">Place Order</button>
+            <div style="padding: 15px 25px 25px 25px; background: var(--main-card-bg); border-top: 1px solid rgba(126, 34, 206, 0.1); box-shadow: 0 -10px 20px rgba(0,0,0,0.03); position: sticky; bottom: 0; z-index: 10;">
+                <button class="action-btn full-width" onclick="sendWhatsAppOrder()" style="margin-top: 0; padding: 16px; font-size: 1.1rem;">Place Order</button>
+            </div>
+        </div>
+    </div>
+        <div id="search-modal" class="modal-overlay">
+        <div class="modal-content" style="display: flex; flex-direction: column; max-height: 85vh; padding: 0;">
+            <div style="padding: 25px 25px 15px 25px; border-bottom: 1px solid #F1F5F9; display: flex; align-items: center; gap: 15px;">
+                <div style="flex-grow: 1; position: relative;">
+                    <input type="text" id="global-search-input" class="styled-input" placeholder="Search menu, rewards, orders..." onkeyup="performSearch(this.value)" style="padding-left: 40px; background-image: url('data:image/svg+xml;utf8,<svg width=%2218%22 height=%2218%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%2394A3B8%22 stroke-width=%222.5%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><circle cx=%2211%22 cy=%2211%22 r=%228%22></circle><line x1=%2221%22 y1=%2221%22 x2=%2216.65%22 y2=%2216.65%22></line></svg>'); background-repeat: no-repeat; background-position: 12px center;">
+                </div>
+                <span style="font-size: 28px; color: #94A3B8; cursor: pointer; line-height: 1;" onclick="document.getElementById('search-modal').classList.remove('show')">×</span>
+            </div>
+            <div id="search-results" style="overflow-y: auto; padding: 20px 25px; flex-grow: 1; min-height: 300px;">
+                </div>
         </div>
     </div>
 
@@ -206,7 +233,7 @@
         </div>
     </div>
 
-    <div id="custom-confirm-modal" class="modal-overlay" style="z-index: 10000;">
+ <div id="custom-confirm-modal" class="modal-overlay" style="z-index: 10000;">
         <div style="background: var(--main-card-bg); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; max-width: 350px; padding: 25px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); text-align: center; animation: alertPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
             <div style="font-size: 3.5rem; margin-bottom: 10px;">🗑️</div>
             <h3 style="color: #E11D48; margin-top: 0; font-size: 1.4rem;">Are you sure?</h3>
@@ -241,7 +268,7 @@
         const auth = getAuth(app);
         const googleProvider = new GoogleAuthProvider();
         
-        window.lastLoadedCategories = []; // Used for smart upsells
+        window.lastLoadedCategories = [];
 
         window.requestPushPermissions = async function() {
             try {
@@ -256,7 +283,6 @@
         onMessage(messaging, (payload) => { 
             showCustomAlert(`<strong>${payload.notification.title}</strong><br>${payload.notification.body}`, 'info'); 
         });
-
         async function loadCustomerMenu() {
             try {
                 const snap = await getDocs(collection(db, "menu"));
@@ -268,7 +294,7 @@
                     categories.push(cat); 
                 });
                 categories.sort((a, b) => a.order - b.order);
-                window.lastLoadedCategories = categories; // Save for frequently bought together logic
+                window.lastLoadedCategories = categories; 
                 
                 if(categories.length > 0) {
                     if (window.renderMenu) window.renderMenu(categories);
@@ -283,7 +309,7 @@
         }
         loadCustomerMenu();
 
-        // --- PREVENT BANNER OVERLAPPING BUTTONS AND UPDATE DYNAMIC CAROUSEL INFO ---
+        // STORE BANNER UPDATES
         onSnapshot(doc(db, "settings", "store"), (docSnap) => {
             let storeStatusBanner = document.getElementById('store-closed-banner');
             if (!storeStatusBanner) {
@@ -302,17 +328,17 @@
                     window.storeIsOpen = false; storeStatusBanner.style.display = "block";
                     document.querySelectorAll('.badge-status').forEach(b => { b.innerText = "Closed"; b.style.color = "#EF4444"; });
                     document.getElementById('floating-cart').style.display = "none";
-                    document.getElementById('login-btn').style.top = '60px'; document.getElementById('my-account-btn').style.top = '60px'; document.getElementById('active-order-status').style.top = '60px';
+                    document.getElementById('login-btn').style.top = '60px'; document.getElementById('top-right-controls').style.top = '60px'; document.getElementById('active-order-status').style.top = '60px';
                 } else {
                     window.storeIsOpen = true; storeStatusBanner.style.display = "none";
                     document.querySelectorAll('.badge-status').forEach(b => { b.innerText = "Open"; b.style.color = "#10B981"; });
                     if(Object.keys(cart).length > 0) window.updateCartUI();
-                    document.getElementById('login-btn').style.top = '15px'; document.getElementById('my-account-btn').style.top = '15px'; document.getElementById('active-order-status').style.top = '15px';
+                    document.getElementById('login-btn').style.top = '15px'; document.getElementById('top-right-controls').style.top = '15px'; document.getElementById('active-order-status').style.top = '15px';
                 }
             }
         });
 
-        // --- DRAGGABLE BROADCAST ANNOUNCEMENT ---
+        // DRAGGABLE BROADCAST ANNOUNCEMENT 
         const qBroadcast = query(collection(db, "broadcasts"), orderBy("timestamp", "desc"), limit(1));
         let initialBroadcastLoad = true;
         onSnapshot(qBroadcast, (snap) => {
@@ -344,7 +370,6 @@
             });
             initialBroadcastLoad = false;
         });
-
         window.currentUser = null; window.activeOrderUnsubscribe = null; 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -352,7 +377,7 @@
                 if (userSnap.exists() && userSnap.data().phoneNumber) { let data = userSnap.data(); finishLoginSetup(user, data.phoneNumber, data.photoURL || user.photoURL); } 
                 else { window.tempUser = user; document.getElementById('phone-request-modal').classList.add('show'); }
             } else {
-                window.currentUser = null; document.getElementById('login-btn').style.display = 'block'; document.getElementById('my-account-btn').style.display = 'none'; document.getElementById('my-orders-btn').style.display = 'none'; updateCarouselAccount(); 
+                window.currentUser = null; document.getElementById('login-btn').style.display = 'block'; document.getElementById('top-right-controls').style.display = 'none'; document.getElementById('my-orders-btn').style.display = 'none'; updateCarouselAccount(); 
             }
         });
 
@@ -367,7 +392,13 @@
         function finishLoginSetup(user, phoneNumber, photoURL) {
             window.currentUser = { email: user.email, name: user.displayName, uid: user.uid, phoneNumber: phoneNumber, photoURL: photoURL };
             let savedName = localStorage.getItem('customerName'); if (!savedName) localStorage.setItem('customerName', user.displayName || "Guest");
-            document.getElementById('customer-name').value = localStorage.getItem('customerName'); document.getElementById('login-btn').style.display = 'none'; document.getElementById('my-account-btn').style.display = 'flex'; document.getElementById('my-orders-btn').style.display = 'block';
+            
+            document.getElementById('customer-name').value = localStorage.getItem('customerName'); 
+            document.getElementById('login-btn').style.display = 'none'; 
+            document.getElementById('top-right-controls').style.display = 'flex'; 
+            document.getElementById('my-orders-btn').style.display = 'block';
+            document.getElementById('nav-profile-pic').src = photoURL || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
+
             trackActiveOrder(user.email); updateCarouselAccount(); if (window.requestPushPermissions) window.requestPushPermissions();
         }
 
@@ -415,7 +446,7 @@
 
         window.saveProfileName = function() { const inputField = document.getElementById('profile-name-input'); if(!inputField) return; const newName = inputField.value.trim(); if (newName.length < 2) return showCustomAlert("Please enter a valid name.", "error"); localStorage.setItem('customerName', newName); showCustomAlert("✅ Profile name updated successfully!", "success"); updateCarouselAccount(); openAccountModal(); };
 
-        // --- SCRATCH CARD LOGIC ---
+        // SCRATCH CARD LOGIC
         window.initScratchCard = function() {
             const canvas = document.getElementById('scratch-pad');
             if (!canvas) return;
@@ -440,8 +471,7 @@
             canvas.addEventListener('mouseup', () => isDrawing = false); canvas.addEventListener('mouseleave', () => isDrawing = false);
             canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); }, {passive:false}); canvas.addEventListener('touchmove', scratch, {passive:false}); canvas.addEventListener('touchend', () => isDrawing = false);
         };
-
-        // --- REWARDS POINTS SYSTEM & QR CODE GENERATOR ---
+                // REWARDS POINTS SYSTEM & QR CODE GENERATOR
         window.openAccountModal = async function() {
             if (!window.currentUser) return; 
             document.getElementById('account-modal').classList.add('show'); 
@@ -474,7 +504,7 @@
                     </div>
                     <span style="font-size: 0.8rem; font-weight: 600;">Scratch off to reveal your QR code! Show at counter.</span>
                 </div>`;
-                setTimeout(() => window.initScratchCard(), 200); // Initialize scratch layer once DOM updates
+                setTimeout(() => window.initScratchCard(), 200); 
             } else {
                  let pointsNeeded = 10 - (availablePoints % 10); if (availablePoints < 10) pointsNeeded = 10 - availablePoints;
                  rewardsHTML += `<div style="text-align: center; padding: 15px; background: #F8FAFC; border-radius: 12px; border: 1px dashed #CBD5E1; margin-bottom: 15px; color: #475569; font-size: 0.85rem;">You need <strong>${pointsNeeded} more points</strong> to unlock your next free ice cream! Keep ordering! 🍦</div>`;
@@ -517,14 +547,13 @@
             onSnapshot(doc(db, "orders", docRef.id), (s) => { if (s.exists() && s.data().status === "Ready") document.getElementById('ready-modal').classList.add('show'); });
         };
 
-        // --- SMART FREQUENTLY BOUGHT TOGETHER UPSELL LOGIC ---
+        // SMART FREQUENTLY BOUGHT TOGETHER UPSELL LOGIC
         window.renderUpsells = function() {
             const upsellContainer = document.getElementById('upsell-container');
             const upsellItemsList = document.getElementById('upsell-items');
             upsellItemsList.innerHTML = '';
 
             let suggestedItems = [];
-            // Find items from 'minor' categories (like drinks, extras) that aren't already in the cart
             window.lastLoadedCategories.forEach(cat => {
                 if (cat.type === 'minor' && cat.items) {
                     cat.items.forEach(item => {
@@ -539,7 +568,6 @@
                 upsellContainer.style.display = 'none'; return;
             }
 
-            // Shuffle and pick up to 3 random minor items
             suggestedItems = suggestedItems.sort(() => 0.5 - Math.random()).slice(0, 3);
             
             suggestedItems.forEach(item => {
@@ -557,7 +585,6 @@
             upsellContainer.style.display = 'block';
         };
 
-        // Ensure toggleCartModal triggers the new upsell logic
         window.toggleCartModal = function() {
             const modal = document.getElementById('cart-modal');
             if (modal.classList.contains('show')) {
